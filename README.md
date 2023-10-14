@@ -1,4 +1,4 @@
-# juegosenred
+# Juegos en Red
 Repositorio creado para el desarrollo del videojuego de la práctica de Juegos en Red del curso 2023/24.
 
 ## Miembros del equipo
@@ -14,6 +14,52 @@ Repositorio creado para el desarrollo del videojuego de la práctica de Juegos e
 
 
 ##GDD
+# 1. INTRODUCCIÓN A _NOMBREJUEGO_
+
+Esto es el documento de desarrollo de _NOMBREJUEGO_. Como objetivo, buscamos plasmar las ideas implementadas en nuestro juego en este documento.
+
+## 1.1 Concepto
+
+_NOMBREJUEGO_ es un juego de peleas mágicas, en el que controlamos a unos pequeños animales con poderes especiales. El objetivo del juego es derrotar al contrincante haciendo uso de las habilidades de cada personaje y los potenciadores que aparecen a lo largo de la partida.
+
+## 1.2 Características
+
+Entre los fundamentos del juego, encontramos:
+
+**Controles** **sencillos**: Permiten entender el juego rápidamente y jugar sin necesitar mucha preparación.
+
+**Rejugabilidad** : Al ser partidas rápidas y con un ritmo frenético, permite jugar de forma seguida sin aburrimiento.
+
+**Dinamismo** : La cantidad de poderes permite dar la vuelta a la partida en cualquier momento, creando tensión y diversión.
+
+**Diversidad** : Al haber varios personajes con habilidades diferentes, la cantidad de posibles enfrentamientos es mucho mayor.
+
+## 1.3 Género
+
+_NOMBREJUEGO_ combina varios géneros para ofrecer una experiencia novedosa.
+
+**Combate** : Los jugadores deben enfrentarse entre sí para ganar.
+
+**Plataformas** : El escenario está repleto de plataformas que permiten una movilidad muy amplia.
+
+**Disparos** : Los personajes se lanzan hechizos, en lugar de golpearse físicamente.
+
+## 1.4 Propósito
+
+El propósito de _NOMBREJUEGO_ es demostrar a los profesores y compañeros el desarrollo de un videojuego capaz de conectarse a la red. Sirve como proyecto de la asignatura y principalmente busca una buena conectividad antes que un buen juego. No obstante, como equipo, buscamos hacer una experiencia divertida y funcional para poder demostrar nuestras capacidades.
+
+## 1.5 Público objetivo
+
+Aun siendo un juego que combina varios géneros conocidos por requerir un alto nivel de dificultad, intentamos que _NOMBREJUEGO_ sea sencillo de comprender y de jugar, permitiendo que un público muy amplio pueda disfrutarlo. Además, el estilo visual descrito a continuación, permite que incluso niños jueguen sin ser expuestos a contenidos no aptos para su edad.
+
+## 1.6 Estilo visual
+
+_NOMBREJUEGO_ cuenta con un estilo dibujado a mano, colorido. Las animaciones, partículas y efectos dan movimiento y acción al juego.
+
+## 1.7 Alcance
+
+El objetivo principal es desarrollar un juego básico al que se puedan ir implementando mejoras conforme vaya pasando el curso académico. Para la primera entrega, buscamos un juego simple y multijugador de forma local.
+
 
 # 2. Mecánicas de Juego
 

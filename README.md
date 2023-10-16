@@ -10,21 +10,17 @@ Repositorio creado para el desarrollo del videojuego de la práctica de Juegos e
 
 · Miguel Rico Feo
 
-
-
-
-##GDD
 # 1. INTRODUCCIÓN A _NOMBREJUEGO_
 
-Esto es el documento de desarrollo de _NOMBREJUEGO_. Como objetivo, buscamos plasmar las ideas implementadas en nuestro juego en este documento.
+Esto es el documento de desarrollo de _NOMBREJUEGO_. Como objetivo, se busca plasmar las ideas implementadas en el juego en este documento.
 
 ## 1.1 Concepto
 
-_NOMBREJUEGO_ es un juego de peleas mágicas, en el que controlamos a unos pequeños animales con poderes especiales. El objetivo del juego es derrotar al contrincante haciendo uso de las habilidades de cada personaje y los potenciadores que aparecen a lo largo de la partida.
+_NOMBREJUEGO_ es un juego de peleas mágicas, en el que se controlan a unos pequeños animales con poderes especiales. El objetivo del juego es derrotar al contrincante haciendo uso de las habilidades de cada personaje y los potenciadores que aparecen a lo largo de la partida.
 
 ## 1.2 Características
 
-Entre los fundamentos del juego, encontramos:
+Entre los fundamentos del juego, se encuentran:
 
 **Controles** **sencillos**: Permiten entender el juego rápidamente y jugar sin necesitar mucha preparación.
 
@@ -46,11 +42,11 @@ _NOMBREJUEGO_ combina varios géneros para ofrecer una experiencia novedosa.
 
 ## 1.4 Propósito
 
-El propósito de _NOMBREJUEGO_ es demostrar a los profesores y compañeros el desarrollo de un videojuego capaz de conectarse a la red. Sirve como proyecto de la asignatura y principalmente busca una buena conectividad antes que un buen juego. No obstante, como equipo, buscamos hacer una experiencia divertida y funcional para poder demostrar nuestras capacidades.
+El propósito de _NOMBREJUEGO_ es demostrar a los profesores y compañeros el desarrollo de un videojuego capaz de conectarse a la red. Sirve como proyecto de la asignatura y principalmente busca una buena conectividad antes que un buen juego. No obstante, como equipo, se busca hacer una experiencia divertida y funcional para poder demostrar las capacidades adquiridas a lo largo del grado.
 
 ## 1.5 Público objetivo
 
-Aun siendo un juego que combina varios géneros conocidos por requerir un alto nivel de dificultad, intentamos que _NOMBREJUEGO_ sea sencillo de comprender y de jugar, permitiendo que un público muy amplio pueda disfrutarlo. Además, el estilo visual descrito a continuación, permite que incluso niños jueguen sin ser expuestos a contenidos no aptos para su edad.
+Aun siendo un juego que combina varios géneros conocidos por requerir un alto nivel de dificultad, se intenta que _NOMBREJUEGO_ sea sencillo de comprender y de jugar, permitiendo que un público muy amplio pueda disfrutarlo. Además, el estilo visual descrito a continuación, permite que incluso niños jueguen sin ser expuestos a contenidos no aptos para su edad.
 
 ## 1.6 Estilo visual
 
@@ -58,7 +54,17 @@ _NOMBREJUEGO_ cuenta con un estilo dibujado a mano, colorido. Las animaciones, p
 
 ## 1.7 Alcance
 
-El objetivo principal es desarrollar un juego básico al que se puedan ir implementando mejoras conforme vaya pasando el curso académico. Para la primera entrega, buscamos un juego simple y multijugador de forma local.
+El objetivo principal es desarrollar un juego básico al que se puedan ir implementando mejoras conforme vaya pasando el curso académico. Para la primera entrega, se busca un juego simple y multijugador de forma local.
+
+## 1.8 Referencias
+
+Algunos de los juegos en los que se ha encontrado inspiración para realizar el proyecto son:
+
+· _Stickman Fight_
+
+· _Super Smash Bros._
+
+· _Wii Play_
 
 
 # 2. Mecánicas de Juego

@@ -2,16 +2,16 @@
 Repositorio creado para el desarrollo del videojuego de la práctica de Juegos en Red del curso 2023/24.
 
 ## Miembros del equipo
-· Ezequiel García Díaz
+· Ezequiel García Díaz - e.garciad.2021@alumnos.urjc.es - [github.com/quiellll](https://github.com/quiellll)
 
-· Gloria Blanca Llorente Pardo
+· Gloria Blanca Llorente Pardo - gb.llorente.2021@alumnos.urjc.es - [github.com/gloriabllorente](https://github.com/gloriabllorente)
 
-· Anatoli Nichei
+· Anatoli Nichei - a.nichei.2022@alumnos.urjc.es - [github.com/Tokpary](https://github.com/Tokpary)
 
-· Miguel Rico Feo
+· Miguel Rico Feo - m.rico.2021@alumnos.urjc.es - [github.com/miguelrico2031](https://github.com/miguelrico2031)
 
 # **Duel for the Mage Tower**
-
+Un juego de peleas mágicas, en el que se controlan a unos pequeños animales con poderes especiales. El objetivo del juego es derrotar al contrincante haciendo uso de las habilidades de cada personaje y los potenciadores que aparecen a lo largo de la partida.
 
 # Contenido
 

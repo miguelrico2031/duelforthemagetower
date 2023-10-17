@@ -10,7 +10,7 @@ Repositorio creado para el desarrollo del videojuego de la práctica de Juegos e
 
 · Miguel Rico Feo
 
-#**Duel for the Mage Tower**
+# **Duel for the Mage Tower**
 
 
 # Contenido

@@ -10,58 +10,61 @@ Repositorio creado para el desarrollo del videojuego de la práctica de Juegos e
 
 · Miguel Rico Feo
 
+#**Duel for the Mage Tower**
+
+
 # Contenido
 
-[1. INTRODUCCIÓN](#_Toc148470916)
+[1. INTRODUCCIÓN]
 
-[1.1. Concepto](#_Toc148470917)
+[1.1. Concepto]
 
-[1.2. Características](#_Toc148470918)
+[1.2. Características]
 
-[1.3. Género](#_Toc148470919)
+[1.3. Género]
 
-[1.4. Propósito](#_Toc148470920)
-[1.5. Público Objetivo ](#_Toc148470921)
+[1.4. Propósito]
+[1.5. Público Objetivo ]
 
-[1.6. Estilo Visual](#_Toc148470922)
+[1.6. Estilo Visual]
 
-[1.7. Alcance](#_Toc148470923)
+[1.7. Alcance]
 
-[1.8. Referencias](#_Toc148470924)
+[1.8. Referencias]
 
-[2. Mecánicas de Juego](#_Toc148470925)
+[2. Mecánicas de Juego
 
-[2.1. Jugabilidad](#_Toc148470926)
+[2.1. Jugabilidad]
 
-[2.2. Flujo de juego](#_Toc148470927)
+[2.2. Flujo de juego]
 
-[2.3. Personajes](#_Toc148470928)
+[2.3. Personajes]
 
-[2.4. _Power Ups](#_Toc148470929)
+[2.4. _Power Ups]
 
-[2.5. Controles](#_Toc148470930)
+[2.5. Controles]
 
-[3. Interfaces](#_Toc148470931)
+[3. Interfaces]
 
-[3.1. Menú Principal](#_Toc148470932)
+[3.1. Menú Principal]
 
-[3.2. Selector de personajes](#_Toc148470933)
+[3.2. Selector de personajes]
 
-[3.3. Interfaz In-Game](#_Toc148470934)
+[3.3. Interfaz In-Game]
 
-[3.4. Menú de Pausa](#_Toc148470935)
+[3.4. Menú de Pausa]
 
-[3.5. Menú de Controles](#_Toc148470936)
+[3.5. Menú de Controles]
 
-[4. Arte](#_Toc148470937)
+[4. Arte]
 
-[4.1. Inspiración](#_Toc148470938)
+[4.1. Inspiración]
 
-[4.2. Personajes](#_Toc148470939)
+[4.2. Personajes]
 
-[4.3. Escenario](#_Toc148470940)
+[4.3. Escenario]
 
-[4.4. Logo](#_Toc148470941)
+[4.4. Logo]
 
 
 # 1. INTRODUCCIÓN
@@ -265,31 +268,31 @@ Esta es la primera pantalla que se muestra nada más iniciar el juego. En ella a
 
 - **Play:** mediante este evento, se transiciona a la siguiente interfaz, el selector de personajes.
 - **How to play:** mediante este evento, se activa la interfaz que muestra los controles de ambos jugadores.
-![](RackMultipart20231017-1-90ybsd_html_c301d0a50443efb9.png)
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/image-004.png)
 
   
 ## 3.2. Selector de personajes
 
 Esta es la pantalla en la que los jugadores seleccionan al personaje con el que jugarán la partida. Se compone por una pantalla dividida, en la cual cada división contiene 3 botones, además de 2 botones. Los 3 botones de cada división representan los personajes seleccionables, que al clickar cambian el _sprite_ de del jugador correspondiente. Los otros 2 botones generales restantes son **Retroceder,** situado en la esquina superior izquierda, cuya función es retroceder al menú principal; y el botón **Play** , situado en la parte inferior central, cuya función será inicializar el juego, siempre y cuando ambos jugadores hayan seleccionado personaje.
-![](RackMultipart20231017-1-90ybsd_html_622c6b04880ce7a3.png)
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/image-005.png)
 
   
 ## 3.3. Interfaz In-Game
 
 La interfaz In-Game es bastante sencilla. En esta se muestran las vidas correspondientes a cada jugador y una barra para comprobar el estado de la habilidad del jugador, cuando esta esté cargada se indica con una estrella u otro símbolo dando a entender que ya se puede usar. La disposición de estos elementos en la pantalla serán en la esquina superior izquierda, para el jugador 1, y en la esquina superior derecha, para el jugador 2.
-![](RackMultipart20231017-1-90ybsd_html_8b6223bbe19919e3.png)
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/image-006.png)
 
   
 ## 3.4. Menú de Pausa
 
 En caso de pausar el juego en mitad de una partida, se despliega esta interfaz. Esta contiene 2 botones en el centro de la pantalla y un regulador de volumen abajo a la izquierda. Los botones correspondientes son **Resume** , que permite continuar con la partida, y **Quit** , la cual lleva a los jugadores al menú principal.
-![](RackMultipart20231017-1-90ybsd_html_c947b4aa457995c1.png)
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/image-007.png)
 
   
 ## 3.5. Menú de Controles
 
 Este menú muestra una imagen con los controles de los jugadores y tiene un botón para retroceder al menú principal.
-![](RackMultipart20231017-1-90ybsd_html_e46d16d3b115e75.png)
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/image-008.png)
 
 
 
@@ -304,8 +307,8 @@ Las paletas de color presentes en los dibujos de Dana Terrace también son una f
 
 A continuación, un par de imágenes que lo ejemplifican:
 
-![](RackMultipart20231017-1-90ybsd_html_49c99ca72f461ae.png)
-![](RackMultipart20231017-1-90ybsd_html_90b9928d5e8d0db4.jpg)
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/image-009.jpg)
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/image-010.jpg)
 
   
 ## 4.2. Personajes
@@ -317,15 +320,15 @@ Todos los personajes cuentan con algún pequeño detalle que muestra su condici�
 **Polilla**
 
 A continuación, se muestra un _concept_ de una de las dos versiones del personaje polilla. La otra variación contará con colores más oscuros.
-![](RackMultipart20231017-1-90ybsd_html_3dbd1718dc220285.png)
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/image-011.jpg)
 
 Aquí se encuentra un ejemplo de los _frames_ que componen la animación del vuelo.
-![](RackMultipart20231017-1-90ybsd_html_cda725aa879d57ba.png)
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/image-012.jpg)
 
 **Gato**
 
 Este personaje cuenta con una pequeña animación en la que escupe una bola que actúa como bomba contra el enemigo.
-![](RackMultipart20231017-1-90ybsd_html_10426449e06cbfe9.png)
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/image-013.jpg)
 
 **Armadillo**
 
@@ -337,9 +340,9 @@ Todavía no existe una versión presentable de este personaje, que cuenta con un
 El juego consta de un único escenario con múltiples plataformas, sencillo, pero manteniendo la estética de magia y hechicería. Está ambientado en el interior de la torre que los personajes luchan por conseguir.
 
 A continuación, un ejemplo del tipo de diseño de nivel que tendrá. La imagen pertenece al juego _Stickman Fight_.
-![](RackMultipart20231017-1-90ybsd_html_b30783cc04d51ffd.png)
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/image-014.jpg)
   
 ## 4.4. Logo
 
 En la siguiente imagen se muestran distintas versiones del logo del juego.
-![](RackMultipart20231017-1-90ybsd_html_1e1e11262d91aa17.png)
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/image-015.jpg)

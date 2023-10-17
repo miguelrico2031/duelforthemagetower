@@ -290,3 +290,56 @@ En caso de pausar el juego en mitad de una partida, se despliega esta interfaz. 
 
 Este menú muestra una imagen con los controles de los jugadores y tiene un botón para retroceder al menú principal.
 ![](RackMultipart20231017-1-90ybsd_html_e46d16d3b115e75.png)
+
+
+
+# 4. Arte
+
+  
+## 4.1. Inspiración
+
+La obra de Dana Terrace, directora y guionista gráfica estadounidense, se ha tomado como principal fuente de inspiración para el arte de _Duel for the Mage Tower_. Cabe destacar su trabajo en series de animación infantil como _Gravity Falls_ y, la referencia principal para este juego, _The Owl House_. Estas dos series tienen una temática de brujería, magia y poderes sobrenaturales similar a la que _Duel for the Mage Tower_ espera tener.
+
+Las paletas de color presentes en los dibujos de Dana Terrace también son una fuerte inspiración estética para el juego. Crea una armonía ideal con el uso de tonos pastel en ambientes oscuros y lúgubres, que también contrasta con colores neón muy llamativos para resaltar los poderes y objetos mágicos.
+
+A continuación, un par de imágenes que lo ejemplifican:
+
+![](RackMultipart20231017-1-90ybsd_html_49c99ca72f461ae.png)
+![](RackMultipart20231017-1-90ybsd_html_90b9928d5e8d0db4.jpg)
+
+  
+## 4.2. Personajes
+
+Los jugadores tendrán la opción de elegir uno de los siguientes tres personajes: polilla, gato o armadillo. Podrán escoger ambos el mismo animal sin miedo a confusión, ya que cada personaje contará con dos versiones en las que variarán distintos aspectos estéticos, como su color.
+
+Todos los personajes cuentan con algún pequeño detalle que muestra su condición de magos y hechiceros.
+
+**Polilla**
+
+A continuación, se muestra un _concept_ de una de las dos versiones del personaje polilla. La otra variación contará con colores más oscuros.
+![](RackMultipart20231017-1-90ybsd_html_3dbd1718dc220285.png)
+
+Aquí se encuentra un ejemplo de los _frames_ que componen la animación del vuelo.
+![](RackMultipart20231017-1-90ybsd_html_cda725aa879d57ba.png)
+
+**Gato**
+
+Este personaje cuenta con una pequeña animación en la que escupe una bola que actúa como bomba contra el enemigo.
+![](RackMultipart20231017-1-90ybsd_html_10426449e06cbfe9.png)
+
+**Armadillo**
+
+Todavía no existe una versión presentable de este personaje, que cuenta con una animación en la que se transforma en bola, actuando como escudo y ayudando al jugador a evitar ser dañado por su contrincante.
+
+  
+## 4.3. Escenario
+
+El juego consta de un único escenario con múltiples plataformas, sencillo, pero manteniendo la estética de magia y hechicería. Está ambientado en el interior de la torre que los personajes luchan por conseguir.
+
+A continuación, un ejemplo del tipo de diseño de nivel que tendrá. La imagen pertenece al juego _Stickman Fight_.
+![](RackMultipart20231017-1-90ybsd_html_b30783cc04d51ffd.png)
+  
+## 4.4. Logo
+
+En la siguiente imagen se muestran distintas versiones del logo del juego.
+![](RackMultipart20231017-1-90ybsd_html_1e1e11262d91aa17.png)

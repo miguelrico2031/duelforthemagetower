@@ -10,72 +10,132 @@ Repositorio creado para el desarrollo del videojuego de la práctica de Juegos e
 
 · Miguel Rico Feo
 
-# 1. INTRODUCCIÓN A _NOMBREJUEGO_
+# Contenido
 
-Esto es el documento de desarrollo de _NOMBREJUEGO_. Como objetivo, se busca plasmar las ideas implementadas en el juego en este documento.
+[1. INTRODUCCIÓN](#_Toc148470916)
 
-## 1.1 Concepto
+[1.1. Concepto](#_Toc148470917)
 
-_NOMBREJUEGO_ es un juego de peleas mágicas, en el que se controlan a unos pequeños animales con poderes especiales. El objetivo del juego es derrotar al contrincante haciendo uso de las habilidades de cada personaje y los potenciadores que aparecen a lo largo de la partida.
+[1.2. Características](#_Toc148470918)
 
-## 1.2 Características
+[1.3. Género](#_Toc148470919)
+
+[1.4. Propósito](#_Toc148470920)
+[1.5. Público Objetivo ](#_Toc148470921)
+
+[1.6. Estilo Visual](#_Toc148470922)
+
+[1.7. Alcance](#_Toc148470923)
+
+[1.8. Referencias](#_Toc148470924)
+
+[2. Mecánicas de Juego](#_Toc148470925)
+
+[2.1. Jugabilidad](#_Toc148470926)
+
+[2.2. Flujo de juego](#_Toc148470927)
+
+[2.3. Personajes](#_Toc148470928)
+
+[2.4. _Power Ups](#_Toc148470929)
+
+[2.5. Controles](#_Toc148470930)
+
+[3. Interfaces](#_Toc148470931)
+
+[3.1. Menú Principal](#_Toc148470932)
+
+[3.2. Selector de personajes](#_Toc148470933)
+
+[3.3. Interfaz In-Game](#_Toc148470934)
+
+[3.4. Menú de Pausa](#_Toc148470935)
+
+[3.5. Menú de Controles](#_Toc148470936)
+
+[4. Arte](#_Toc148470937)
+
+[4.1. Inspiración](#_Toc148470938)
+
+[4.2. Personajes](#_Toc148470939)
+
+[4.3. Escenario](#_Toc148470940)
+
+[4.4. Logo](#_Toc148470941)
+
+
+# 1. INTRODUCCIÓN
+
+Esto es el documento de desarrollo de Duel for the Mage Tower. Como objetivo, se busca plasmar las ideas implementadas en el juego en este documento.
+
+  
+## 1.1. Concepto
+
+Duel for the Mage Tower es un juego de peleas mágicas, en el que se controlan a unos pequeños animales con poderes especiales. El objetivo del juego es derrotar al contrincante haciendo uso de las habilidades de cada personaje y los potenciadores que aparecen a lo largo de la partida.
+
+  
+## 1.2. Características
 
 Entre los fundamentos del juego, se encuentran:
 
-**Controles** **sencillos**: Permiten entender el juego rápidamente y jugar sin necesitar mucha preparación.
+**Controles sencillos:** Permiten entender el juego rápidamente y jugar sin necesitar mucha preparación.
 
-**Rejugabilidad** : Al ser partidas rápidas y con un ritmo frenético, permite jugar de forma seguida sin aburrimiento.
+**Rejugabilidad:** Al ser partidas rápidas y con un ritmo frenético, permite jugar de forma seguida sin aburrimiento.
 
-**Dinamismo** : La cantidad de poderes permite dar la vuelta a la partida en cualquier momento, creando tensión y diversión.
+**Dinamismo:** La cantidad de poderes permite dar la vuelta a la partida en cualquier momento, creando tensión y diversión.
 
-**Diversidad** : Al haber varios personajes con habilidades diferentes, la cantidad de posibles enfrentamientos es mucho mayor.
+**Diversidad:** Al haber varios personajes con habilidades diferentes, la cantidad de posibles enfrentamientos es mucho mayor.
 
-## 1.3 Género
+  
+## 1.3. Género
 
-_NOMBREJUEGO_ combina varios géneros para ofrecer una experiencia novedosa.
+Duel for the Mage Tower combina varios géneros para ofrecer una experiencia novedosa.
 
-**Combate** : Los jugadores deben enfrentarse entre sí para ganar.
+**Combate:** Los jugadores deben enfrentarse entre sí para ganar.
 
-**Plataformas** : El escenario está repleto de plataformas que permiten una movilidad muy amplia.
+**Plataformas:** El escenario está repleto de plataformas que permiten una movilidad muy amplia.
 
-**Disparos** : Los personajes se lanzan hechizos, en lugar de golpearse físicamente.
+**Disparos:** Los personajes se lanzan hechizos, en lugar de golpearse físicamente.
 
-## 1.4 Propósito
+  
+## 1.4. Propósito
 
-El propósito de _NOMBREJUEGO_ es demostrar a los profesores y compañeros el desarrollo de un videojuego capaz de conectarse a la red. Sirve como proyecto de la asignatura y principalmente busca una buena conectividad antes que un buen juego. No obstante, como equipo, se busca hacer una experiencia divertida y funcional para poder demostrar las capacidades adquiridas a lo largo del grado.
+El propósito de Duel for the Mage Tower es demostrar a los profesores y compañeros el desarrollo de un videojuego capaz de conectarse a la red. Sirve como proyecto de la asignatura y principalmente busca una buena conectividad antes que un buen juego. No obstante, como equipo, se busca hacer una experiencia divertida y funcional para poder demostrar las capacidades adquiridas a lo largo del grado.
 
-## 1.5 Público objetivo
+  
+## 1.5. Público Objetivo
 
-Aun siendo un juego que combina varios géneros conocidos por requerir un alto nivel de dificultad, se intenta que _NOMBREJUEGO_ sea sencillo de comprender y de jugar, permitiendo que un público muy amplio pueda disfrutarlo. Además, el estilo visual descrito a continuación, permite que incluso niños jueguen sin ser expuestos a contenidos no aptos para su edad.
+Aun siendo un juego que combina varios géneros conocidos por requerir un alto nivel de dificultad, se intenta que Duel for the Mage Tower sea sencillo de comprender y de jugar, permitiendo que un público muy amplio pueda disfrutarlo. Además, el estilo visual descrito a continuación, permite que incluso niños jueguen sin ser expuestos a contenidos no aptos para su edad.
 
-## 1.6 Estilo visual
+  
+## 1.6. Estilo Visual
 
-_NOMBREJUEGO_ cuenta con un estilo dibujado a mano, colorido. Las animaciones, partículas y efectos dan movimiento y acción al juego.
+Duel for the Mage Tower cuenta con un estilo dibujado a mano, colorido. Las animaciones, partículas y efectos dan movimiento y acción al juego.
 
-## 1.7 Alcance
+  
+## 1.7. Alcance
 
 El objetivo principal es desarrollar un juego básico al que se puedan ir implementando mejoras conforme vaya pasando el curso académico. Para la primera entrega, se busca un juego simple y multijugador de forma local.
 
-## 1.8 Referencias
+  
+## 1.8. Referencias
 
 Algunos de los juegos en los que se ha encontrado inspiración para realizar el proyecto son:
 
-· _Stickman Fight_
-
-· _Super Smash Bros._
-
-· _Wii Play_
+- _Stickman Fight_
+- _Super Smash Bros._
+- _Wii Play_
 
 
 # 2. Mecánicas de Juego
 
-En esta sección se hablarán de todos los elementos que conforman el juego, así como de la forma en la que transcurre cada partida de NOMBREJUEGO.
+En esta sección se hablarán de todos los elementos que conforman el juego, así como de la forma en la que transcurre cada partida de Duel for the Mage Tower.
 
 ## 2.1. Jugabilidad
 
 **Nivel**
 
-NOMBREJUEGO consta de un único nivel, en el cual los 2 jugadores deberán enfrentarse en un duelo de magia. Este nivel consta de un suelo y varias plataformas flotantes distribuidas por toda la pantalla, a las cuales los jugadores pueden subirse saltando sobre ellas.
+Duel for the Mage Tower consta de un único nivel, en el cual los 2 jugadores deberán enfrentarse en un duelo de magia. Este nivel consta de un suelo y varias plataformas flotantes distribuidas por toda la pantalla, a las cuales los jugadores pueden subirse saltando sobre ellas.
 
 En el centro del nivel hay un campo de fuerza que se extiende verticalmente formando una columna que abarca la totalidad de la pantalla de manera vertical. Este tiene la función de impedir que ninguno de los 2 jugadores cruce al lado opuesto del nivel. Los hechizos lanzados cruzan sin problema el campo de fuerza. Esto hace que el duelo se mantenga a rango y se deban apuntar bien los hechizos al lanzarlos a distancia.
 
@@ -99,7 +159,7 @@ Bajar los puntos de vida del jugador enemigo lanzándole hechizos, antes de que 
 
 ## 2.2. Flujo de juego
 
-Una partida de NOMBREJUEGO empieza con cada jugador (o mago) a su lado del nivel, uno a la izquierda y otro a la derecha del campo de fuerza. Entonces se podrán mover libremente, excepto para cruzar al lado opuesto debido al campo de fuerza en la mitad, y disparar hechizos en la dirección que elijan.
+Una partida de Duel for the Mage Tower empieza con cada jugador (o mago) a su lado del nivel, uno a la izquierda y otro a la derecha del campo de fuerza. Entonces se podrán mover libremente, excepto para cruzar al lado opuesto debido al campo de fuerza en la mitad, y disparar hechizos en la dirección que elijan.
 
 Cada jugador, según considere, irá lanzando hechizos y esquivando los hechizos del enemigo constantemente, hasta que uno de los 2 llegue a 0 puntos de vida, causando la victoria del jugador que quede vivo.
 
@@ -107,7 +167,7 @@ A lo largo de la partida irán apareciendo varios objetos aleatoriamente, los cu
 
 ## 2.3. Personajes
 
-En NOMBREJUEGO cada jugador podrá elegir entre 3 personajes. Los 3 comparten la habilidad de lanzar el hechizo básico, descrito anteriormente, el cual rebota con las plataformas y daña al jugador enemigo al impactarlo. A parte, cada personaje tiene un aspecto único (detallado en la sección de ARTE) y una habilidad mágica única. Esta habilidad puede ser usada una vez cada cierto tiempo, a diferencia del hechizo normal. Los personajes con sus habilidades son:
+En Duel for the Mage Tower cada jugador podrá elegir entre 3 personajes. Los 3 comparten la habilidad de lanzar el hechizo básico, descrito anteriormente, el cual rebota con las plataformas y daña al jugador enemigo al impactarlo. A parte, cada personaje tiene un aspecto único (detallado en la sección de ARTE) y una habilidad mágica única. Esta habilidad puede ser usada una vez cada cierto tiempo, a diferencia del hechizo normal. Los personajes con sus habilidades son:
 
 **Armadillo**
 
@@ -115,7 +175,7 @@ Tiene la habilidad de escudarse cerrándose en una bola por un tiempo. Mientras 
 
 **Gato**
 
-Tiene la habilidad
+Tiene la habilidad de lanzar una bomba, que funciona en principio como un hechizo normal, pero tras unos pocos rebotes explota en un área dañando al enemigo si lo alcanza. Sólo se podrá lanzar la bomba una vez cada cierto tiempo.
 
 **Polilla**
 
@@ -127,7 +187,7 @@ Los _Power Ups_ son objetos interactuables que irán apareciendo aleatoriamente,
 
 Si un jugador toca un _Power Up_, este último desaparecerá, y al jugador se le concederá un efecto positivo.
 
-Hay 3 tipos de _Power Ups_ en NOMBREJUEGO:
+Hay 3 tipos de _Power Ups_ en Duel for the Mage Tower:
 
 **Curación**
 
@@ -143,7 +203,7 @@ Al tocarlo, el jugador recibe temporalmente un incremento a la velocidad de movi
 
 ## 2.5. Controles
 
-En NOMBREJUEGO habrá varios tipos de controles, depende de si se esté jugando una partida en modo local o modo en línea, así como de si los jugadores usan el teclado o conectan un mando.
+En Duel for the Mage Tower habrá varios tipos de controles, depende de si se esté jugando una partida en modo local o modo en línea, así como de si los jugadores usan el teclado o conectan un mando.
 
 Los controles tienen estos nombres:
 

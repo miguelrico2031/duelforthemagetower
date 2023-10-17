@@ -253,3 +253,40 @@ Jugador 2:
 - Dispara Centro: Botón Oeste
 - Disparar Abajo: Joystick izquierdo abajo + Botón Oeste
 - Habilidad: Botón norte
+
+# 3. Interfaces
+
+En este apartado se comentan todas las interfaces que el juego requiere para su correcto funcionamiento, desde las ventanas de navegación o menús, hasta la UI que muestra el estado de los jugadores como por ejemplo la barra de vida.
+
+  
+## 3.1. Menú Principal
+
+Esta es la primera pantalla que se muestra nada más iniciar el juego. En ella aparecen el título del juego, un fondo acorde al juego, un regulador de volumen desplegable abajo a la derecha y 3 botones con las siguientes funcionalidades:
+
+- **Play:** mediante este evento, se transiciona a la siguiente interfaz, el selector de personajes.
+- **How to play:** mediante este evento, se activa la interfaz que muestra los controles de ambos jugadores.
+![](RackMultipart20231017-1-90ybsd_html_c301d0a50443efb9.png)
+
+  
+## 3.2. Selector de personajes
+
+Esta es la pantalla en la que los jugadores seleccionan al personaje con el que jugarán la partida. Se compone por una pantalla dividida, en la cual cada división contiene 3 botones, además de 2 botones. Los 3 botones de cada división representan los personajes seleccionables, que al clickar cambian el _sprite_ de del jugador correspondiente. Los otros 2 botones generales restantes son **Retroceder,** situado en la esquina superior izquierda, cuya función es retroceder al menú principal; y el botón **Play** , situado en la parte inferior central, cuya función será inicializar el juego, siempre y cuando ambos jugadores hayan seleccionado personaje.
+![](RackMultipart20231017-1-90ybsd_html_622c6b04880ce7a3.png)
+
+  
+## 3.3. Interfaz In-Game
+
+La interfaz In-Game es bastante sencilla. En esta se muestran las vidas correspondientes a cada jugador y una barra para comprobar el estado de la habilidad del jugador, cuando esta esté cargada se indica con una estrella u otro símbolo dando a entender que ya se puede usar. La disposición de estos elementos en la pantalla serán en la esquina superior izquierda, para el jugador 1, y en la esquina superior derecha, para el jugador 2.
+![](RackMultipart20231017-1-90ybsd_html_8b6223bbe19919e3.png)
+
+  
+## 3.4. Menú de Pausa
+
+En caso de pausar el juego en mitad de una partida, se despliega esta interfaz. Esta contiene 2 botones en el centro de la pantalla y un regulador de volumen abajo a la izquierda. Los botones correspondientes son **Resume** , que permite continuar con la partida, y **Quit** , la cual lleva a los jugadores al menú principal.
+![](RackMultipart20231017-1-90ybsd_html_c947b4aa457995c1.png)
+
+  
+## 3.5. Menú de Controles
+
+Este menú muestra una imagen con los controles de los jugadores y tiene un botón para retroceder al menú principal.
+![](RackMultipart20231017-1-90ybsd_html_e46d16d3b115e75.png)

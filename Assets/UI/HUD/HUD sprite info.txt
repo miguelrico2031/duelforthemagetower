@@ -1,0 +1,7 @@
+Heart Container Full: 12 x 12 px
+Heart Container Half: 12 x 12 px
+Heart Container Empty: 12 x 12 px
+Profile Border [Blue/Red]: 128 x 32 px
+
+Power bar section: 42 x 7 px
+Power bar full: 234 x 7 px

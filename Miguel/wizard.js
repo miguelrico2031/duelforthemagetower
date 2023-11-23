@@ -1,13 +1,15 @@
 
 class Wizard
 {
-    moveSpeed = 100;
-    jumpForce = 300;
+    moveSpeed = 200;
+    jumpForce = 1000;
 
     gameObject;
     body;
     xInput = 0;
+    yInput = 0;
     jumpInput = 0;
+    direction = new Phaser.Math.Vector2();
 
     constructor(scene, spriteKey, position)
     {
@@ -21,13 +23,18 @@ class Wizard
         //movimiento
         this.body.setVelocityX(this.moveSpeed * this.xInput);
 
+        //direccion
+        if(this.xInput != 0) this.direction.x = this.xInput;
+        if(this.yInput != 0) this.direction.y = this.yInput;
+
         //salto
-        if(this.jumpButton && this.body.touching.down)
+        if(this.jumpInput && this.body.touching.down)
         {
-            this.body.setVelocityY(-jumpForce);
+            this.body.setVelocityY(-this.jumpForce);
         }
 
         this.xInput = 0;
-        this.jumpButton = 0;
+        this.yInput = 0;
+        this.jumpInput = 0;
     }
 }

@@ -1,15 +1,18 @@
-
 class Wizard
 {
-    
+    //propiedades publicas
+    gameObject; //referencia al objeto/sprite
+    body; //cuerpo de las fisicas
+    xInput = 0; //input horizontal : -1, 0, 1
+    yInput = 0; //input vertiañ : -1, 0, 1
+    jumpInput = 0; //input de salto: 0, 1
+    direction = new Phaser.Math.Vector2(); //direccion (para disparar)
 
-    gameObject;
-    body;
-    xInput = 0;
-    yInput = 0;
-    jumpInput = 0;
-    direction = new Phaser.Math.Vector2();
-    animationKeys =
+
+
+
+    //propiedades privadas
+    _animationKeys = // objeto con todas las keys para reproducir las animaciones
     {
         idle: "idle",
         run: "run",
@@ -19,55 +22,107 @@ class Wizard
         hit: "hit",
         die: "die"
     }
+    _currentAnimationKey = ""; //animacion actual
+    _moveSpeed = 200; //velocidad de movimiento (horizontal)
+    _jumpForce = 1000; //fuerza de salto
+    _isJumping = false; //control para evitar doble salto
+    _jumpTimer = 0; //timer para evitar hacer check de suelo justo cuando se salta
+    _health = 10; //salud
+    _isAlive = true; //control para no moverse al estar muerto
+    _onHitCallbacks = []; //array para guardar todos los callbacks a llamar cuando el jugador reciba daño
+    _onDeathCallbacks = []; //lo mismo de arriba pero cuando el jugador muera
+    _updateAnims = true; //control para no cambiar de animacion si el jugador esta en la de hit o die
 
-    _spriteKey = "";
-    _moveSpeed = 12;
-    _jumpForce = 1000;
-    _animationKey = "";
-    _isJumping = false;
-    _jumpTimer = 0;
+    
 
     constructor(scene, spriteKey, position, xDirection)
     {
-        this._spriteKey = spriteKey;
-
-        for (let key in this.animationKeys) this.animationKeys[key] = this._spriteKey + "_" + key;
-
-        this.gameObject = scene.physics.add.sprite(position.x, position.y, this.animationKeys.idle);
+        //cambiar las keys de anim. para que lleven la id del jugador
+        //esto porque las animaciones son globales y si hay 2 jugadores hande llevar difs nombres
+        for (let key in this._animationKeys) this._animationKeys[key] = spriteKey + "_" + key;
+        //crear el sprite
+        this.gameObject = scene.physics.add.sprite(position.x, position.y, this._animationKeys.idle);
         this.body = this.gameObject.body;
-        this.gameObject.setCollideWorldBounds(true);
 
-        this.direction.x = xDirection
+        this.gameObject.setScale(0.75).refreshBody();
+        this.body.setSize(54, 92, true);
+
+        this.gameObject.setCollideWorldBounds(true); //evitar que se salga del viewport del juego
+        //establecer callback para cuando las animaciones que no loopean terminan
+        this.gameObject.on('animationcomplete', this.onAnimationEnd, this); 
+        this.direction.x = xDirection; //direccion inicial (como parametro para que c/jugador tenga una distinta)
     }
+
+
+
+
+    //metodos publicos
 
     update(time, delta)
     {
+        if(!this._isAlive) 
+        {//si esta muerto se resetea la velocidad horizontal para que no se mueva, la vertical no por si esta en el aire al morir
+            this.body.setVelocityX(0);
+            return;
+        }
+
         this._move(delta);
-
         this._jump(delta);
+        this._updateAnimations();
 
-
-        //animaciones
-
-        
-        this._updateAnimation();
-
+        //reseteo de inputs para el siguiente frame
         this.xInput = 0;
         this.yInput = 0;
         this.jumpInput = 0;
     }
 
-    startAnimations()
+    startAnimations = () => this.gameObject.anims.play(this._animationKeys.idle, true); //inicializa la anim. a idle
+
+    //metodos para añadir callbacks cuando el jugador recibe daño y muere
+    addHitListener = (callback) => this._onHitCallbacks.push(callback);
+    addDeathListener = (callback) => this._onDeathCallbacks.push(callback);
+    
+    takeDamage(damage)
     {
-        this.gameObject.anims.play(this.animationKeys.idle, true);
+        if(!this._isAlive) return;
+
+        this._health = Math.max(this._health - damage, 0); //para no bajar de 0 la salud
+        this._onHitCallbacks.forEach(callback => callback(this._health)); //llamar a todos los callbacks
+
+        if(this._health === 0) this._die();
+        else
+        {//animacion de daño
+            this._setAnimation(this._animationKeys.hit);
+            this._updateAnims = false;
+        }
     }
+
+    onAnimationEnd() //llamado al terminar cualquier animacion que no se loopea
+    {
+        switch(this.gameObject.anims.currentAnim.key)
+        {
+            case this._animationKeys.hit:
+                //lo de abajo porque no queremos hacer nada si no ha acabado la animacion (de momento no hace falta)
+                //if(!this.gameObject.anims.currentFrame.isLast) break;
+                this._updateAnims = true; //control para volver a actualizar animaciones (idle, run, jump)
+                break;
+
+            case this._animationKeys.die:
+                console.log("MUELTO"); //xd
+                break;
+        }
+    }
+
+
+
+    //metodos privados
 
     _move(delta)
     {
         //movimiento
-        this.body.setVelocityX(this._moveSpeed * this.xInput * delta);
+        this.body.setVelocityX(this._moveSpeed * this.xInput/* * delta*/); //no funiona el delta entre diferentes dispositivos
 
-        //direccion
+        //direccion (para disparar)
         this.direction.y = this.yInput;
     }
 
@@ -85,29 +140,45 @@ class Wizard
         else
         {
             this._jumpTimer += delta;
-            if(this._jumpTimer >= 50 && this.body.touching.down)
-            {
+            if(this._jumpTimer >= 50/*numero hardcodeado a cambiar en release*/ && this.body.touching.down)
                 this._isJumping = false;
-            }
         }
     }
 
-    _updateAnimation()
+    _updateAnimations()
     {
-        if(Math.abs(this.body.velocity.x) > 0.1) this._animationKey = this.animationKeys.run;
-        else this._animationKey = this.animationKeys.idle;
+        if(!this._updateAnims) return; //no cambiar de animacion si esta en las no loopeables
+
+        if(Math.abs(this.body.velocity.x) > 0.1) this._currentAnimationKey = this._animationKeys.run;
+        else this._currentAnimationKey = this._animationKeys.idle;
 
         if(this._isJumping)
         {
-            this._animationKey = this.body.velocity.y < 0 ? this.animationKeys.jump : this.animationKeys.fall;
+            this._currentAnimationKey = this.body.velocity.y < 0 ? this._animationKeys.jump : this._animationKeys.fall;
         }
         else if(!this.body.touching.down)
         {
-            this._animationKey = this.animationKeys.fall;
+            this._currentAnimationKey = this._animationKeys.fall;
         }
 
-        this.gameObject.anims.play(this._animationKey, true);
+        this.gameObject.anims.play(this._currentAnimationKey, true);
         
     }
+
+    _setAnimation(key)
+    {
+        this._currentAnimationKey = key;
+        this.gameObject.anims.play(this._currentAnimationKey, true);
+    }
+
+    _die()
+    {
+        this._isAlive = false;
+        this._onDeathCallbacks.forEach(c => c()); //llamar a los callbacks de muerte del jugador
+
+        this._setAnimation(this._animationKeys.die);
+        this._updateAnims = false;
+    }
+
 
 }

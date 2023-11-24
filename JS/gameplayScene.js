@@ -13,8 +13,8 @@ class GameplayScene extends Phaser.Scene
 
     preload()
     {
-        this.load.image("bg", "roblox.jpg");
-        this.load.image("floor", "testfloor.png");
+        this.load.image("bg", "../Miguel/roblox.jpg");
+        this.load.image("floor", "../Miguel/testfloor.png");
 
         this.load.spritesheet("wizard1_idle", "../Sprites/WizardPack/Idle.png", {frameWidth: 231, frameHeight: 190} );
         this.load.spritesheet("wizard1_run", "../Sprites/WizardPack/Run.png", {frameWidth: 231, frameHeight: 190} );

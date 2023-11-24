@@ -44,13 +44,14 @@ class Wizard
         this.gameObject = scene.physics.add.sprite(position.x, position.y, this._animationKeys.idle);
         this.body = this.gameObject.body;
 
-        this.gameObject.setScale(0.75).refreshBody();
-        this.body.setSize(54, 92, true);
+
 
         this.gameObject.setCollideWorldBounds(true); //evitar que se salga del viewport del juego
         //establecer callback para cuando las animaciones que no loopean terminan
         this.gameObject.on('animationcomplete', this.onAnimationEnd, this); 
         this.direction.x = xDirection; //direccion inicial (como parametro para que c/jugador tenga una distinta)
+
+        this.gameObject.flipX = xDirection < 1;
     }
 
 
@@ -120,7 +121,7 @@ class Wizard
     _move(delta)
     {
         //movimiento
-        this.body.setVelocityX(this._moveSpeed * this.xInput/* * delta*/); //no funiona el delta entre diferentes dispositivos
+        this.body.setVelocityX(this._moveSpeed * this.xInput);
 
         //direccion (para disparar)
         this.direction.y = this.yInput;

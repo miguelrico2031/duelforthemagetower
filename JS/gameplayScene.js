@@ -27,6 +27,7 @@ class GameplayScene extends Phaser.Scene
         this.load.spritesheet("wizard1_fall", "../Sprites/WizardPack/Fall.png", {frameWidth: 231, frameHeight: 190} );
         this.load.spritesheet("wizard1_hit", "../Sprites/WizardPack/Hit.png", {frameWidth: 231, frameHeight: 190} );
         this.load.spritesheet("wizard1_die", "../Sprites/WizardPack/Death.png", {frameWidth: 231, frameHeight: 190} );
+        this.load.spritesheet("wizard1_attack", "../Sprites/WizardPack/Attack2.png", {frameWidth: 231, frameHeight: 190} );
 
         //sprites player 2
         this.load.spritesheet("wizard2_idle", "../Sprites/EvilWizardPack/Idle.png", {frameWidth: 250, frameHeight: 250} );
@@ -35,6 +36,7 @@ class GameplayScene extends Phaser.Scene
         this.load.spritesheet("wizard2_fall", "../Sprites/EvilWizardPack/Fall.png", {frameWidth: 250, frameHeight: 250} );
         this.load.spritesheet("wizard2_hit", "../Sprites/EvilWizardPack/Hit.png", {frameWidth: 250, frameHeight: 250} );
         this.load.spritesheet("wizard2_die", "../Sprites/EvilWizardPack/Death.png", {frameWidth: 250, frameHeight: 250} );
+        this.load.spritesheet("wizard2_attack", "../Sprites/EvilWizardPack/Attack2.png", {frameWidth: 250, frameHeight: 250} );
 
         //sprite hechizo
         this.load.image("spell", "../Miguel/bola.png");
@@ -63,7 +65,15 @@ class GameplayScene extends Phaser.Scene
 
         this.initPlayer2();
 
-        this.spells = this.physics.add.group();
+        this.spells = this.physics.add.group
+        ({
+            allowGravity: false,
+            //collideWorldBounds: true,
+            runChildUpdate: true 
+        });
+
+        this.physics.add.overlap(this.player1, this.spells, this.player1.spellHit, null, this.player1);
+        this.physics.add.overlap(this.player2, this.spells, this.player2.spellHit, null, this.player2);
 
         this.input.on('pointerdown', () => this.player1.takeDamage(1), this);
 
@@ -83,6 +93,8 @@ class GameplayScene extends Phaser.Scene
 
         this.player1.update(time, delta);
         this.player2.update(time, delta);
+
+        
     }
 
     test = (h) => console.log(h);
@@ -98,14 +110,12 @@ class GameplayScene extends Phaser.Scene
 
         if(this.playersInput.jumpKey1.isDown) this.player1.jumpInput = 1;
         if(this.playersInput.castKey1.isDown) this.player1.castInput = 1;
+
         
 
         //player 2
-        if(this.playersInput.arrowKeys.left.isDown)
-        {
-            this.player2.xInput = -1;
-            console.log(this.player2)
-        }
+        if(this.playersInput.arrowKeys.left.isDown) this.player2.xInput = -1;
+        
         if(this.playersInput.arrowKeys.right.isDown) this.player2.xInput = 1;
         if(this.playersInput.arrowKeys.up.isDown) this.player2.yInput = -1;
         if(this.playersInput.arrowKeys.down.isDown) this.player2.yInput = 1;
@@ -167,6 +177,13 @@ class GameplayScene extends Phaser.Scene
             frames: this.anims.generateFrameNumbers("wizard1_die", { start: 0, end: 6 }),
             frameRate: 10,
         });
+
+        this.anims.create
+        ({
+            key: "wizard1_attack",
+            frames: this.anims.generateFrameNumbers("wizard1_attack", { start: 3, end: 7 }),
+            frameRate: 15,
+        });
         
         this.player1.startAnimations(); //empezar a animar al jugador
         this.player1.addHitListener((h) => this.test(h)); //pruebita
@@ -177,7 +194,9 @@ class GameplayScene extends Phaser.Scene
         this.player2 = new Wizard(this, 2, new Phaser.Math.Vector2(viewport.width*3/4, viewport.height*3/4), -1);
 
         this.player2.gameObject.setScale(1.15).refreshBody();
-        this.player2.body.setSize(46, 84);
+        this.player2.body.setSize(35, 60);
+        this.player2.body.offset.y += 12
+        //this.player2.body.setSize(54, 92, true);
 
         this.anims.create
         ({
@@ -223,6 +242,13 @@ class GameplayScene extends Phaser.Scene
             key: "wizard2_die",
             frames: this.anims.generateFrameNumbers("wizard2_die", { start: 0, end: 6 }),
             frameRate: 10,
+        });
+
+        this.anims.create
+        ({
+            key: "wizard2_attack",
+            frames: this.anims.generateFrameNumbers("wizard2_attack", { start: 3, end: 7 }),
+            frameRate: 15,
         });
         
         this.player2.startAnimations(); //empezar a animar al jugador

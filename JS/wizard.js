@@ -22,7 +22,8 @@ class Wizard
         fall: "fall",
         attack: "attack",
         hit: "hit",
-        die: "die"
+        die: "die",
+        attack: "attack"
     }
     _currentAnimationKey = ""; //animacion actual
     _moveSpeed = 200; //velocidad de movimiento (horizontal)
@@ -94,6 +95,12 @@ class Wizard
     addHitListener = (callback) => this._onHitCallbacks.push(callback);
     addDeathListener = (callback) => this._onDeathCallbacks.push(callback);
     
+    spellHit(wizard, spell)
+    {
+        this.takeDamage(spell.damage);
+        spell.destroy();
+    }
+
     takeDamage(damage)
     {
         if(!this._isAlive) return;
@@ -121,6 +128,10 @@ class Wizard
 
             case this._animationKeys.die:
                 console.log("MUELTO"); //xd
+                break;
+
+            case this._animationKeys.attack:
+                this._updateAnims = true;
                 break;
         }
     }
@@ -166,8 +177,11 @@ class Wizard
                 //cast
                 this._isOnCooldown = true;
                 this._cooldownTimer = 0;
-                console.log(this.direction);
-                let spell = new Spell(this._scene, this.id, this.body.position, this.direction);
+                // console.log(this.direction);
+                let spell = new Spell(this._scene, this.id, this.gameObject.x + this.direction.x * 30, this.gameObject.y, this.direction);
+
+                this._setAnimation(this._animationKeys.attack);
+                this._updateAnims = false;
             }
         }
         else

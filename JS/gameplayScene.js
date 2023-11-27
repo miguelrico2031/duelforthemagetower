@@ -14,6 +14,8 @@ class GameplayScene extends Phaser.Scene
     player1;
     player2;
     spells;
+    healthbar1;
+    healthbar2;
 
     preload()
     {
@@ -40,12 +42,17 @@ class GameplayScene extends Phaser.Scene
 
         //sprite hechizo
         this.load.image("spell", "../Miguel/bola.png");
+
+        //sprites hud
+        this.load.image("heart_full", "../Assets/UI/HUD/Heart Container Full.png");
+        this.load.image("heart_half", "../Assets/UI/HUD/Heart Container Half.png");
+        this.load.image("heart_empty", "../Assets/UI/HUD/Heart Container Empty.png");
     }
 
 
     create()
     {   
-        
+
         this.playersInput.wasdKeys = this.input.keyboard.addKeys("W,A,S,D");
         this.playersInput.jumpKey1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.playersInput.castKey1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
@@ -64,7 +71,11 @@ class GameplayScene extends Phaser.Scene
 
         this.initPlayer1();
 
+        this.healthbar1 = new HealthBar(this, this.player1);
+        
         this.initPlayer2();
+        this.healthbar2 = new HealthBar(this, this.player2);
+
 
         this.spells = this.physics.add.group
         ({

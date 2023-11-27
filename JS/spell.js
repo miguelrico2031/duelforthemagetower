@@ -2,7 +2,7 @@ class Spell extends Phaser.Physics.Arcade.Sprite
 {
     direction = new Phaser.Math.Vector2();
     id;
-    damage = 2;
+    damage = 1;
 
     _moveSpeed = 500;
 

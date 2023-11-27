@@ -33,7 +33,7 @@ class Wizard
     _isOnCooldown = false; //control para el cooldown del disparo
     _jumpTimer = 0; //timer para evitar hacer check de suelo justo cuando se salta
     _cooldownTimer = 0 //timer para el cooldown del disparo
-    _health = 10; //salud
+    _health = 6; //salud
     _isAlive = true; //control para no moverse al estar muerto
     _onHitCallbacks = []; //array para guardar todos los callbacks a llamar cuando el jugador reciba daño
     _onDeathCallbacks = []; //lo mismo de arriba pero cuando el jugador muera

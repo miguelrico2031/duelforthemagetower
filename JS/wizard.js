@@ -6,12 +6,14 @@ class Wizard
     xInput = 0; //input horizontal : -1, 0, 1
     yInput = 0; //input vertiañ : -1, 0, 1
     jumpInput = 0; //input de salto: 0, 1
+    castInput = 0; //input de disparar: 0, 1
     direction = new Phaser.Math.Vector2(); //direccion (para disparar)
-
+    id;
 
 
 
     //propiedades privadas
+    _scene; //escena
     _animationKeys = // objeto con todas las keys para reproducir las animaciones
     {
         idle: "idle",
@@ -20,13 +22,17 @@ class Wizard
         fall: "fall",
         attack: "attack",
         hit: "hit",
-        die: "die"
+        die: "die",
+        attack: "attack"
     }
     _currentAnimationKey = ""; //animacion actual
     _moveSpeed = 200; //velocidad de movimiento (horizontal)
     _jumpForce = 1000; //fuerza de salto
+    _castCooldown = 0.5; //tiempo a esperar entre disparo y disparo
     _isJumping = false; //control para evitar doble salto
+    _isOnCooldown = false; //control para el cooldown del disparo
     _jumpTimer = 0; //timer para evitar hacer check de suelo justo cuando se salta
+    _cooldownTimer = 0 //timer para el cooldown del disparo
     _health = 10; //salud
     _isAlive = true; //control para no moverse al estar muerto
     _onHitCallbacks = []; //array para guardar todos los callbacks a llamar cuando el jugador reciba daño
@@ -35,22 +41,27 @@ class Wizard
 
     
 
-    constructor(scene, spriteKey, position, xDirection)
+    constructor(scene, id, position, xDirection)
     {
+        this._scene = scene;
+        this.id = id;
         //cambiar las keys de anim. para que lleven la id del jugador
         //esto porque las animaciones son globales y si hay 2 jugadores hande llevar difs nombres
-        for (let key in this._animationKeys) this._animationKeys[key] = spriteKey + "_" + key;
+        for (let key in this._animationKeys) this._animationKeys[key] = "wizard" + this.id + "_" + key;
         //crear el sprite
         this.gameObject = scene.physics.add.sprite(position.x, position.y, this._animationKeys.idle);
         this.body = this.gameObject.body;
 
-        this.gameObject.setScale(0.75).refreshBody();
-        this.body.setSize(54, 92, true);
+
 
         this.gameObject.setCollideWorldBounds(true); //evitar que se salga del viewport del juego
         //establecer callback para cuando las animaciones que no loopean terminan
         this.gameObject.on('animationcomplete', this.onAnimationEnd, this); 
         this.direction.x = xDirection; //direccion inicial (como parametro para que c/jugador tenga una distinta)
+
+        this.gameObject.flipX = xDirection < 1;
+
+        this._castCooldown *= 1000; //pasarlo a milisegundos
     }
 
 
@@ -68,12 +79,14 @@ class Wizard
 
         this._move(delta);
         this._jump(delta);
+        this._cast(delta);
         this._updateAnimations();
 
         //reseteo de inputs para el siguiente frame
         this.xInput = 0;
         this.yInput = 0;
         this.jumpInput = 0;
+        this.castInput = 0;
     }
 
     startAnimations = () => this.gameObject.anims.play(this._animationKeys.idle, true); //inicializa la anim. a idle
@@ -82,6 +95,12 @@ class Wizard
     addHitListener = (callback) => this._onHitCallbacks.push(callback);
     addDeathListener = (callback) => this._onDeathCallbacks.push(callback);
     
+    spellHit(wizard, spell)
+    {
+        this.takeDamage(spell.damage);
+        spell.destroy();
+    }
+
     takeDamage(damage)
     {
         if(!this._isAlive) return;
@@ -110,6 +129,10 @@ class Wizard
             case this._animationKeys.die:
                 console.log("MUELTO"); //xd
                 break;
+
+            case this._animationKeys.attack:
+                this._updateAnims = true;
+                break;
         }
     }
 
@@ -120,7 +143,7 @@ class Wizard
     _move(delta)
     {
         //movimiento
-        this.body.setVelocityX(this._moveSpeed * this.xInput/* * delta*/); //no funiona el delta entre diferentes dispositivos
+        this.body.setVelocityX(this._moveSpeed * this.xInput);
 
         //direccion (para disparar)
         this.direction.y = this.yInput;
@@ -142,6 +165,29 @@ class Wizard
             this._jumpTimer += delta;
             if(this._jumpTimer >= 50/*numero hardcodeado a cambiar en release*/ && this.body.touching.down)
                 this._isJumping = false;
+        }
+    }
+
+    _cast(delta)
+    {
+        if(!this._isOnCooldown)
+        {
+            if(this.castInput)
+            {
+                //cast
+                this._isOnCooldown = true;
+                this._cooldownTimer = 0;
+                // console.log(this.direction);
+                let spell = new Spell(this._scene, this.id, this.gameObject.x + this.direction.x * 30, this.gameObject.y, this.direction);
+
+                this._setAnimation(this._animationKeys.attack);
+                this._updateAnims = false;
+            }
+        }
+        else
+        {
+            this._cooldownTimer += delta;
+            if(this._cooldownTimer >= this._castCooldown) this._isOnCooldown = false;
         }
     }
 

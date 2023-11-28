@@ -27,7 +27,7 @@ class Pause extends Phaser.Scene
 
     create()
     {
-        this.gameIsPaused = false;
+        this.gameIsPaused = true;
 
         this.add.image(0, 0, "pause_screen").setOrigin(0, 0);
 
@@ -45,6 +45,7 @@ class Pause extends Phaser.Scene
     
     update()
     {
+        console.log("paused: " + this.gameIsPaused)
         this.processInput();
     }
 
@@ -54,12 +55,12 @@ class Pause extends Phaser.Scene
     {
         // eventos de teclado
 
-        if (!this.gameIsPaused) this.checkPauseToggled();
+        if (this.gameIsPaused) this.checkPauseToggled();
 
-        if (this.pauseKey.isDown && this.gameIsPaused) this.resumeGame();
+        if (!this.gameIsPaused) this.resumeGame();
 
         // Eventos de ratón
-        this.buttonContinue.on('pointerdown', () => { console.log('Continuar el juego'); });
+        this.buttonContinue.on('pointerdown', () => { this.resumeGame(); });
         this.buttonExit.on('pointerdown', () => { console.log('Salir del Juego'); });
     }
     
@@ -79,7 +80,7 @@ class Pause extends Phaser.Scene
         if (this.pauseKey.isUp && this.pauseKeyIsPressed) {
             console.log("parriba");
             this.pauseKeyIsPressed = false;
-            this.gameIsPaused = true;
+            this.gameIsPaused = false;
         }
     }
 }

@@ -1,5 +1,11 @@
 class GameplayScene extends Phaser.Scene
 {
+
+    constructor()
+    {
+        super("GameplayScene")
+    }
+
     playersInput = //objeto que guarda todos los inputs necesarios de los jugadores
     {
         wasdKeys: 0,
@@ -7,7 +13,9 @@ class GameplayScene extends Phaser.Scene
         jumpKey1: 0,
         jumpKey2: 0,
         castKey1: 0,
-        castKey2: 0
+        castKey2: 0,
+
+        pauseKey: 0
     }
 
     ground;
@@ -16,6 +24,9 @@ class GameplayScene extends Phaser.Scene
     spells;
     healthbar1;
     healthbar2;
+
+    gameIsPaused;
+    pauseKeyIsPressed;
 
     preload()
     {
@@ -53,6 +64,9 @@ class GameplayScene extends Phaser.Scene
     create()
     {   
 
+        this.gameIsPaused = false;
+        this.pauseKeyIsPressed = false;
+
         this.playersInput.wasdKeys = this.input.keyboard.addKeys("W,A,S,D");
         this.playersInput.jumpKey1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.playersInput.castKey1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
@@ -60,6 +74,8 @@ class GameplayScene extends Phaser.Scene
         this.playersInput.arrowKeys = this.input.keyboard.createCursorKeys();
         this.playersInput.jumpKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
         this.playersInput.castKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        
+        this.playersInput.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
         this.add.image(viewport.width/2, viewport.height/2, "bg");
         
@@ -70,7 +86,6 @@ class GameplayScene extends Phaser.Scene
         this.ground.create(viewport.width - 100, viewport.height*3/4, "floor").setScale(0.25).refreshBody();
 
         this.initPlayer1();
-
         this.healthbar1 = new HealthBar(this, this.player1);
         
         this.initPlayer2();
@@ -105,8 +120,6 @@ class GameplayScene extends Phaser.Scene
 
         this.player1.update(time, delta);
         this.player2.update(time, delta);
-
-        
     }
 
     test = (h) => console.log(h);
@@ -134,6 +147,11 @@ class GameplayScene extends Phaser.Scene
 
         if(this.playersInput.jumpKey2.isDown) this.player2.jumpInput = 1;
         if(this.playersInput.castKey2.isDown) this.player2.castInput = 1;
+
+        //pausa
+        // if(this.playersInput.pauseKey.isDown) this.pauseGame();
+        // if(this.playersInput.pauseKey.isUp) this.pauseGame();
+        this.checkPauseToggled();
         
     }
 
@@ -266,5 +284,31 @@ class GameplayScene extends Phaser.Scene
         this.player2.startAnimations(); //empezar a animar al jugador
         //this.player2.addHitListener((h) => this.test(h)); //pruebita
         
+    }
+
+    pauseGame() 
+    {
+        if (this.gameIsPaused) this.launchPauseMenu();
+    }
+
+    checkPauseToggled() 
+    {
+        if (this.playersInput.pauseKey.isDown && !this.pauseKeyIsPressed) {
+            this.pauseKeyIsPressed = true;
+            console.log("pabajo");
+        }
+
+        if (this.playersInput.pauseKey.isUp && this.pauseKeyIsPressed) {
+            this.pauseKeyIsPressed = false;
+            console.log("parriba");
+            this.gameIsPaused = true;
+            this.pauseGame();
+        }
+    }
+
+    launchPauseMenu() 
+    {
+        this.pauseKeyIsPressed = false;
+        this.scene.start("PauseScene");
     }
 }

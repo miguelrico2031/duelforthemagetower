@@ -149,8 +149,6 @@ class GameplayScene extends Phaser.Scene
         if(this.playersInput.castKey2.isDown) this.player2.castInput = 1;
 
         //pausa
-        // if(this.playersInput.pauseKey.isDown) this.pauseGame();
-        // if(this.playersInput.pauseKey.isUp) this.pauseGame();
         this.checkPauseToggled();
         
     }
@@ -309,6 +307,8 @@ class GameplayScene extends Phaser.Scene
     launchPauseMenu() 
     {
         this.pauseKeyIsPressed = false;
-        this.scene.start("PauseScene");
+        this.scene.pause("GameplayScene");
+        this.scene.launch("PauseScene"); // pone el menu de pausa por encima
+        //this.scene.start("PauseScene"); // esta es mala pq pone la pausa como otra escena y reinicia el juego asin q no lo queremos
     }
 }

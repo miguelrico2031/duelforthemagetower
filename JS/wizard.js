@@ -127,7 +127,7 @@ class Wizard
                 break;
 
             case this._animationKeys.die:
-                console.log("MUELTO"); //xd
+                //console.log("MUELTO"); //xd
                 break;
 
             case this._animationKeys.attack:

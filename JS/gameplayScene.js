@@ -25,7 +25,6 @@ class GameplayScene extends Phaser.Scene
     healthbar1;
     healthbar2;
 
-    gameIsPaused;
     pauseKeyIsPressed;
 
     preload()
@@ -63,8 +62,6 @@ class GameplayScene extends Phaser.Scene
 
     create()
     {   
-
-        this.gameIsPaused = false;
         this.pauseKeyIsPressed = false;
 
         this.playersInput.wasdKeys = this.input.keyboard.addKeys("W,A,S,D");
@@ -120,9 +117,10 @@ class GameplayScene extends Phaser.Scene
 
         this.player1.update(time, delta);
         this.player2.update(time, delta);
+
     }
 
-    test = (h) => console.log(h);
+    //test = (h) => console.log(h);
     
 
     processInput()
@@ -149,7 +147,7 @@ class GameplayScene extends Phaser.Scene
         if(this.playersInput.castKey2.isDown) this.player2.castInput = 1;
 
         //pausa
-        this.checkPauseToggled();
+        this.checkPauseKeyPressed();
         
     }
 
@@ -214,7 +212,7 @@ class GameplayScene extends Phaser.Scene
         });
         
         this.player1.startAnimations(); //empezar a animar al jugador
-        this.player1.addHitListener((h) => this.test(h)); //pruebita
+        //this.player1.addHitListener((h) => this.test(h)); //pruebita
     }
 
     initPlayer2()
@@ -284,23 +282,15 @@ class GameplayScene extends Phaser.Scene
         
     }
 
-    pauseGame() 
-    {
-        if (this.gameIsPaused) this.launchPauseMenu();
-    }
-
-    checkPauseToggled() 
+    checkPauseKeyPressed() 
     {
         if (this.playersInput.pauseKey.isDown && !this.pauseKeyIsPressed) {
             this.pauseKeyIsPressed = true;
-            console.log("pabajo");
         }
 
-        if (this.playersInput.pauseKey.isUp && this.pauseKeyIsPressed) {
+        else if (this.playersInput.pauseKey.isUp && this.pauseKeyIsPressed) {
             this.pauseKeyIsPressed = false;
-            console.log("parriba");
-            this.gameIsPaused = true;
-            this.pauseGame();
+            this.launchPauseMenu();
         }
     }
 
@@ -308,7 +298,18 @@ class GameplayScene extends Phaser.Scene
     {
         this.pauseKeyIsPressed = false;
         this.scene.pause("GameplayScene");
-        this.scene.launch("PauseScene"); // pone el menu de pausa por encima
+
+
+        if(!this.scene.get("PauseScene").loaded)
+        {
+            this.scene.get("PauseScene").loaded = true;
+            this.scene.launch("PauseScene"); // pone el menu de pausa por encima
+        }
+        else
+        {
+            this.scene.wake("PauseScene"); // pone el menu de pausa por encima
+        }
+
         //this.scene.start("PauseScene"); // esta es mala pq pone la pausa como otra escena y reinicia el juego asin q no lo queremos
     }
 }

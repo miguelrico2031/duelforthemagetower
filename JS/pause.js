@@ -67,7 +67,10 @@ class Pause extends Phaser.Scene
     resumeGame()
     {
         this.pauseKeyIsPressed = false;
-        this.scene.start("GameplayScene");
+        // aqui la gracia es hacer que esta escena de pausa se oculte
+        //this.scene.sendToBack("PauseScene"); // la oculta pero luego no puedo volver a poner el juego en pausa
+        this.scene.sleep("PauseScene");
+        this.scene.resume("GameplayScene"); // continua la ejecucion del juego
     }
 
     checkPauseToggled() 

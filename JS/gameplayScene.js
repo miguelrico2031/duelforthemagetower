@@ -23,7 +23,9 @@ class GameplayScene extends Phaser.Scene
     player2;
     spells;
     healthbar1;
+    playericon1;
     healthbar2;
+    playericon2;
 
     pauseKeyIsPressed;
 
@@ -40,6 +42,8 @@ class GameplayScene extends Phaser.Scene
         this.load.spritesheet("wizard1_hit", "../Sprites/WizardPack/Hit.png", {frameWidth: 231, frameHeight: 190} );
         this.load.spritesheet("wizard1_die", "../Sprites/WizardPack/Death.png", {frameWidth: 231, frameHeight: 190} );
         this.load.spritesheet("wizard1_attack", "../Sprites/WizardPack/Attack2.png", {frameWidth: 231, frameHeight: 190} );
+
+        this.load.spritesheet("wizard1_playericon", "../Assets/UI/HUD/BlueMageIcon.png", {frameWidth: 63, frameHeight: 64} );
 
         //sprites player 2
         this.load.spritesheet("wizard2_idle", "../Sprites/EvilWizardPack/Idle.png", {frameWidth: 250, frameHeight: 250} );
@@ -82,8 +86,17 @@ class GameplayScene extends Phaser.Scene
         this.ground.create(100, viewport.height*3/4, "floor").setScale(0.25).refreshBody();
         this.ground.create(viewport.width - 100, viewport.height*3/4, "floor").setScale(0.25).refreshBody();
 
+        this.playericon1 = this.anims.create
+        ({
+            frames: this.anims.generateFrameNumbers("wizard1_playericon", { start: 0, end: 3 }),
+            framerate: 8,
+            repeat: -1
+        })
+
+        //this.playericon1.gameObject.setXY(48, 48);
+
         this.initPlayer1();
-        this.healthbar1 = new HealthBar(this, this.player1);
+        this.healthbar1 = new HealthBar(this, this.player1, this.playericon1);
         
         this.initPlayer2();
         this.healthbar2 = new HealthBar(this, this.player2);

@@ -2,22 +2,21 @@ class Pause extends Phaser.Scene
 {
 
     //publicas
-    gameIsPaused;
-    pauseKeyIsPressed;
+    pauseKeyIsPressed; // comprueba si estoy pulsando escape
 
     //privadas
-    pauseScreen;
-    pauseKey;
+    _pauseKey;
 
-    buttonPressed;
-    buttonContinue;
-    buttonExit;
+    _buttonPressed; // para saber si el botón está siendo pulsado / clicado
 
-    click;
-    clack;
+    _buttonContinue; // botón de continuar
+    _buttonExit;     // botón de salir
+
+    _audioClick; // sonido al pulsar
+    _audioClack; // sonido al soltar
 
     //Metodos publicos
-    constructor(scene) 
+    constructor() 
     {
         super("PauseScene");
     }
@@ -33,125 +32,112 @@ class Pause extends Phaser.Scene
 
     create()
     {
-        this.gameIsPaused = true;
-        this.buttonPressed = false;
+        this._buttonPressed = false;
 
         this.add.image(0, 0, "pause_screen").setOrigin(0, 0);
 
-        this.click = this.sound.add("click");
-        this.clack = this.sound.add("clack");
+        this._audioClick = this.sound.add("click");
+        this._audioClack = this.sound.add("clack");
 
-        this.anims.create
-        ({
-            key: "continue_press",
-            frames: this.anims.generateFrameNumbers("continuar", { start: 0, end: 1 }),
-            frameRate: 12,
-        });
-
-        this.anims.create
-        ({
-            key: "exit_press",
-            frames: this.anims.generateFrameNumbers("salir", { start: 0, end: 1 }),
-            frameRate: 12,
-        });
 
         // La forma de poner los botones es lo mas terrorifico feo e ineficiente que he hecho en mi vida dios mio
         // pero tampoco hay otra pq usar el setorigin con estas da errores y por lo q sea usar solo el viewport no las centra
-        this.buttonContinue = this.add.sprite(viewport.width/2, viewport.height/2 - 10, "continuar")
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { 
-                this.buttonPressed = true;
-                this.click.play(); 
-                this.buttonContinue.setFrame(1);
-            })
-            .on('pointerup', () => { 
-                if(this.buttonPressed) this.clack.play()
-                this.resumeGame(); 
-            })
-            .on('pointerout', () => this.enterButtonRestState(this.buttonContinue) // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-        );
 
-        this.buttonExit = this.add.sprite(viewport.width/2, 120 + viewport.height/2, "salir")
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => {
-                this.buttonPressed = true; 
-                this.click.play();
-                this.buttonExit.setFrame(1); 
-            })
-            .on('pointerup', () => { 
-                if(this.buttonPressed) this.clack.play()
-                this.exitGame(); 
-            })
-            .on('pointerout', () => this.enterButtonRestState(this.buttonExit) // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-        );
+        this._buttonContinue = this.initContinueButton();
+
+        this._buttonExit = this.initExitButton();
         
-        this.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+        this._pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     }
     
     update()
     {
-        this.processInput();
+        this.checkPauseKeyPressed();
     }
 
     //Metodos privados
     
-    processInput()
-    {
-        // eventos de teclado
-
-        if (this.gameIsPaused) this.checkPauseToggled();
-
-        if (!this.gameIsPaused) this.resumeGame();
-
-        // Eventos de ratón MOVIDOS AL CREATE PARA QUE CADA BOTON SE CREE CON SU FUNCIONALIDAD
-        // this.buttonContinue.on('pointerdown', () => { this.resumeGame(); });
-        // this.buttonExit.on('pointerdown', () => { this.exitGame(); });
-
-        // // creo q es un poco chapucero pero es la que hay no encuentro nada mas en la referencia
-        // this.buttonContinue.on('pointerup', () => { this.buttonContinue.setFrame(0); });
-        // this.buttonExit.on('pointerup', () => { this.buttonExit.setFrame(0); });
-    }
-    
     // todo esto es para ver si has pulsado el escape y lo has soltado antes de hacer nada pq si no te da un ataque de epilepsia
-    checkPauseToggled() 
+    checkPauseKeyPressed() 
     {
-        if (this.pauseKey.isDown && !this.pauseKeyIsPressed) {
-            console.log("pabajo");
+        // Comprueba que se está pulsando
+        if (this._pauseKey.isDown && !this.pauseKeyIsPressed) 
+        {
             this.pauseKeyIsPressed = true;
         }
 
-        if (this.pauseKey.isUp && this.pauseKeyIsPressed) {
-            console.log("parriba");
+        // Comprueba que se haya soltado y reanuda el juego
+        else if (this._pauseKey.isUp && this.pauseKeyIsPressed) 
+        {
             this.pauseKeyIsPressed = false;
-            this.gameIsPaused = false;
+            this.resumeGame();
         }
     }
 
     resumeGame()
     {
         this.pauseKeyIsPressed = false;
-        this.add.sprite(this.buttonContinue.x, this.buttonContinue.y).play("continue_press");
-        this.buttonContinue.setFrame(0);
+        // this.add.sprite(this.buttonContinue.x, this.buttonContinue.y).play("continue_press");
+        this._buttonContinue.setFrame(0);
         // aqui la gracia es hacer que esta escena de pausa se oculte
         //this.scene.sendToBack("PauseScene"); // la oculta pero luego no puedo volver a poner el juego en pausa
-        this.scene.sleep("PauseScene");
         this.scene.resume("GameplayScene"); // continua la ejecucion del juego
+        this.scene.sleep("PauseScene");
     }
 
     exitGame()
     {
         console.log("Salir del juego");
         //this.add.sprite(this.buttonExit.x, this.buttonExit.y).play("exit_press"); // va feo
-        this.buttonExit.setFrame(0);
+        this._buttonExit.setFrame(0);
+    }
+
+    enterButtonClickState(button) 
+    {
+        this._audioClick.play(); 
+        button.setFrame(1);
+        this._buttonPressed = true;
     }
 
     enterButtonRestState(button)
     {
         // pongo el frame de la animacion sin pulsar pq si no se ve como si se quedase pillado y no queremos eso
-        if(this.buttonPressed) this.clack.play();
+        if(this._buttonPressed) this._audioClack.play();
         button.setFrame(0);
-        this.buttonPressed = false;
+        this._buttonPressed = false;
+    }
+
+    initContinueButton()
+    {
+        let button = this.add.sprite(viewport.width/2, viewport.height/2 - 10, "continuar")
+            .setInteractive({ useHandCursor: true })
+            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
+            .on('pointerdown', () => { this.enterButtonClickState(this._buttonContinue) })
+            .on('pointerup', () => 
+            { 
+                this.enterButtonRestState(this._buttonContinue);
+                this.resumeGame(); 
+            })
+            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
+            .on('pointerout', () => this.enterButtonRestState(this._buttonContinue) 
+        );
+
+        return button;
+    }
+
+    initExitButton()
+    {
+        let button = this.add.sprite(viewport.width/2, 120 + viewport.height/2, "salir")
+            .setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => { this.enterButtonClickState(this._buttonExit) })
+            .on('pointerup', () => 
+            { 
+                this.enterButtonRestState(this._buttonExit);
+                this.exitGame(); 
+            }) 
+            .on('pointerout', () => this.enterButtonRestState(this._buttonExit)
+        );
+
+        return button;
     }
 }

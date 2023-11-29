@@ -6,6 +6,7 @@ const viewport =
 const config =
 {
     type: Phaser.AUTO,
+    mipmapFilter: 'LINEAR_MIPMAP_LINEAR',
     width: viewport.width,
     height: viewport.height,
     physics:

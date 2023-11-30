@@ -25,7 +25,6 @@ class GameplayScene extends Phaser.Scene
     player2;
     spells;
     shields;
-    shields;
     healthbar1;
     playericon1;
     healthbar2;
@@ -66,7 +65,7 @@ class GameplayScene extends Phaser.Scene
         this.load.image("spell", "../Miguel/bola.png");
 
         //sprites escudo
-        this.load.spritesheet("shield", "../Anatoli/shield.png", {frameWidth: 512, frameHeight: 512} );
+        this.load.spritesheet("shield", "../Anatoli/shield.png", {frameWidth: 412, frameHeight: 412, margin: 50, spacing: 50} );
 
 
         //sprites hud
@@ -126,12 +125,7 @@ class GameplayScene extends Phaser.Scene
             runChildUpdate: true 
         });
 
-        this.shields = this.physics.add.group
-        ({
-            allowGravity: false,
-            //collideWorldBounds: true,
-            runChildUpdate: true 
-        });
+        this.shields = this.physics.add.staticGroup();
 
         this.physics.add.overlap(this.player1, this.spells, this.player1.spellHit, null, this.player1);
         this.physics.add.overlap(this.player2, this.spells, this.player2.spellHit, null, this.player2);
@@ -148,7 +142,7 @@ class GameplayScene extends Phaser.Scene
         this.physics.add.collider(this.player2.body, this.barrera);
         this.physics.add.collider(this.spells, this.ground);
         
-        this.physics.add.collider(this.spells, this.shields);
+        this.physics.add.collider(this.shields, this.spells);
         
         this.gameEnded = false;
     }
@@ -385,7 +379,7 @@ class GameplayScene extends Phaser.Scene
 
     launchGameOverScene(winnerId){
         this.gameEnded = true;
-        console.log(winnerId);
+        //console.log(winnerId);
         this.scene.launch('GameoverScene', { winner: winnerId });
     }
 }

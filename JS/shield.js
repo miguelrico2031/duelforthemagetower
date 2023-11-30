@@ -1,5 +1,5 @@
 class Shield extends Phaser.Physics.Arcade.Sprite{
-    shieldRadius = 4.0;
+    shieldRadius = 45;
     shieldDuration = 1.5;
     id;
 
@@ -10,11 +10,13 @@ class Shield extends Phaser.Physics.Arcade.Sprite{
         super(scene, x, y, "shield");
         this.id = id;
         scene.shields.add(this, true);
-        this.body.setAllowGravity(false);
-        this.body.setBounce(0);
-        this.setScale(0.23).refreshBody();
-        this.body.reset(x, y);
+        
+        this.body.setCircle(this.shieldRadius);
+        this.setScale(0.25).refreshBody();
         this.shieldDuration *= 1000;
     }
 
+    deflect(shield, spell){
+        this.shield.destroy();
+    }
 }

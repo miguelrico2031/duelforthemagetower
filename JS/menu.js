@@ -79,6 +79,40 @@ class Menu extends Phaser.Scene
         }
     }
 
+    enterButtonClickState(button) 
+    {
+        this.audioClick.play(); 
+        button.setFrame(1);
+        this.buttonPressed = true;
+    }
+
+    enterButtonRestState(button)
+    {
+        // pongo el frame de la animacion sin pulsar pq si no se ve como si se quedase pillado y no queremos eso
+        if(this.buttonPressed) this.audioClack.play();
+        button.setFrame(0);
+        this.buttonPressed = false;
+    }
+
+    initPlayButton()
+    {
+        
+        let button = this.add.sprite(game.config.width / 2.833, game.config.height / 2, "play")
+            .setInteractive({ useHandCursor: true })
+            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
+            .on('pointerdown', () => { this.enterButtonClickState(this.buttonPlay) })
+            .on('pointerup', () => 
+            { 
+                this.enterButtonRestState(this.buttonPlay);
+                this.resumeGame(); 
+            })
+            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
+            .on('pointerout', () => this.enterButtonRestState(this.buttonPlay) 
+        );
+
+        return button;
+    }
+
     startGame() {
         console.log("Iniciando el juego");
         this.scene.start("GameplayScene");

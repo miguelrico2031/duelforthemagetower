@@ -14,23 +14,30 @@ class GameplayScene extends Phaser.Scene
         jumpKey2: 0,
         castKey1: 0,
         castKey2: 0,
-
+        shieldCastKey1: 0,
+        shieldCastKey2: 0,
         pauseKey: 0
     }
 
     ground;
+    barrera;
     player1;
     player2;
     spells;
+    shields;
     healthbar1;
+    playericon1;
     healthbar2;
+    playericon2;
 
     pauseKeyIsPressed;
+    gameEnded = false;
 
     preload()
     {
         this.load.image("bg", "../Miguel/roblox.jpg");
         this.load.image("floor", "../Miguel/testfloor.png");
+        this.load.image("barrier", "../Anatoli/barrerapocha.png");
         
         //sprites player 1
         this.load.spritesheet("wizard1_idle", "../Sprites/WizardPack/Idle.png", {frameWidth: 231, frameHeight: 190} );
@@ -40,6 +47,9 @@ class GameplayScene extends Phaser.Scene
         this.load.spritesheet("wizard1_hit", "../Sprites/WizardPack/Hit.png", {frameWidth: 231, frameHeight: 190} );
         this.load.spritesheet("wizard1_die", "../Sprites/WizardPack/Death.png", {frameWidth: 231, frameHeight: 190} );
         this.load.spritesheet("wizard1_attack", "../Sprites/WizardPack/Attack2.png", {frameWidth: 231, frameHeight: 190} );
+        this.load.spritesheet("wizard1_shield", "../Sprites/WizardPack/Attack1.png", {frameWidth: 231, frameHeight: 190} );
+
+        this.load.spritesheet("wizard1_playericon", "../Assets/UI/HUD/BlueMageIcon.png", {frameWidth: 63, frameHeight: 64} );
 
         //sprites player 2
         this.load.spritesheet("wizard2_idle", "../Sprites/EvilWizardPack/Idle.png", {frameWidth: 250, frameHeight: 250} );
@@ -49,9 +59,14 @@ class GameplayScene extends Phaser.Scene
         this.load.spritesheet("wizard2_hit", "../Sprites/EvilWizardPack/Hit.png", {frameWidth: 250, frameHeight: 250} );
         this.load.spritesheet("wizard2_die", "../Sprites/EvilWizardPack/Death.png", {frameWidth: 250, frameHeight: 250} );
         this.load.spritesheet("wizard2_attack", "../Sprites/EvilWizardPack/Attack2.png", {frameWidth: 250, frameHeight: 250} );
+        this.load.spritesheet("wizard2_shield", "../Sprites/EvilWizardPack/Attack1.png", {frameWidth: 250, frameHeight: 250} );
 
         //sprite hechizo
         this.load.image("spell", "../Miguel/bola.png");
+
+        //sprites escudo
+        this.load.spritesheet("shield", "../Anatoli/shield.png", {frameWidth: 412, frameHeight: 412, margin: 50, spacing: 50} );
+
 
         //sprites hud
         this.load.image("heart_full", "../Assets/UI/HUD/Heart Container Full.png");
@@ -67,10 +82,12 @@ class GameplayScene extends Phaser.Scene
         this.playersInput.wasdKeys = this.input.keyboard.addKeys("W,A,S,D");
         this.playersInput.jumpKey1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.playersInput.castKey1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+        this.playersInput.shieldCastKey1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
         
         this.playersInput.arrowKeys = this.input.keyboard.createCursorKeys();
         this.playersInput.jumpKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
         this.playersInput.castKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        this.playersInput.shieldCastKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
         
         this.playersInput.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
@@ -82,8 +99,20 @@ class GameplayScene extends Phaser.Scene
         this.ground.create(100, viewport.height*3/4, "floor").setScale(0.25).refreshBody();
         this.ground.create(viewport.width - 100, viewport.height*3/4, "floor").setScale(0.25).refreshBody();
 
+        this.barrera = this.physics.add.staticGroup();
+        this.barrera.create(viewport.width/2, viewport.height/2, "barrier").setScale(1).refreshBody();
+
+        this.playericon1 = this.anims.create
+        ({
+            frames: this.anims.generateFrameNumbers("wizard1_playericon", { start: 0, end: 3 }),
+            framerate: 8,
+            repeat: -1
+        })
+
+        //this.playericon1.gameObject.setXY(48, 48);
+
         this.initPlayer1();
-        this.healthbar1 = new HealthBar(this, this.player1);
+        this.healthbar1 = new HealthBar(this, this.player1, this.playericon1);
         
         this.initPlayer2();
         this.healthbar2 = new HealthBar(this, this.player2);
@@ -96,6 +125,8 @@ class GameplayScene extends Phaser.Scene
             runChildUpdate: true 
         });
 
+        this.shields = this.physics.add.staticGroup();
+
         this.physics.add.overlap(this.player1, this.spells, this.player1.spellHit, null, this.player1);
         this.physics.add.overlap(this.player2, this.spells, this.player2.spellHit, null, this.player2);
 
@@ -107,8 +138,13 @@ class GameplayScene extends Phaser.Scene
 
         this.physics.add.collider(this.player1.body, this.ground);
         this.physics.add.collider(this.player2.body, this.ground);
+        this.physics.add.collider(this.player1.body, this.barrera);
+        this.physics.add.collider(this.player2.body, this.barrera);
         this.physics.add.collider(this.spells, this.ground);
         
+        this.physics.add.collider(this.shields, this.spells);
+        
+        this.gameEnded = false;
     }
 
     update(time, delta)
@@ -118,6 +154,7 @@ class GameplayScene extends Phaser.Scene
         this.player1.update(time, delta);
         this.player2.update(time, delta);
 
+        this.processDeath();
     }
 
     //test = (h) => console.log(h);
@@ -133,6 +170,8 @@ class GameplayScene extends Phaser.Scene
 
         if(this.playersInput.jumpKey1.isDown) this.player1.jumpInput = 1;
         if(this.playersInput.castKey1.isDown) this.player1.castInput = 1;
+        if(this.playersInput.shieldCastKey1.isDown) this.player1.shieldCastInput = 1;
+        
 
         
 
@@ -145,10 +184,21 @@ class GameplayScene extends Phaser.Scene
 
         if(this.playersInput.jumpKey2.isDown) this.player2.jumpInput = 1;
         if(this.playersInput.castKey2.isDown) this.player2.castInput = 1;
-
+        if(this.playersInput.shieldCastKey2.isDown) this.player2.shieldCastInput = 1;
+        
         //pausa
         this.checkPauseKeyPressed();
         
+    }
+
+    processDeath(){
+        if(!this.player1._isAlive){
+            this.launchGameOverScene(2);
+        }
+
+        if(!this.player2._isAlive){
+            this.launchGameOverScene(1);
+        }
     }
 
     initPlayer1()
@@ -208,6 +258,13 @@ class GameplayScene extends Phaser.Scene
         ({
             key: "wizard1_attack",
             frames: this.anims.generateFrameNumbers("wizard1_attack", { start: 3, end: 7 }),
+            frameRate: 15,
+        });
+
+        this.anims.create
+        ({
+            key: "wizard1_shield",
+            frames: this.anims.generateFrameNumbers("wizard1_shield", { start: 3, end: 7 }),
             frameRate: 15,
         });
         
@@ -277,6 +334,13 @@ class GameplayScene extends Phaser.Scene
             frameRate: 15,
         });
         
+        this.anims.create
+        ({
+            key: "wizard2_shield",
+            frames: this.anims.generateFrameNumbers("wizard2_shield", { start: 3, end: 7 }),
+            frameRate: 15,
+        });
+
         this.player2.startAnimations(); //empezar a animar al jugador
         //this.player2.addHitListener((h) => this.test(h)); //pruebita
         
@@ -311,5 +375,11 @@ class GameplayScene extends Phaser.Scene
         }
 
         //this.scene.start("PauseScene"); // esta es mala pq pone la pausa como otra escena y reinicia el juego asin q no lo queremos
+    }
+
+    launchGameOverScene(winnerId){
+        this.gameEnded = true;
+        //console.log(winnerId);
+        this.scene.launch('GameoverScene', { winner: winnerId });
     }
 }

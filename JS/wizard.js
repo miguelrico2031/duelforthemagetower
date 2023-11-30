@@ -7,6 +7,7 @@ class Wizard
     yInput = 0; //input vertiañ : -1, 0, 1
     jumpInput = 0; //input de salto: 0, 1
     castInput = 0; //input de disparar: 0, 1
+    shieldCastInput = 0;
     direction = new Phaser.Math.Vector2(); //direccion (para disparar)
     id;
 
@@ -23,22 +24,30 @@ class Wizard
         attack: "attack",
         hit: "hit",
         die: "die",
-        attack: "attack"
+        attack: "attack",
+        shield: "shield"
     }
     _currentAnimationKey = ""; //animacion actual
     _moveSpeed = 200; //velocidad de movimiento (horizontal)
     _jumpForce = 1000; //fuerza de salto
     _castCooldown = 0.5; //tiempo a esperar entre disparo y disparo
+    _shieldCastCooldown = 5.0; // tiempo a esperar entre escudo y escudo
     _isJumping = false; //control para evitar doble salto
     _isOnCooldown = false; //control para el cooldown del disparo
+    _isShieldOnCooldown = false; //control para el cooldown del escudo
     _jumpTimer = 0; //timer para evitar hacer check de suelo justo cuando se salta
     _cooldownTimer = 0 //timer para el cooldown del disparo
+    _shieldCooldownTimer = 0 //timer para el cooldown del escudo
     _health = 6; //salud
     _isAlive = true; //control para no moverse al estar muerto
     _onHitCallbacks = []; //array para guardar todos los callbacks a llamar cuando el jugador reciba daño
     _onDeathCallbacks = []; //lo mismo de arriba pero cuando el jugador muera
     _updateAnims = true; //control para no cambiar de animacion si el jugador esta en la de hit o die
-
+    _isOnShieldState = false;
+    _shieldObject;
+    _shieldIsCasted = false;
+    _shieldDuration = 3.0;
+    _shieldCastedTime = 0.0;
     
 
     constructor(scene, id, position, xDirection)
@@ -62,6 +71,10 @@ class Wizard
         this.gameObject.flipX = xDirection < 1;
 
         this._castCooldown *= 1000; //pasarlo a milisegundos
+        this._shieldCastCooldown *= 1000; //pasarlo a milisegundos
+        
+        this._shieldDuration *= 1000;
+        this._shieldCastedTime *= 1000;
     }
 
 
@@ -71,15 +84,30 @@ class Wizard
 
     update(time, delta)
     {
-        if(!this._isAlive) 
+        if(!this._isAlive || this._scene.gameEnded) 
         {//si esta muerto se resetea la velocidad horizontal para que no se mueva, la vertical no por si esta en el aire al morir
             this.body.setVelocityX(0);
             return;
         }
 
+        if(this._shieldIsCasted){
+            this.xInput = 0;
+            this.yInput = 0;
+            this.jumpInput = 0;
+            this.castInput = 0;
+            this.shieldCastInput = 0;
+            this._shieldTimer(delta);
+            this.body.setVelocityX(0);
+        }
+
         this._move(delta);
         this._jump(delta);
         this._cast(delta);
+
+        if(this.body.touching.down){
+            this._castShield(delta);
+        }
+
         this._updateAnimations();
 
         //reseteo de inputs para el siguiente frame
@@ -87,6 +115,7 @@ class Wizard
         this.yInput = 0;
         this.jumpInput = 0;
         this.castInput = 0;
+        this.shieldCastInput = 0;
     }
 
     startAnimations = () => this.gameObject.anims.play(this._animationKeys.idle, true); //inicializa la anim. a idle
@@ -133,6 +162,10 @@ class Wizard
             case this._animationKeys.attack:
                 this._updateAnims = true;
                 break;
+                
+            case this._animationKeys.shield:
+                this._updateAnims = true;
+                break;
         }
     }
 
@@ -177,7 +210,7 @@ class Wizard
                 //cast
                 this._isOnCooldown = true;
                 this._cooldownTimer = 0;
-                // console.log(this.direction);
+                //console.log("Bala");
                 let spell = new Spell(this._scene, this.id, this.gameObject.x + this.direction.x * 30, this.gameObject.y, this.direction);
 
                 this._setAnimation(this._animationKeys.attack);
@@ -188,6 +221,39 @@ class Wizard
         {
             this._cooldownTimer += delta;
             if(this._cooldownTimer >= this._castCooldown) this._isOnCooldown = false;
+        }
+    }
+
+    _castShield(delta){
+        if(!this._isShieldOnCooldown)
+        {
+            if(this.shieldCastInput)
+            {
+                this._isShieldOnCooldown = true;
+                this._shieldCooldownTimer = 0;
+                //console.log("Escudo");
+                
+                this._shieldIsCasted = true;
+                this._shieldObject = new Shield(this._scene, this.id, this.gameObject.x, this.gameObject.y);
+                this._setAnimation(this._animationKeys.shield);
+                this._updateAnims = false;
+            }
+        }
+        else
+        {
+            this._shieldCooldownTimer += delta;
+            if(this._shieldCooldownTimer >= this._shieldCastCooldown) this._isShieldOnCooldown = false;
+        }
+    }
+
+    _shieldTimer(delta){
+        this._shieldCastedTime += delta;
+        console.log(this._shieldCastedTime);
+        console.log(this._shieldDuration);
+        if(this._shieldCastedTime >= this._shieldDuration){
+            this._shieldIsCasted = false;
+            this._shieldCastedTime = 0.0;
+            this._shieldObject.destroy();
         }
     }
 
@@ -224,6 +290,7 @@ class Wizard
 
         this._setAnimation(this._animationKeys.die);
         this._updateAnims = false;
+        
     }
 
 

@@ -35,15 +35,15 @@ class Menu extends Phaser.Scene
         this.add.image(0, 0, "menu").setOrigin(0, 0);
 
         //mitad izquierda
-        this.buttonPlay = this.add.image(game.config.width / 4, game.config.height / 2, "play");
-        this.buttonPlay.setInteractive();//.on('pointerdown', this.startGame, this);
+        this.buttonPlay = this.add.image(game.config.width / 2.833, game.config.height / 2, "play");
+        this.buttonPlay.setInteractive().on('pointerdown', this.startGame, this);
 
         //mitad derecha, arriba
-        this.buttonHelp = this.add.image((game.config.width / 4) * 3, game.config.height / 3, "help");
+        this.buttonHelp = this.add.image((game.config.width / 4.425) * 3, game.config.height / 3.6, "help");
         this.buttonHelp.setInteractive();//.on('pointerdown', this.showHelp, this);
 
         //mitad derecha, abajo
-        this.buttonCredits = this.add.image((game.config.width / 4) * 3, (game.config.height / 3) * 2, "credits");
+        this.buttonCredits = this.add.image((game.config.width / 4.425) * 3, (game.config.height / 2.82) * 2, "credits");
         this.buttonCredits.setInteractive();//.on('pointerdown', this.showCredits, this);
         
         this.menuKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB);

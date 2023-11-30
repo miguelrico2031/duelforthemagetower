@@ -290,6 +290,7 @@ class Wizard
 
         this._setAnimation(this._animationKeys.die);
         this._updateAnims = false;
+        
     }
 
 

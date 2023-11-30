@@ -4,29 +4,30 @@ class HealthBar {
     hearts_p1;
     hearts_p2;
 
-    marginX = 96;
+    marginX = 64;
     marginY = 64;
-    hearts_separation = 48;
+    hearts_separation = 64;
     scale = 3;
 
     gameScene;
     player;
     createHeart;
 
-    constructor(scene, player, playericon) 
+    constructor(scene, player) 
     {
-        let x = player.id === 1 ? this.marginX * 2  : viewport.width - this.marginX * 2;
+        let x = player.id === 1 ? this.marginX *2  : viewport.width - this.marginX*2;
 
         this.gameScene = scene;
         this.player = player;
 
         this.createHeart = (key, x) => this.gameScene.add.image(x, this.marginY, key).setScale(this.scale)
 
+
         this.heart_list = 
         [
             {
                 x: x - this.hearts_separation ,
-                image: this.createHeart("heart_full", x - this.hearts_separation)
+                image: this.createHeart("heart_full", x - this.marginX)
             },
             {
                 x: x ,
@@ -34,15 +35,13 @@ class HealthBar {
             },
             {
                 x: x + this.hearts_separation ,
-                image: this.createHeart("heart_full", x + this.hearts_separation)
+                image: this.createHeart("heart_full", x + this.marginX)
             },
         ]
 
-        this.updateSprites();
+       this.updateSprites();
 
         player.addHitListener((h) => this.onTakeDamage(h)); //pruebita
-
-        playericon.startAnimations();
 
     }
 

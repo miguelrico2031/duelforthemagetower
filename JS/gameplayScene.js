@@ -151,6 +151,7 @@ class GameplayScene extends Phaser.Scene
         this.player1.update(time, delta);
         this.player2.update(time, delta);
 
+        this.processDeath();
     }
 
     //test = (h) => console.log(h);
@@ -167,6 +168,7 @@ class GameplayScene extends Phaser.Scene
         if(this.playersInput.jumpKey1.isDown) this.player1.jumpInput = 1;
         if(this.playersInput.castKey1.isDown) this.player1.castInput = 1;
         if(this.playersInput.shieldCastKey1.isDown) this.player1.shieldCastInput = 1;
+        
 
         
 
@@ -180,10 +182,20 @@ class GameplayScene extends Phaser.Scene
         if(this.playersInput.jumpKey2.isDown) this.player2.jumpInput = 1;
         if(this.playersInput.castKey2.isDown) this.player2.castInput = 1;
         if(this.playersInput.shieldCastKey2.isDown) this.player2.shieldCastInput = 1;
-
+        
         //pausa
         this.checkPauseKeyPressed();
         
+    }
+
+    processDeath(){
+        if(!this.player1._isAlive){
+            this.launchGameOverScene(2);
+        }
+
+        if(!this.player2._isAlive){
+            this.launchGameOverScene(1);
+        }
     }
 
     initPlayer1()
@@ -360,5 +372,9 @@ class GameplayScene extends Phaser.Scene
         }
 
         //this.scene.start("PauseScene"); // esta es mala pq pone la pausa como otra escena y reinicia el juego asin q no lo queremos
+    }
+
+    launchGameOverScene(winnerId){
+        this.scene.start('GameoverScene', { winner: winnerId });
     }
 }

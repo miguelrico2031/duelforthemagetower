@@ -31,6 +31,7 @@ class GameplayScene extends Phaser.Scene
     playericon2;
 
     pauseKeyIsPressed;
+    gameEnded = false;
 
     preload()
     {
@@ -375,6 +376,7 @@ class GameplayScene extends Phaser.Scene
     }
 
     launchGameOverScene(winnerId){
-        this.scene.start('GameoverScene', { winner: winnerId });
+        this.gameEnded = true;
+        this.scene.launch('GameoverScene', { winner: winnerId });
     }
 }

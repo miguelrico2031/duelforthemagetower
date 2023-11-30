@@ -26,9 +26,7 @@ class GameplayScene extends Phaser.Scene
     spells;
     shields;
     healthbar1;
-    playericon1;
     healthbar2;
-    playericon2;
 
     pauseKeyIsPressed;
     gameEnded = false;
@@ -73,7 +71,7 @@ class GameplayScene extends Phaser.Scene
         this.load.image("heart_half", "../Assets/UI/HUD/Heart Container Half.png");
         this.load.image("heart_empty", "../Assets/UI/HUD/Heart Container Empty.png");
         this.load.spritesheet("PlayerIcon1", "../Assets/UI/HUD/BlueMageIcon.png", { frameWidth: 63, frameHeight: 64 } );
-        this.load.spritesheet("PlayerIcon1", "../Assets/UI/HUD/RedMageIcon.png", { frameWidth: 63, frameHeight: 64 } );
+        this.load.spritesheet("PlayerIcon2", "../Assets/UI/HUD/RedMageIcon.png", { frameWidth: 63, frameHeight: 64 } );
 
     }
 
@@ -106,10 +104,18 @@ class GameplayScene extends Phaser.Scene
         this.barrera.create(viewport.width/2, viewport.height/2, "barrier").setScale(1).refreshBody();
         
         this.initPlayer1();
-        this.healthbar1 = new HealthBar(this, this.player1);
+        this.healthbar1 = new HealthBar(this, this.player1, "PlayerIcon1");
+        // this.anims.create
+        // ({
+        //     frames: this.anims.generateFrameNumbers("PlayerIcon1", { start: 0, end: 3 }),
+        //     framerate: 8,
+        //     repeat: -1
+        // });
+
+        // this.healthbar1.startAnimations();
         
         this.initPlayer2();
-        this.healthbar2 = new HealthBar(this, this.player2);
+        this.healthbar2 = new HealthBar(this, this.player2, "PlayerIcon2");
 
 
         this.spells = this.physics.add.group
@@ -139,6 +145,8 @@ class GameplayScene extends Phaser.Scene
         this.physics.add.collider(this.shields, this.spells);
         
         this.gameEnded = false;
+        gameplayResourcesLoaded = true; //para evitarvolver a cargar las animaciones porque se cargan de manera global
+
     }
 
     update(time, delta)
@@ -201,6 +209,12 @@ class GameplayScene extends Phaser.Scene
 
         this.player1.gameObject.setScale(0.75).refreshBody();
         this.player1.body.setSize(54, 92, true);
+
+        if(gameplayResourcesLoaded)
+        {
+            this.player1.startAnimations(); //empezar a animar al jugador
+            return;
+        }
 
         this.anims.create
         ({
@@ -274,6 +288,12 @@ class GameplayScene extends Phaser.Scene
         this.player2.body.setSize(35, 60);
         this.player2.body.offset.y += 12
         //this.player2.body.setSize(54, 92, true);
+
+        if(gameplayResourcesLoaded)
+        {
+            this.player2.startAnimations(); //empezar a animar al jugador
+            return;
+        }
 
         this.anims.create
         ({

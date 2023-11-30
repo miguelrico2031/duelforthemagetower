@@ -4,8 +4,10 @@ class HealthBar {
     hearts_p1;
     hearts_p2;
 
-    marginX = 76;
+    marginX = 84;
     marginY = 64;
+
+    hearts_displacement_y = 20;
     hearts_separation = 24;
     heartScale = 1.5;
 
@@ -16,14 +18,14 @@ class HealthBar {
     createHeart;
     createIcon;
 
-    constructor(scene, player) 
+    constructor(scene, player, iconKey) 
     {               
         this.gameScene = scene;
         this.player = player;
         
         let x = player.id === 1 ? this.marginX * 2  : viewport.width - this.marginX * 2;
 
-        this.createHeart = (key, x) => this.gameScene.add.image(x, this.marginY + 6, key).setScale(this.heartScale)
+        this.createHeart = (key, x) => this.gameScene.add.image(x, this.marginY + this.hearts_displacement_y, key).setScale(this.heartScale)
 
         this.heart_list = 
         [
@@ -43,7 +45,7 @@ class HealthBar {
 
         this.updateSprites();
 
-        player.addHitListener((h) => this.onTakeDamage(h)); //pruebita
+        player.addHitListener((h) => this.onTakeDamage(h)); 
 
 
         // Icono del jugador
@@ -52,14 +54,25 @@ class HealthBar {
 
         this.createIcon = (key, x) => this.gameScene.add.sprite(x, this.marginY, key)
 
-        let playericon1 = this.createIcon("PlayerIcon", x);
+        let playericon = this.createIcon(iconKey, x);
 
-        // playericon1 = this.anims.create
-        // ({
-        //     frames: this.anims.generateFrameNumbers("wizard1_playericon", { start: 0, end: 3 }),
-        //     framerate: 8,
-        //     repeat: -1
-        // });
+        //playericon.setFrame(1);
+
+        if(gameplayResourcesLoaded) 
+        {
+            playericon.anims.play(iconKey, true);
+            return;
+        }
+
+        scene.anims.create
+        ({
+            key: iconKey,
+            frames: scene.anims.generateFrameNumbers(iconKey, { start: 0, end: 3 }),
+            duration: 500,
+            repeat: -1
+        });
+
+        playericon.anims.play(iconKey, true);
     }
 
 

@@ -3,6 +3,9 @@ const viewport =
     width: 1280,
     height: 720,
 }
+
+let gameplayResourcesLoaded = false;
+
 const config =
 {
     type: Phaser.AUTO,

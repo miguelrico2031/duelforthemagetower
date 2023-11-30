@@ -104,14 +104,21 @@ class GameplayScene extends Phaser.Scene
         this.ground = this.physics.add.staticGroup();
         this.ground.create(viewport.width/2, viewport.height-123/2, "floor").setScale(1).refreshBody();
         this.ground.create(viewport.width/2, viewport.height/2, "plataforma1").setScale(2.5).refreshBody();
+
+        //plataformas mitad izquierda
         this.ground.create(100, viewport.height*2/3, "plataforma1").setScale(2).refreshBody();
         this.ground.create(500, viewport.height*4/5.8, "plataforma4").setScale(2).refreshBody();
         this.ground.create(350, viewport.height*1/3.5, "plataforma4").setScale(2).refreshBody();
         this.ground.create(50, viewport.height*4/9, "plataforma2").setScale(2).refreshBody();  
-        this.ground.create(300, viewport.height*4/7.7, "plataforma3").setScale(1.75).refreshBody();  
+        this.ground.create(300, viewport.height*4/7.7, "plataforma3").setScale(1.75).refreshBody(); 
+        
+        //plataformas mitad derecha
+        this.ground.create(game.config.width - 100, viewport.height*2/3, "plataforma1").setScale(2).refreshBody();
+        this.ground.create(game.config.width - 500, viewport.height*4/5.8, "plataforma4").setScale(2).refreshBody();
+        this.ground.create(game.config.width - 350, viewport.height*1/3.5, "plataforma4").setScale(2).refreshBody();
+        this.ground.create(game.config.width - 50, viewport.height*4/9, "plataforma2").setScale(2).refreshBody();  
+        this.ground.create(game.config.width - 300, viewport.height*4/7.7, "plataforma3").setScale(1.75).refreshBody();
 
-
-        //this.ground.create(viewport.width - 100, viewport.height*3/4, "plataforma3").setScale(2).refreshBody();
 
         this.barrera = this.physics.add.staticGroup();
         this.barrera.create(viewport.width/2, viewport.height/2, "barrier").setScale(1).refreshBody();

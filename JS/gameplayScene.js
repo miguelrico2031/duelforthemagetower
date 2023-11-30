@@ -20,6 +20,7 @@ class GameplayScene extends Phaser.Scene
     }
 
     ground;
+    barrera;
     player1;
     player2;
     spells;
@@ -37,6 +38,7 @@ class GameplayScene extends Phaser.Scene
     {
         this.load.image("bg", "../Miguel/roblox.jpg");
         this.load.image("floor", "../Miguel/testfloor.png");
+        this.load.image("barrier", "../Anatoli/barrerapocha.png");
         
         //sprites player 1
         this.load.spritesheet("wizard1_idle", "../Sprites/WizardPack/Idle.png", {frameWidth: 231, frameHeight: 190} );
@@ -98,6 +100,9 @@ class GameplayScene extends Phaser.Scene
         this.ground.create(100, viewport.height*3/4, "floor").setScale(0.25).refreshBody();
         this.ground.create(viewport.width - 100, viewport.height*3/4, "floor").setScale(0.25).refreshBody();
 
+        this.barrera = this.physics.add.staticGroup();
+        this.barrera.create(viewport.width/2, viewport.height/2, "barrier").setScale(1).refreshBody();
+
         this.playericon1 = this.anims.create
         ({
             frames: this.anims.generateFrameNumbers("wizard1_playericon", { start: 0, end: 3 }),
@@ -139,6 +144,8 @@ class GameplayScene extends Phaser.Scene
 
         this.physics.add.collider(this.player1.body, this.ground);
         this.physics.add.collider(this.player2.body, this.ground);
+        this.physics.add.collider(this.player1.body, this.barrera);
+        this.physics.add.collider(this.player2.body, this.barrera);
         this.physics.add.collider(this.spells, this.ground);
         
         this.physics.add.collider(this.spells, this.shields);

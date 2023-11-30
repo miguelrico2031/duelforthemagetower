@@ -1,7 +1,5 @@
 class Gameover extends Phaser.Scene{
 
-    //public
-    gameEnded;
 
     //private 
     _buttonPressed;
@@ -18,7 +16,8 @@ class Gameover extends Phaser.Scene{
     }
 
     preload(){
-        this.load.image("winner_bg", "../Assets/UI/Game Over Screens/P" + this._winnerPlayer + " Win.png");
+        this.load.image("p1_win", "../Assets/UI/Game Over Screens/P1 Win.png");
+        this.load.image("p2_win", "../Assets/UI/Game Over Screens/P2 Win.png");
 
         this.load.spritesheet("continuar", "../Assets/UI/Pause Menus/Continue_spritesheet.png", { frameWidth: 167, frameHeight: 106 });
         this.load.spritesheet("salir", "../Assets/UI/Pause Menus/Exit_spritesheet.png", { frameWidth: 167, frameHeight: 106 });
@@ -33,7 +32,11 @@ class Gameover extends Phaser.Scene{
     create(){
         this._buttonPressed = false;
 
-        this.add.image(0, 0, "winner_bg").setOrigin(0,0);
+        if(this._winnerPlayer === 1){
+            this.add.image(0, 0, "p1_win").setOrigin(0,0);
+        } else {
+            this.add.image(0, 0, "p2_win").setOrigin(0,0);
+        }
         
 
         this._audioClick = this.sound.add("click");
@@ -48,15 +51,13 @@ class Gameover extends Phaser.Scene{
     {
         let button = this.add.sprite(viewport.width/2, viewport.height/2 - 10, "continuar")
             .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this._buttonContinue) })
+            .on('pointerdown', () => { this.enterButtonClickState(this._buttonMenu) })
             .on('pointerup', () => 
             { 
-                this.enterButtonRestState(this._buttonContinue);
-                this.resumeGame(); 
+                this.enterButtonRestState(this._buttonMenu);
+                this.exitMenu(); 
             })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this._buttonContinue) 
+            .on('pointerout', () => this.enterButtonRestState(this._buttonMenu) 
         );
 
         return button;
@@ -66,17 +67,33 @@ class Gameover extends Phaser.Scene{
     {
         let button = this.add.sprite(viewport.width/2, 120 + viewport.height/2, "salir")
             .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => { this.enterButtonClickState(this._buttonExit) })
+            .on('pointerdown', () => { this.enterButtonClickState(this._buttonPlayAgain) })
             .on('pointerup', () => 
             { 
-                this.enterButtonRestState(this._buttonExit);
-                this.exitGame(); 
+                this.enterButtonRestState(this._buttonPlayAgain);
+                this.restartGame(); 
             }) 
-            .on('pointerout', () => this.enterButtonRestState(this._buttonExit)
+            .on('pointerout', () => this.enterButtonRestState(this._buttonPlayAgain)
         );
 
         return button;
     }
+
+    restartGame()
+    {
+        this._buttonPlayAgain.setFrame(0);
+        this.scene.restart("GameplayScene"); // reinicia la escena del juego
+        this.scene.start("GameplayScene"); 
+    }
+
+    exitMenu()
+    {   
+        this._buttonMenu.setFrame(0);
+        console.log("Salir al menú");
+        //this.scene.switch("MenuScene"); 
+        
+    }
+
 
     enterButtonClickState(button) 
     {
@@ -87,7 +104,6 @@ class Gameover extends Phaser.Scene{
 
     enterButtonRestState(button)
     {
-        // pongo el frame de la animacion sin pulsar pq si no se ve como si se quedase pillado y no queremos eso
         if(this._buttonPressed) this._audioClack.play();
         button.setFrame(0);
         this._buttonPressed = false;

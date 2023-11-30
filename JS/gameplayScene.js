@@ -143,6 +143,7 @@ class GameplayScene extends Phaser.Scene
         
         this.physics.add.collider(this.spells, this.shields);
         
+        this.gameEnded = false;
     }
 
     update(time, delta)
@@ -377,6 +378,7 @@ class GameplayScene extends Phaser.Scene
 
     launchGameOverScene(winnerId){
         this.gameEnded = true;
+        console.log(winnerId);
         this.scene.launch('GameoverScene', { winner: winnerId });
     }
 }

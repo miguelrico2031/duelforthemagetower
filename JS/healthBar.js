@@ -4,10 +4,10 @@ class HealthBar {
     hearts_p1;
     hearts_p2;
 
-    marginX = 64;
+    marginX = 76;
     marginY = 64;
-    hearts_separation = 64;
-    scale = 3;
+    hearts_separation = 24;
+    heartScale = 1.5;
 
     iconMargin = 48;
 
@@ -17,26 +17,19 @@ class HealthBar {
     createIcon;
 
     constructor(scene, player) 
-<<<<<<< HEAD
     {               
-=======
-    {
-        let x = player.id === 1 ? this.marginX *2  : viewport.width - this.marginX*2;
-
->>>>>>> main
         this.gameScene = scene;
         this.player = player;
         
         let x = player.id === 1 ? this.marginX * 2  : viewport.width - this.marginX * 2;
 
-        this.createHeart = (key, x) => this.gameScene.add.image(x, this.marginY, key).setScale(this.scale)
-
+        this.createHeart = (key, x) => this.gameScene.add.image(x, this.marginY + 6, key).setScale(this.heartScale)
 
         this.heart_list = 
         [
             {
                 x: x - this.hearts_separation ,
-                image: this.createHeart("heart_full", x - this.marginX)
+                image: this.createHeart("heart_full", x - this.hearts_separation)
             },
             {
                 x: x ,
@@ -44,15 +37,14 @@ class HealthBar {
             },
             {
                 x: x + this.hearts_separation ,
-                image: this.createHeart("heart_full", x + this.marginX)
+                image: this.createHeart("heart_full", x + this.hearts_separation)
             },
         ]
 
-       this.updateSprites();
+        this.updateSprites();
 
         player.addHitListener((h) => this.onTakeDamage(h)); //pruebita
 
-<<<<<<< HEAD
 
         // Icono del jugador
 
@@ -62,14 +54,12 @@ class HealthBar {
 
         let playericon1 = this.createIcon("PlayerIcon", x);
 
-        playericon1 = this.anims.create
-        ({
-            frames: this.anims.generateFrameNumbers("wizard1_playericon", { start: 0, end: 3 }),
-            framerate: 8,
-            repeat: -1
-        });
-=======
->>>>>>> main
+        // playericon1 = this.anims.create
+        // ({
+        //     frames: this.anims.generateFrameNumbers("wizard1_playericon", { start: 0, end: 3 }),
+        //     framerate: 8,
+        //     repeat: -1
+        // });
     }
 
 

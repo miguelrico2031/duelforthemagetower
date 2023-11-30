@@ -77,8 +77,6 @@ class Pause extends Phaser.Scene
     resumeGame()
     {
         this.pauseKeyIsPressed = false;
-        // this.add.sprite(this.buttonContinue.x, this.buttonContinue.y).play("continue_press");
-        this._buttonContinue.setFrame(0);
         // aqui la gracia es hacer que esta escena de pausa se oculte
         //this.scene.sendToBack("PauseScene"); // la oculta pero luego no puedo volver a poner el juego en pausa
         this.scene.resume("GameplayScene"); // continua la ejecucion del juego
@@ -87,9 +85,9 @@ class Pause extends Phaser.Scene
 
     exitGame()
     {
-        console.log("Salir del juego");
-        //this.add.sprite(this.buttonExit.x, this.buttonExit.y).play("exit_press"); // va feo
-        this._buttonExit.setFrame(0);
+        this.scene.launch("MenuScene");
+        this.scene.stop("GameplayScene");
+        this.scene.sleep("PauseScene");
     }
 
     enterButtonClickState(button) 

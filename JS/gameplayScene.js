@@ -31,7 +31,6 @@ class GameplayScene extends Phaser.Scene
     playericon2;
 
     pauseKeyIsPressed;
-    gameEnded = false;
 
     preload()
     {
@@ -165,7 +164,6 @@ class GameplayScene extends Phaser.Scene
         
         this.physics.add.collider(this.shields, this.spells);
         
-        this.gameEnded = false;
     }
 
     update(time, delta)
@@ -399,8 +397,7 @@ class GameplayScene extends Phaser.Scene
     }
 
     launchGameOverScene(winnerId){
-        this.gameEnded = true;
         //console.log(winnerId);
-        this.scene.launch('GameoverScene', { winner: winnerId });
+        this.scene.start('GameoverScene', { winner: winnerId });
     }
 }

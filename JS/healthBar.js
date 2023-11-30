@@ -4,9 +4,9 @@ class HealthBar {
     hearts_p1;
     hearts_p2;
 
-    marginX = 96;
+    marginX = 64;
     marginY = 64;
-    hearts_separation = 48;
+    hearts_separation = 64;
     scale = 3;
 
     iconMargin = 48;
@@ -17,7 +17,13 @@ class HealthBar {
     createIcon;
 
     constructor(scene, player) 
+<<<<<<< HEAD
     {               
+=======
+    {
+        let x = player.id === 1 ? this.marginX *2  : viewport.width - this.marginX*2;
+
+>>>>>>> main
         this.gameScene = scene;
         this.player = player;
         
@@ -25,11 +31,12 @@ class HealthBar {
 
         this.createHeart = (key, x) => this.gameScene.add.image(x, this.marginY, key).setScale(this.scale)
 
+
         this.heart_list = 
         [
             {
                 x: x - this.hearts_separation ,
-                image: this.createHeart("heart_full", x - this.hearts_separation)
+                image: this.createHeart("heart_full", x - this.marginX)
             },
             {
                 x: x ,
@@ -37,14 +44,15 @@ class HealthBar {
             },
             {
                 x: x + this.hearts_separation ,
-                image: this.createHeart("heart_full", x + this.hearts_separation)
+                image: this.createHeart("heart_full", x + this.marginX)
             },
         ]
 
-        this.updateSprites();
+       this.updateSprites();
 
         player.addHitListener((h) => this.onTakeDamage(h)); //pruebita
 
+<<<<<<< HEAD
 
         // Icono del jugador
 
@@ -60,6 +68,8 @@ class HealthBar {
             framerate: 8,
             repeat: -1
         });
+=======
+>>>>>>> main
     }
 
 

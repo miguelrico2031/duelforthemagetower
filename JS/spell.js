@@ -5,6 +5,7 @@ class Spell extends Phaser.Physics.Arcade.Sprite
     damage = 1;
 
     _moveSpeed = 500;
+    _spellRadius = 450;
 
     constructor(scene, id, x, y, direction)
     {
@@ -14,7 +15,8 @@ class Spell extends Phaser.Physics.Arcade.Sprite
         scene.spells.add(this, true);
         this.body.setAllowGravity(false);
         this.body.setBounce(1);
-        this.setScale(0.01).refreshBody();
+        this.body.setCircle(this._spellRadius);
+        this.setScale(0.01 ).refreshBody();
         this.body.reset(x, y);
         this.body.setVelocity(this.direction.x * this._moveSpeed, this.direction.y * this._moveSpeed);
 

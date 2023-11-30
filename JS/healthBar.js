@@ -9,16 +9,19 @@ class HealthBar {
     hearts_separation = 48;
     scale = 3;
 
+    iconMargin = 48;
+
     gameScene;
     player;
     createHeart;
+    createIcon;
 
-    constructor(scene, player, playericon) 
-    {
-        let x = player.id === 1 ? this.marginX * 2  : viewport.width - this.marginX * 2;
-
+    constructor(scene, player) 
+    {               
         this.gameScene = scene;
         this.player = player;
+        
+        let x = player.id === 1 ? this.marginX * 2  : viewport.width - this.marginX * 2;
 
         this.createHeart = (key, x) => this.gameScene.add.image(x, this.marginY, key).setScale(this.scale)
 
@@ -42,8 +45,21 @@ class HealthBar {
 
         player.addHitListener((h) => this.onTakeDamage(h)); //pruebita
 
-        playericon.startAnimations();
 
+        // Icono del jugador
+
+        x = player.id === 1 ? this.iconMargin * 2  : viewport.width - this.iconMargin * 2;
+
+        this.createIcon = (key, x) => this.gameScene.add.sprite(x, this.marginY, key)
+
+        let playericon1 = this.createIcon("PlayerIcon", x);
+
+        playericon1 = this.anims.create
+        ({
+            frames: this.anims.generateFrameNumbers("wizard1_playericon", { start: 0, end: 3 }),
+            framerate: 8,
+            repeat: -1
+        });
     }
 
 

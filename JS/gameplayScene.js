@@ -61,6 +61,9 @@ class GameplayScene extends Phaser.Scene
         this.load.image("heart_full", "../Assets/UI/HUD/Heart Container Full.png");
         this.load.image("heart_half", "../Assets/UI/HUD/Heart Container Half.png");
         this.load.image("heart_empty", "../Assets/UI/HUD/Heart Container Empty.png");
+        this.load.spritesheet("PlayerIcon1", "../Assets/UI/HUD/BlueMageIcon.png", { frameWidth: 63, frameHeight: 64 } );
+        this.load.spritesheet("PlayerIcon1", "../Assets/UI/HUD/RedMageIcon.png", { frameWidth: 63, frameHeight: 64 } );
+
     }
 
 
@@ -84,19 +87,10 @@ class GameplayScene extends Phaser.Scene
         this.ground.create(viewport.width/2, viewport.height, "floor").setScale(2).refreshBody();
         this.ground.create(viewport.width/2, viewport.height/2, "floor").setScale(0.25).refreshBody();
         this.ground.create(100, viewport.height*3/4, "floor").setScale(0.25).refreshBody();
-        this.ground.create(viewport.width - 100, viewport.height*3/4, "floor").setScale(0.25).refreshBody();
-
-        this.playericon1 = this.anims.create
-        ({
-            frames: this.anims.generateFrameNumbers("wizard1_playericon", { start: 0, end: 3 }),
-            framerate: 8,
-            repeat: -1
-        })
-
-        //this.playericon1.gameObject.setXY(48, 48);
-
+        this.ground.create(viewport.width - 100, viewport.height*3/4, "floor").setScale(0.25).refreshBody();    
+        
         this.initPlayer1();
-        this.healthbar1 = new HealthBar(this, this.player1, this.playericon1);
+        this.healthbar1 = new HealthBar(this, this.player1);
         
         this.initPlayer2();
         this.healthbar2 = new HealthBar(this, this.player2);

@@ -35,8 +35,8 @@ class GameplayScene extends Phaser.Scene
 
     preload()
     {
-        this.load.image("bg", "../Miguel/roblox.jpg");
-        this.load.image("floor", "../Miguel/testfloor.png");
+        this.load.image("bg", "../Fondo/fondo.png");
+        this.load.image("floor", "../Fondo/suelo - copia.png");
         this.load.image("barrier", "../Anatoli/barrerapocha.png");
         
         //sprites player 1
@@ -94,10 +94,10 @@ class GameplayScene extends Phaser.Scene
         this.add.image(viewport.width/2, viewport.height/2, "bg");
         
         this.ground = this.physics.add.staticGroup();
-        this.ground.create(viewport.width/2, viewport.height, "floor").setScale(2).refreshBody();
-        this.ground.create(viewport.width/2, viewport.height/2, "floor").setScale(0.25).refreshBody();
-        this.ground.create(100, viewport.height*3/4, "floor").setScale(0.25).refreshBody();
-        this.ground.create(viewport.width - 100, viewport.height*3/4, "floor").setScale(0.25).refreshBody();
+        this.ground.create(viewport.width/2, viewport.height-123/2, "floor").setScale(1).refreshBody();
+        //this.ground.create(viewport.width/2, viewport.height/2, "floor").setScale(0.25).refreshBody();
+        //this.ground.create(100, viewport.height*3/4, "floor").setScale(0.25).refreshBody();
+        //this.ground.create(viewport.width - 100, viewport.height*3/4, "floor").setScale(0.25).refreshBody();
 
         this.barrera = this.physics.add.staticGroup();
         this.barrera.create(viewport.width/2, viewport.height/2, "barrier").setScale(1).refreshBody();

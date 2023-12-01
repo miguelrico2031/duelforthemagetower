@@ -2,18 +2,18 @@ class Pause extends Phaser.Scene
 {
 
     //publicas
-    pauseKeyIsPressed; // comprueba si estoy pulsando escape
+    pauseKeyIsPressed;  // comprueba si estoy pulsando escape
 
     //privadas
     _pauseKey;
 
-    _buttonPressed; // para saber si el botón está siendo pulsado / clicado
+    _buttonPressed;     // para saber si el botón está siendo pulsado / clicado
 
-    _buttonContinue; // botón de continuar
-    _buttonExit;     // botón de salir
+    _buttonContinue;    // botón de continuar
+    _buttonExit;        // botón de salir
 
-    _audioClick; // sonido al pulsar
-    _audioClack; // sonido al soltar
+    _audioClick;        // sonido al pulsar
+    _audioClack;        // sonido al soltar
 
     //Metodos publicos
     constructor() 
@@ -39,26 +39,24 @@ class Pause extends Phaser.Scene
         this._audioClick = this.sound.add("click");
         this._audioClack = this.sound.add("clack");
 
-
         // La forma de poner los botones es lo mas terrorifico feo e ineficiente que he hecho en mi vida dios mio
         // pero tampoco hay otra pq usar el setorigin con estas da errores y por lo q sea usar solo el viewport no las centra
 
-        this._buttonContinue = this.initContinueButton();
-
-        this._buttonExit = this.initExitButton();
+        this._buttonContinue = this._initContinueButton();
+        this._buttonExit = this._initExitButton();
         
         this._pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     }
     
     update()
     {
-        this.checkPauseKeyPressed();
+        this._checkPauseKeyPressed();
     }
 
     //Metodos privados
     
     // todo esto es para ver si has pulsado el escape y lo has soltado antes de hacer nada pq si no te da un ataque de epilepsia
-    checkPauseKeyPressed() 
+    _checkPauseKeyPressed() 
     {
         // Comprueba que se está pulsando
         if (this._pauseKey.isDown && !this.pauseKeyIsPressed) 
@@ -70,33 +68,36 @@ class Pause extends Phaser.Scene
         else if (this._pauseKey.isUp && this.pauseKeyIsPressed) 
         {
             this.pauseKeyIsPressed = false;
-            this.resumeGame();
+            this._resumeGame();
         }
     }
 
-    resumeGame()
+    // Para continuar el juego
+    _resumeGame()
     {
         this.pauseKeyIsPressed = false;
         // aqui la gracia es hacer que esta escena de pausa se oculte
-        //this.scene.sendToBack("PauseScene"); // la oculta pero luego no puedo volver a poner el juego en pausa
         this.scene.resume("GameplayScene"); // continua la ejecucion del juego
         this.scene.sleep("PauseScene");
     }
 
-    exitGame()
+    // Todo esto tiene que pasar para salir de la escena de juego (y de pausa)
+    _exitGame()
     {
         this.scene.launch("MenuScene");
         this.scene.stop("GameplayScene");
         this.scene.sleep("PauseScene");
     }
 
-    enterButtonClickState(button) 
+    // Esto es lo que debe hacer el boton al ser pulsado
+    _enterButtonClickState(button) 
     {
         this._audioClick.play(); 
         button.setFrame(1);
         this._buttonPressed = true;
     }
 
+    // Esto seria cuando el boton deja de estar pulsado
     enterButtonRestState(button)
     {
         // pongo el frame de la animacion sin pulsar pq si no se ve como si se quedase pillado y no queremos eso
@@ -105,16 +106,17 @@ class Pause extends Phaser.Scene
         this._buttonPressed = false;
     }
 
-    initContinueButton()
+    // Para inicializar el botón y dotarlo de todas las interacciones necesarias
+    _initContinueButton()
     {
         let button = this.add.sprite(viewport.width/2, viewport.height/2 - 10, "continuar")
-            .setInteractive({ useHandCursor: true })
+            .setInteractive({ useHandCursor: true })    // Pone el cursor como la mano
             // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this._buttonContinue) })
+            .on('pointerdown', () => { this._enterButtonClickState(this._buttonContinue) })
             .on('pointerup', () => 
             { 
                 this.enterButtonRestState(this._buttonContinue);
-                this.resumeGame(); 
+                this._resumeGame(); 
             })
             // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
             .on('pointerout', () => this.enterButtonRestState(this._buttonContinue) 
@@ -123,15 +125,16 @@ class Pause extends Phaser.Scene
         return button;
     }
 
-    initExitButton()
+    // Para inicializar el botón y dotarlo de todas las interacciones necesarias
+    _initExitButton()
     {
         let button = this.add.sprite(viewport.width/2, 120 + viewport.height/2, "salir")
             .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => { this.enterButtonClickState(this._buttonExit) })
+            .on('pointerdown', () => { this._enterButtonClickState(this._buttonExit) })
             .on('pointerup', () => 
             { 
                 this.enterButtonRestState(this._buttonExit);
-                this.exitGame(); 
+                this._exitGame(); 
             }) 
             .on('pointerout', () => this.enterButtonRestState(this._buttonExit)
         );

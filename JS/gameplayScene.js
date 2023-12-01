@@ -122,9 +122,11 @@ class GameplayScene extends Phaser.Scene
         this.barrera.create(viewport.width/2, viewport.height/2, "barrier").setScale(1).refreshBody();
         
         this.initPlayer1();
+        // Asignar una barra de vida / HUD al jugador 1
         this.healthbar1 = new HealthBar(this, this.player1, "PlayerIcon1");
         
         this.initPlayer2();
+        // Asignar una barra de vida / HUD al jugador 2
         this.healthbar2 = new HealthBar(this, this.player2, "PlayerIcon2");
 
 
@@ -155,7 +157,7 @@ class GameplayScene extends Phaser.Scene
         this.physics.add.collider(this.shields, this.spells);
         
         this.gameEnded = false;
-        gameplayResourcesLoaded = true; //para evitarvolver a cargar las animaciones porque se cargan de manera global
+        gameplayResourcesLoaded = true; //para evitar volver a cargar las animaciones porque se cargan de manera global
 
     }
 
@@ -167,10 +169,7 @@ class GameplayScene extends Phaser.Scene
         this.player2.update(time, delta);
 
         this.processDeath();
-    }
-
-    //test = (h) => console.log(h);
-    
+    }    
 
     processInput()
     {
@@ -370,24 +369,29 @@ class GameplayScene extends Phaser.Scene
         
     }
 
+    // Al igual que en la escena de pausa, es para evitar que dejar pulsado el botón haga cosas feas
     checkPauseKeyPressed() 
     {
+        // Comprueba que se ha presionado el escape
         if (this.playersInput.pauseKey.isDown && !this.pauseKeyIsPressed) {
             this.pauseKeyIsPressed = true;
         }
 
+        // Cuando se ha soltado, llama al launchPauseMenu
         else if (this.playersInput.pauseKey.isUp && this.pauseKeyIsPressed) {
             this.pauseKeyIsPressed = false;
             this.launchPauseMenu();
         }
     }
 
+    // Detiene el juego y lanza el menú de pausa
     launchPauseMenu() 
     {
         this.pauseKeyIsPressed = false;
+        // Pausa el juego
         this.scene.pause("GameplayScene");
 
-
+        // Evita que se vuelva a crear el objeto del menú si ya existe
         if(!this.scene.get("PauseScene").loaded)
         {
             this.scene.get("PauseScene").loaded = true;
@@ -395,10 +399,8 @@ class GameplayScene extends Phaser.Scene
         }
         else
         {
-            this.scene.wake("PauseScene"); // pone el menu de pausa por encima
+            this.scene.wake("PauseScene"); // reactiva el menú de pausa (que ya estaba por encima)
         }
-
-        //this.scene.start("PauseScene"); // esta es mala pq pone la pausa como otra escena y reinicia el juego asin q no lo queremos
     }
 
     launchGameOverScene(winnerId){

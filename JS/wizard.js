@@ -84,7 +84,7 @@ class Wizard
 
     update(time, delta)
     {
-        if(!this._isAlive || this._scene.gameEnded) 
+        if(!this._isAlive) 
         {//si esta muerto se resetea la velocidad horizontal para que no se mueva, la vertical no por si esta en el aire al morir
             this.body.setVelocityX(0);
             return;

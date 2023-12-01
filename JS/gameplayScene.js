@@ -47,8 +47,6 @@ class GameplayScene extends Phaser.Scene
         this.load.spritesheet("wizard1_attack", "../Sprites/WizardPack/Attack2.png", {frameWidth: 231, frameHeight: 190} );
         this.load.spritesheet("wizard1_shield", "../Sprites/WizardPack/Attack1.png", {frameWidth: 231, frameHeight: 190} );
 
-        this.load.spritesheet("wizard1_playericon", "../Assets/UI/HUD/BlueMageIcon.png", {frameWidth: 63, frameHeight: 64} );
-
         //sprites player 2
         this.load.spritesheet("wizard2_idle", "../Sprites/EvilWizardPack/Idle.png", {frameWidth: 250, frameHeight: 250} );
         this.load.spritesheet("wizard2_run", "../Sprites/EvilWizardPack/Run.png", {frameWidth: 250, frameHeight: 250} );
@@ -70,8 +68,8 @@ class GameplayScene extends Phaser.Scene
         this.load.image("heart_full", "../Assets/UI/HUD/Heart Container Full.png");
         this.load.image("heart_half", "../Assets/UI/HUD/Heart Container Half.png");
         this.load.image("heart_empty", "../Assets/UI/HUD/Heart Container Empty.png");
-        this.load.spritesheet("PlayerIcon1", "../Assets/UI/HUD/BlueMageIcon.png", { frameWidth: 63, frameHeight: 64 } );
-        this.load.spritesheet("PlayerIcon2", "../Assets/UI/HUD/RedMageIcon.png", { frameWidth: 63, frameHeight: 64 } );
+        this.load.spritesheet("PlayerIcon1", "../Assets/UI/HUD/BlueMageIcon.png", { frameWidth: 64, frameHeight: 64 } );
+        this.load.spritesheet("PlayerIcon2", "../Assets/UI/HUD/RedMageIcon.png", { frameWidth: 64, frameHeight: 64 } );
 
     }
 

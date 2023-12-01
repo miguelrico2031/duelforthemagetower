@@ -127,7 +127,7 @@ class Wizard
     spellHit(wizard, spell)
     {
         this.takeDamage(spell.damage);
-        spell.destroy();
+        spell.explode();
     }
 
     takeDamage(damage)
@@ -211,7 +211,7 @@ class Wizard
                 this._isOnCooldown = true;
                 this._cooldownTimer = 0;
                 //console.log("Bala");
-                let spell = new Spell(this._scene, this.id, this.gameObject.x + this.direction.x * 30, this.gameObject.y, this.direction);
+                let spell = new Spell(this._scene, this.id, this.gameObject.x + this.direction.x * 50, this.gameObject.y, this.direction);
 
                 this._setAnimation(this._animationKeys.attack);
                 this._updateAnims = false;

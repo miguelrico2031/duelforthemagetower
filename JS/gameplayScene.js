@@ -65,9 +65,11 @@ class GameplayScene extends Phaser.Scene
         this.load.spritesheet("wizard2_attack", "../Assets/Sprites/RedWizard/Attack2.png", {frameWidth: 250, frameHeight: 250} );
         this.load.spritesheet("wizard2_shield", "../Assets/Sprites/RedWizard/Attack1.png", {frameWidth: 250, frameHeight: 250} );
 
-        //sprite hechizo
-        this.load.image("spell", "../Assets/Sprites/Particles/bola.png");
-        this.load.spritesheet("blueSpell", "../Assets/Sprites/Particles/BlueParticles/Projectile2.png", { frameWidth: 14, frameHeight: 15 });
+        //sprite hechizos
+        this.load.spritesheet("blueSpell", "../Assets/Sprites/Particles/BlueParticles/Projectile1.png", { frameWidth: 16, frameHeight: 32 });
+        this.load.spritesheet("blueExplosion", "../Assets/Sprites/Particles/BlueParticles/Explosion1.png", { frameWidth: 16, frameHeight: 16 });
+        this.load.spritesheet("redSpell", "../Assets/Sprites/Particles/RedParticles/Projectile1.png", { frameWidth: 16, frameHeight: 32 });
+        this.load.spritesheet("redExplosion", "../Assets/Sprites/Particles/RedParticles/Explosion1.png", { frameWidth: 16, frameHeight: 16 });
 
         //sprites escudo
         this.load.spritesheet("shield", "../Assets/Sprites/Particles/shield.png", {frameWidth: 412, frameHeight: 412, margin: 50, spacing: 50} );
@@ -102,6 +104,11 @@ class GameplayScene extends Phaser.Scene
         
         this.playersInput.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
+
+
+
+
+
         this.add.image(viewport.width/2, viewport.height/2, "bg");
         
         this.ground = this.physics.add.staticGroup();
@@ -125,6 +132,13 @@ class GameplayScene extends Phaser.Scene
 
         this.barrera = this.physics.add.staticGroup();
         this.barrera.create(viewport.width/2, viewport.height/2, "barrier").setScale(1).refreshBody();
+
+
+
+
+
+
+
         
         this.initPlayer1();
         // Asignar una barra de vida / HUD al jugador 1
@@ -134,33 +148,31 @@ class GameplayScene extends Phaser.Scene
         // Asignar una barra de vida / HUD al jugador 2
         this.healthbar2 = new HUD(this, this.player2, "PlayerIcon2");
 
-
-        this.spells = this.physics.add.group
-        ({
-            allowGravity: false,
-            //collideWorldBounds: true,
-            runChildUpdate: true 
-        });
-
-        this.shields = this.physics.add.staticGroup();
-
-        this.physics.add.overlap(this.player1, this.spells, this.player1.spellHit, null, this.player1);
-        this.physics.add.overlap(this.player2, this.spells, this.player2.spellHit, null, this.player2);
-
-        this.input.on('pointerdown', () => this.player1.takeDamage(1), this);
+        this.initSpells();
 
 
         
 
+        this.shields = this.physics.add.staticGroup();
 
+
+
+
+
+
+
+        this.physics.add.overlap(this.player1, this.spells, this.player1.spellHit, null, this.player1);
+        this.physics.add.overlap(this.player2, this.spells, this.player2.spellHit, null, this.player2);
         this.physics.add.collider(this.player1.body, this.ground);
         this.physics.add.collider(this.player2.body, this.ground);
         this.physics.add.collider(this.player1.body, this.barrera);
         this.physics.add.collider(this.player2.body, this.barrera);
-        this.physics.add.collider(this.spells, this.ground);
+        this.physics.add.collider(this.spells, this.ground, this.onSpellCollision, null, this);
+        this.physics.add.collider(this.spells, this.shields,this.onSpellCollision, null, this);
         
-        this.physics.add.collider(this.shields, this.spells);
-        
+
+
+
         this.gameEnded = false;
         gameplayResourcesLoaded = true; //para evitar volver a cargar las animaciones porque se cargan de manera global
 
@@ -174,7 +186,12 @@ class GameplayScene extends Phaser.Scene
         this.player2.update(time, delta);
 
         this.processDeath();
-    }    
+    }
+
+    onSpellCollision(spell, other)
+    {
+        spell.onCollision(other);
+    }
 
     processInput()
     {
@@ -370,6 +387,46 @@ class GameplayScene extends Phaser.Scene
         });
 
         this.player2.startAnimations(); //empezar a animar al jugador        
+    }
+
+    initSpells()
+    {
+        this.spells = this.physics.add.group
+        ({
+            allowGravity: false,
+            //collideWorldBounds: true,
+            runChildUpdate: true 
+        });
+
+        // proyectil azul
+        this.anims.create
+        ({
+            key: "blueSpell",
+            frames: this.anims.generateFrameNumbers("blueSpell", { start: 0, end: 2 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create
+        ({
+            key: "blueExplosion",
+            frames: this.anims.generateFrameNumbers("blueExplosion", { start: 0, end: 5 }),
+            frameRate: 10
+        });
+
+        // proyectil rojo
+        this.anims.create
+        ({
+            key: "redSpell",
+            frames: this.anims.generateFrameNumbers("redSpell", { start: 0, end: 2 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create
+        ({
+            key: "redExplosion",
+            frames: this.anims.generateFrameNumbers("redExplosion", { start: 0, end: 5 }),
+            frameRate: 10
+        });
     }
 
     // Al igual que en la escena de pausa, es para evitar que dejar pulsado el botón haga cosas feas

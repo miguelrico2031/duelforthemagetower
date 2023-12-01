@@ -14,6 +14,7 @@ class Pause extends Phaser.Scene
 
     _audioClick;        // sonido al pulsar
     _audioClack;        // sonido al soltar
+    _audioUnpause;      // sonido al salir del menú
 
     //Metodos publicos
     constructor() 
@@ -28,6 +29,7 @@ class Pause extends Phaser.Scene
         this.load.spritesheet("salir", "../Assets/UI/Screens/Pause/ExitButton.png", { frameWidth: 167, frameHeight: 106 });
         this.load.audio("click", "../Assets/UI/Sounds/Minimalist4.wav");
         this.load.audio("clack", "../Assets/UI/Sounds/Minimalist7.wav");
+        this.load.audio("unpause", "../Assets/UI/Sounds/Unpause.wav");
     }
 
     create()
@@ -38,6 +40,7 @@ class Pause extends Phaser.Scene
 
         this._audioClick = this.sound.add("click");
         this._audioClack = this.sound.add("clack");
+        this._audioUnpause = this.sound.add("unpause");
 
         // La forma de poner los botones es lo mas terrorifico feo e ineficiente que he hecho en mi vida dios mio
         // pero tampoco hay otra pq usar el setorigin con estas da errores y por lo q sea usar solo el viewport no las centra
@@ -76,6 +79,7 @@ class Pause extends Phaser.Scene
     _resumeGame()
     {
         this.pauseKeyIsPressed = false;
+        this._audioUnpause.play();
         // aqui la gracia es hacer que esta escena de pausa se oculte
         this.scene.resume("GameplayScene"); // continua la ejecucion del juego
         this.scene.sleep("PauseScene");
@@ -84,6 +88,7 @@ class Pause extends Phaser.Scene
     // Todo esto tiene que pasar para salir de la escena de juego (y de pausa)
     _exitGame()
     {
+        this._audioUnpause.play();
         this.scene.launch("MenuScene");
         this.scene.stop("GameplayScene");
         this.scene.sleep("PauseScene");

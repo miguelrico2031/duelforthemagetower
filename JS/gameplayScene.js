@@ -29,6 +29,7 @@ class GameplayScene extends Phaser.Scene
     healthbar2;
 
     pauseKeyIsPressed;
+    pauseSound;
 
     preload()
     {
@@ -71,7 +72,6 @@ class GameplayScene extends Phaser.Scene
         //sprites escudo
         this.load.spritesheet("shield", "../Assets/Sprites/Particles/shield.png", {frameWidth: 412, frameHeight: 412, margin: 50, spacing: 50} );
 
-
         //sprites hud
         this.load.image("heart_full", "../Assets/UI/HUD/Hearts/HeartContainerFull.png");
         this.load.image("heart_half", "../Assets/UI/HUD/Hearts/HeartContainerHalf.png");
@@ -79,12 +79,16 @@ class GameplayScene extends Phaser.Scene
         this.load.spritesheet("PlayerIcon1", "../Assets/UI/HUD/Icons/BlueMageIcon.png", { frameWidth: 64, frameHeight: 64 } );
         this.load.spritesheet("PlayerIcon2", "../Assets/UI/HUD/Icons/RedMageIcon.png", { frameWidth: 64, frameHeight: 64 } );
 
+        //sonido pausa
+        this.load.audio("pauseSound", "../Assets/UI/Sounds/Pause.wav");
+
     }
 
 
     create()
     {   
         this.pauseKeyIsPressed = false;
+        this.pauseSound = this.sound.add("pauseSound");
 
         this.playersInput.wasdKeys = this.input.keyboard.addKeys("W,A,S,D");
         this.playersInput.jumpKey1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -387,6 +391,8 @@ class GameplayScene extends Phaser.Scene
     launchPauseMenu() 
     {
         this.pauseKeyIsPressed = false;
+        // Reproduce el efecto de sonido
+        this.pauseSound.play();
         // Pausa el juego
         this.scene.pause("GameplayScene");
 

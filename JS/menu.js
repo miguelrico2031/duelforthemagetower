@@ -28,10 +28,10 @@ class Menu extends Phaser.Scene
 
     preload()
     {
-        this.load.spritesheet("play", "../Assets/UI/Menu Principal/jugarSpritesheet.png", { frameWidth: 267, frameHeight: 168 });
-        this.load.spritesheet("credits", "../Assets/UI/Menu Principal/creditsSpritesheet.png", { frameWidth: 214, frameHeight: 135 });
-        this.load.spritesheet("help", "../Assets/UI/Menu Principal/helpSpritesheet.png", { frameWidth: 214, frameHeight: 135 });
-        this.load.image("menu", "../Assets/UI/Menu Principal/menu.png");
+        this.load.spritesheet("play", "../Assets/UI/Screens/MainMenu/PlayButton.png", { frameWidth: 267, frameHeight: 168 });
+        this.load.spritesheet("credits", "../Assets/UI/Screens/MainMenu/CreditsButton.png", { frameWidth: 214, frameHeight: 135 });
+        this.load.spritesheet("help", "../Assets/UI/Screens/MainMenu/HelpButton.png", { frameWidth: 214, frameHeight: 135 });
+        this.load.image("menu", "../Assets/UI/Screens/MainMenu/menu.png");
         this.load.audio("click", "../Assets/UI/Sounds/Minimalist4.wav");
         this.load.audio("clack", "../Assets/UI/Sounds/Minimalist7.wav");
     }

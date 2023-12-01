@@ -16,11 +16,11 @@ class Gameover extends Phaser.Scene{
     }
 
     preload(){
-        this.load.image("p1_win", "../Assets/UI/Game Over Screens/P1 Win.png");
-        this.load.image("p2_win", "../Assets/UI/Game Over Screens/P2 Win.png");
+        this.load.image("p1_win", "../Assets/UI/Screens/GameOver/P1Win.png");
+        this.load.image("p2_win", "../Assets/UI/Screens/GameOver/P2Win.png");
 
-        this.load.spritesheet("btn_menu", "../Assets/UI/Game Over Screens/Menu_spritesheet.png", { frameWidth: 167, frameHeight: 106 });
-        this.load.spritesheet("btn_replay", "../Assets/UI/Game Over Screens/Replay_spritesheet.png", { frameWidth: 167, frameHeight: 106 });
+        this.load.spritesheet("btn_menu", "../Assets/UI/Screens/GameOver/MenuButton.png", { frameWidth: 167, frameHeight: 106 });
+        this.load.spritesheet("btn_replay", "../Assets/UI/Screens/GameOver/ReplayButton.png", { frameWidth: 167, frameHeight: 106 });
         this.load.audio("click", "../Assets/UI/Sounds/Minimalist4.wav");
         this.load.audio("clack", "../Assets/UI/Sounds/Minimalist7.wav");
     }

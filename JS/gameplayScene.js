@@ -33,50 +33,50 @@ class GameplayScene extends Phaser.Scene
     preload()
     {
         //fondo
-        this.load.image("bg", "../Fondo/fondo.png");
+        this.load.image("bg", "../Assets/Scenery/Background/bg.png");
         //suelo
-        this.load.image("floor", "../Fondo/suelo - copia.png");
+        this.load.image("floor", "../Assets/Scenery/Background/floor.png");
         //plataformas
-        this.load.image("plataforma1", "../Fondo/p4.png");
-        this.load.image("plataforma2", "../Fondo/p1.png");
-        this.load.image("plataforma3", "../Fondo/p2.png");
-        this.load.image("plataforma4", "../Fondo/p3.png");
+        this.load.image("plataforma1", "../Assets/Scenery/Background/p4.png");
+        this.load.image("plataforma2", "../Assets/Scenery/Background/p1.png");
+        this.load.image("plataforma3", "../Assets/Scenery/Background/p2.png");
+        this.load.image("plataforma4", "../Assets/Scenery/Background/p3.png");
         //barrera
-        this.load.image("barrier", "../Anatoli/barrerapocha.png");
+        this.load.image("barrier", "../Assets/Scenery/barrerapocha.png");
         
         //sprites player 1
-        this.load.spritesheet("wizard1_idle", "../Sprites/WizardPack/Idle.png", {frameWidth: 231, frameHeight: 190} );
-        this.load.spritesheet("wizard1_run", "../Sprites/WizardPack/Run.png", {frameWidth: 231, frameHeight: 190} );
-        this.load.spritesheet("wizard1_jump", "../Sprites/WizardPack/Jump.png", {frameWidth: 231, frameHeight: 190} );
-        this.load.spritesheet("wizard1_fall", "../Sprites/WizardPack/Fall.png", {frameWidth: 231, frameHeight: 190} );
-        this.load.spritesheet("wizard1_hit", "../Sprites/WizardPack/Hit.png", {frameWidth: 231, frameHeight: 190} );
-        this.load.spritesheet("wizard1_die", "../Sprites/WizardPack/Death.png", {frameWidth: 231, frameHeight: 190} );
-        this.load.spritesheet("wizard1_attack", "../Sprites/WizardPack/Attack2.png", {frameWidth: 231, frameHeight: 190} );
-        this.load.spritesheet("wizard1_shield", "../Sprites/WizardPack/Attack1.png", {frameWidth: 231, frameHeight: 190} );
+        this.load.spritesheet("wizard1_idle", "../Assets/Sprites/BlueWizard/Idle.png", {frameWidth: 231, frameHeight: 190} );
+        this.load.spritesheet("wizard1_run", "../Assets/Sprites/BlueWizard/Run.png", {frameWidth: 231, frameHeight: 190} );
+        this.load.spritesheet("wizard1_jump", "../Assets/Sprites/BlueWizard/Jump.png", {frameWidth: 231, frameHeight: 190} );
+        this.load.spritesheet("wizard1_fall", "../Assets/Sprites/BlueWizard/Fall.png", {frameWidth: 231, frameHeight: 190} );
+        this.load.spritesheet("wizard1_hit", "../Assets/Sprites/BlueWizard/Hit.png", {frameWidth: 231, frameHeight: 190} );
+        this.load.spritesheet("wizard1_die", "../Assets/Sprites/BlueWizard/Death.png", {frameWidth: 231, frameHeight: 190} );
+        this.load.spritesheet("wizard1_attack", "../Assets/Sprites/BlueWizard/Attack2.png", {frameWidth: 231, frameHeight: 190} );
+        this.load.spritesheet("wizard1_shield", "../Assets/Sprites/BlueWizard/Attack1.png", {frameWidth: 231, frameHeight: 190} );
 
         //sprites player 2
-        this.load.spritesheet("wizard2_idle", "../Sprites/EvilWizardPack/Idle.png", {frameWidth: 250, frameHeight: 250} );
-        this.load.spritesheet("wizard2_run", "../Sprites/EvilWizardPack/Run.png", {frameWidth: 250, frameHeight: 250} );
-        this.load.spritesheet("wizard2_jump", "../Sprites/EvilWizardPack/Jump.png", {frameWidth: 250, frameHeight: 250} );
-        this.load.spritesheet("wizard2_fall", "../Sprites/EvilWizardPack/Fall.png", {frameWidth: 250, frameHeight: 250} );
-        this.load.spritesheet("wizard2_hit", "../Sprites/EvilWizardPack/Hit.png", {frameWidth: 250, frameHeight: 250} );
-        this.load.spritesheet("wizard2_die", "../Sprites/EvilWizardPack/Death.png", {frameWidth: 250, frameHeight: 250} );
-        this.load.spritesheet("wizard2_attack", "../Sprites/EvilWizardPack/Attack2.png", {frameWidth: 250, frameHeight: 250} );
-        this.load.spritesheet("wizard2_shield", "../Sprites/EvilWizardPack/Attack1.png", {frameWidth: 250, frameHeight: 250} );
+        this.load.spritesheet("wizard2_idle", "../Assets/Sprites/RedWizard/Idle.png", {frameWidth: 250, frameHeight: 250} );
+        this.load.spritesheet("wizard2_run", "../Assets/Sprites/RedWizard/Run.png", {frameWidth: 250, frameHeight: 250} );
+        this.load.spritesheet("wizard2_jump", "../Assets/Sprites/RedWizard/Jump.png", {frameWidth: 250, frameHeight: 250} );
+        this.load.spritesheet("wizard2_fall", "../Assets/Sprites/RedWizard/Fall.png", {frameWidth: 250, frameHeight: 250} );
+        this.load.spritesheet("wizard2_hit", "../Assets/Sprites/RedWizard/Hit.png", {frameWidth: 250, frameHeight: 250} );
+        this.load.spritesheet("wizard2_die", "../Assets/Sprites/RedWizard/Death.png", {frameWidth: 250, frameHeight: 250} );
+        this.load.spritesheet("wizard2_attack", "../Assets/Sprites/RedWizard/Attack2.png", {frameWidth: 250, frameHeight: 250} );
+        this.load.spritesheet("wizard2_shield", "../Assets/Sprites/RedWizard/Attack1.png", {frameWidth: 250, frameHeight: 250} );
 
         //sprite hechizo
-        this.load.image("spell", "../Miguel/bola.png");
+        this.load.image("spell", "../Assets/Sprites/Particles/bola.png");
 
         //sprites escudo
-        this.load.spritesheet("shield", "../Anatoli/shield.png", {frameWidth: 412, frameHeight: 412, margin: 50, spacing: 50} );
+        this.load.spritesheet("shield", "../Assets/Sprites/Particles/shield.png", {frameWidth: 412, frameHeight: 412, margin: 50, spacing: 50} );
 
 
         //sprites hud
-        this.load.image("heart_full", "../Assets/UI/HUD/Heart Container Full.png");
-        this.load.image("heart_half", "../Assets/UI/HUD/Heart Container Half.png");
-        this.load.image("heart_empty", "../Assets/UI/HUD/Heart Container Empty.png");
-        this.load.spritesheet("PlayerIcon1", "../Assets/UI/HUD/BlueMageIcon.png", { frameWidth: 64, frameHeight: 64 } );
-        this.load.spritesheet("PlayerIcon2", "../Assets/UI/HUD/RedMageIcon.png", { frameWidth: 64, frameHeight: 64 } );
+        this.load.image("heart_full", "../Assets/UI/HUD/Hearts/HeartContainerFull.png");
+        this.load.image("heart_half", "../Assets/UI/HUD/Hearts/HeartContainerHalf.png");
+        this.load.image("heart_empty", "../Assets/UI/HUD/Hearts/HeartContainerEmpty.png");
+        this.load.spritesheet("PlayerIcon1", "../Assets/UI/HUD/Icons/BlueMageIcon.png", { frameWidth: 64, frameHeight: 64 } );
+        this.load.spritesheet("PlayerIcon2", "../Assets/UI/HUD/Icons/RedMageIcon.png", { frameWidth: 64, frameHeight: 64 } );
 
     }
 
@@ -123,14 +123,6 @@ class GameplayScene extends Phaser.Scene
         
         this.initPlayer1();
         this.healthbar1 = new HealthBar(this, this.player1, "PlayerIcon1");
-        // this.anims.create
-        // ({
-        //     frames: this.anims.generateFrameNumbers("PlayerIcon1", { start: 0, end: 3 }),
-        //     framerate: 8,
-        //     repeat: -1
-        // });
-
-        // this.healthbar1.startAnimations();
         
         this.initPlayer2();
         this.healthbar2 = new HealthBar(this, this.player2, "PlayerIcon2");

@@ -66,6 +66,7 @@ class GameplayScene extends Phaser.Scene
 
         //sprite hechizo
         this.load.image("spell", "../Assets/Sprites/Particles/bola.png");
+        this.load.spritesheet("blueSpell", "../Assets/Sprites/Particles/BlueParticles/Projectile2.png", { frameWidth: 14, frameHeight: 15 });
 
         //sprites escudo
         this.load.spritesheet("shield", "../Assets/Sprites/Particles/shield.png", {frameWidth: 412, frameHeight: 412, margin: 50, spacing: 50} );
@@ -123,11 +124,11 @@ class GameplayScene extends Phaser.Scene
         
         this.initPlayer1();
         // Asignar una barra de vida / HUD al jugador 1
-        this.healthbar1 = new HealthBar(this, this.player1, "PlayerIcon1");
+        this.healthbar1 = new HUD(this, this.player1, "PlayerIcon1");
         
         this.initPlayer2();
         // Asignar una barra de vida / HUD al jugador 2
-        this.healthbar2 = new HealthBar(this, this.player2, "PlayerIcon2");
+        this.healthbar2 = new HUD(this, this.player2, "PlayerIcon2");
 
 
         this.spells = this.physics.add.group
@@ -364,9 +365,7 @@ class GameplayScene extends Phaser.Scene
             frameRate: 15,
         });
 
-        this.player2.startAnimations(); //empezar a animar al jugador
-        //this.player2.addHitListener((h) => this.test(h)); //pruebita
-        
+        this.player2.startAnimations(); //empezar a animar al jugador        
     }
 
     // Al igual que en la escena de pausa, es para evitar que dejar pulsado el botón haga cosas feas

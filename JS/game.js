@@ -18,10 +18,10 @@ const config =
         arcade:
         {
             gravity: { y: 3200 },
-            debug: true
+            debug: false
         }
     },
-    scene: [Menu, GameplayScene, Pause, Gameover]
+    scene: [Loading, Menu, GameplayScene, Pause, Gameover]
 };
 
 const game = new Phaser.Game(config);

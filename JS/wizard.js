@@ -211,7 +211,7 @@ class Wizard
                 this._isOnCooldown = true;
                 this._cooldownTimer = 0;
                 //console.log("Bala");
-                let spell = new Spell(this._scene, this.id, this.gameObject.x + this.direction.x * 50, this.gameObject.y, this.direction);
+                let spell = new Spell(this._scene, this.id, this.gameObject.x + this.direction.x * 50, this.body.y + 20, this.direction);
 
                 this._setAnimation(this._animationKeys.attack);
                 this._updateAnims = false;

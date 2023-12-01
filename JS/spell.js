@@ -43,7 +43,7 @@ class Spell extends Phaser.Physics.Arcade.Sprite
 
     explode() 
     {
-        this._scene.explosion = new Explosion(this._scene, this.x, this.y);
+        this._scene.explosion = new Explosion(this._scene, this.x, this.y, this.id);
         this.destroy();
     }
 
@@ -61,7 +61,7 @@ class Explosion extends Phaser.GameObjects.Sprite
     constructor(scene, x, y, id)
     {
         let key = id === 1 ? "blueExplosion" : "redExplosion";
-        super(scene, x, y, key);
+        super(scene, x, y);
         scene.add.existing(this);
         this.on('animationcomplete', () => this.destroy(), this); 
         this.anims.play(key, true);

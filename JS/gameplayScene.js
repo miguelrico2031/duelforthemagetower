@@ -66,8 +66,10 @@ class GameplayScene extends Phaser.Scene
         this.load.spritesheet("wizard2_shield", "../Assets/Sprites/RedWizard/Attack1.png", {frameWidth: 250, frameHeight: 250} );
 
         //sprite hechizos
+            //azul
         this.load.spritesheet("blueSpell", "../Assets/Sprites/Particles/BlueParticles/Projectile1.png", { frameWidth: 16, frameHeight: 32 });
         this.load.spritesheet("blueExplosion", "../Assets/Sprites/Particles/BlueParticles/Explosion1.png", { frameWidth: 16, frameHeight: 16 });
+            //rojo
         this.load.spritesheet("redSpell", "../Assets/Sprites/Particles/RedParticles/Projectile1.png", { frameWidth: 16, frameHeight: 32 });
         this.load.spritesheet("redExplosion", "../Assets/Sprites/Particles/RedParticles/Explosion1.png", { frameWidth: 16, frameHeight: 16 });
 
@@ -410,7 +412,7 @@ class GameplayScene extends Phaser.Scene
         ({
             key: "blueExplosion",
             frames: this.anims.generateFrameNumbers("blueExplosion", { start: 0, end: 5 }),
-            frameRate: 10
+            frameRate: 20
         });
 
         // proyectil rojo
@@ -425,7 +427,7 @@ class GameplayScene extends Phaser.Scene
         ({
             key: "redExplosion",
             frames: this.anims.generateFrameNumbers("redExplosion", { start: 0, end: 5 }),
-            frameRate: 10
+            frameRate: 20
         });
     }
 

@@ -88,6 +88,7 @@ class Pause extends Phaser.Scene
     // Todo esto tiene que pasar para salir de la escena de juego (y de pausa)
     _exitGame()
     {
+        this.game.sound.stopAll();
         this._audioUnpause.play();
         this.scene.launch("MenuScene");
         this.scene.stop("GameplayScene");

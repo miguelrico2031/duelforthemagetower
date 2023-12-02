@@ -16,7 +16,4 @@ class Shield extends Phaser.Physics.Arcade.Sprite{
         this.shieldDuration *= 1000;
     }
 
-    deflect(shield, spell){
-        this.shield.destroy();
-    }
 }

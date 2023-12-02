@@ -96,6 +96,7 @@ class Gameover extends Phaser.Scene{
 
     restartGame()
     {
+        this.game.sound.stopAll();
         this.scene.restart("GameplayScene"); // reinicia la escena del juego
         this.scene.start("GameplayScene"); 
     }
@@ -103,6 +104,7 @@ class Gameover extends Phaser.Scene{
     exitMenu()
     {   
         console.log("Salir al menú");
+        this.game.sound.stopAll();
         this.scene.launch("MenuScene");
         this.scene.stop("GameplayScene");
         this.scene.sleep("GameoverScene");

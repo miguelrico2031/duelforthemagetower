@@ -33,6 +33,13 @@ class GameplayScene extends Phaser.Scene
 
     gameEnded;
 
+    _audioBlast;
+    _audioShield;
+    _audioHit;
+    _audioDeflect;
+    _audioJump;
+    _musicIngame;
+
     preload()
     {
         //fondo
@@ -45,7 +52,7 @@ class GameplayScene extends Phaser.Scene
         this.load.image("plataforma3", "../Assets/Scenery/Background/p2.png");
         this.load.image("plataforma4", "../Assets/Scenery/Background/p3.png");
         //barrera
-        this.load.image("barrier", "../Assets/Scenery/barrerapocha.png");
+        this.load.spritesheet("barrier", "../Assets/Scenery/barrera.png", {frameWidth: 110, frameHeight: 613} );
         
         //sprites player 1
         this.load.spritesheet("wizard1_idle", "../Assets/Sprites/BlueWizard/Idle.png", {frameWidth: 231, frameHeight: 190} );
@@ -88,11 +95,27 @@ class GameplayScene extends Phaser.Scene
         //sonido pausa
         this.load.audio("pauseSound", "../Assets/UI/Sounds/Pause.wav");
 
+        this.load.audio("blastAudio", "../Assets/Sounds/Battle/03_Claw_03.wav");
+        this.load.audio("shieldAudio", "../Assets/Sounds/Powerups/02_Heal_02.wav");
+        this.load.audio("hitAudio", "../Assets/Sounds/Movement/61_Hit_03.wav");
+        this.load.audio("jumpAudio", "../Assets/Sounds/Movement/30_Jump_03.wav");
+        this.load.audio("deflectAudio", "../Assets/Sounds/Battle/39_Block_03.wav");
+        this.load.audio("ingameSong", "../Assets/Sounds/Music/InGame.wav");
     }
+
 
 
     create()
     {   
+
+        this._audioBlast = this.sound.add("blastAudio");
+        this._audioShield = this.sound.add("shieldAudio");
+        this._audioHit = this.sound.add("hitAudio");
+        this._audioDeflect = this.sound.add("deflectAudio");
+        this._audioJump = this.sound.add("jumpAudio");
+        this._musicIngame = this.sound.add("ingameSong");
+
+
         this.pauseKeyIsPressed = false;
         this.pauseSound = this.sound.add("pauseSound");
 
@@ -133,15 +156,21 @@ class GameplayScene extends Phaser.Scene
         this.ground.create(game.config.width - 50, viewport.height*4/9, "plataforma2").setScale(2).refreshBody();  
         this.ground.create(game.config.width - 300, viewport.height*4/7.7, "plataforma3").setScale(1.75).refreshBody();
 
+        
 
-        this.barrera = this.physics.add.staticGroup();
-        this.barrera.create(viewport.width/2, viewport.height/2, "barrier").setScale(1).refreshBody();
-
-
+        this.barrera = this.physics.add.staticSprite(viewport.width/2, viewport.height/2.3, "barrier");
 
 
 
+        this.barrera.anims.create({
+            key: "barrier_idle",
+            frames: this.anims.generateFrameNumbers("barrier"),
+            frameRate: 20,
+            repeat: -1
+        });
 
+
+        
 
         
         this.initPlayer1();
@@ -172,24 +201,37 @@ class GameplayScene extends Phaser.Scene
         this.physics.add.collider(this.player1.body, this.barrera);
         this.physics.add.collider(this.player2.body, this.barrera);
         this.physics.add.collider(this.spells, this.ground, this.onSpellCollision, null, this);
-        this.physics.add.collider(this.spells, this.shields,this.onSpellCollision, null, this);
+        this.physics.add.collider(this.spells, this.shields,this.onShieldCollision, null, this);
         
 
 
+        this.barrera.anims.play("barrier_idle", true);
 
+        
         this.gameEnded = false;
         gameplayResourcesLoaded = true; //para evitar volver a cargar las animaciones porque se cargan de manera global
+
+        this._musicIngame = this.sound.add('ingameSong');
+        
+
+        this._musicIngame.play();
+
 
     }
 
     update(time, delta)
     {
+    
         this.processInput();
 
         this.player1.update(time, delta);
         this.player2.update(time, delta);
 
         this.processDeath();
+    }
+
+    onShieldCollision(spell, other){
+        this._audioDeflect.play();
     }
 
     onSpellCollision(spell, other)
@@ -200,14 +242,20 @@ class GameplayScene extends Phaser.Scene
     processInput()
     {
         //player 1
-        if(this.playersInput.wasdKeys.A.isDown)this.player1.xInput = -1;
+        if(this.playersInput.wasdKeys.A.isDown) this.player1.xInput = -1;
         if(this.playersInput.wasdKeys.D.isDown) this.player1.xInput = 1;
         if(this.playersInput.wasdKeys.W.isDown) this.player1.yInput = -1;
         if(this.playersInput.wasdKeys.S.isDown) this.player1.yInput = 1;
 
-        if(this.playersInput.jumpKey1.isDown) this.player1.jumpInput = 1;
-        if(this.playersInput.castKey1.isDown) this.player1.castInput = 1;
-        if(this.playersInput.shieldCastKey1.isDown) this.player1.shieldCastInput = 1;
+        if(this.playersInput.jumpKey1.isDown){
+            this.player1.jumpInput = 1;
+        } 
+        if(this.playersInput.castKey1.isDown) {
+            this.player1.castInput = 1;
+        } 
+        if(this.playersInput.shieldCastKey1.isDown) {
+            this.player1.shieldCastInput = 1;
+        } 
         
 
         

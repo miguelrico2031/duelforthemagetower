@@ -19,6 +19,7 @@ class Menu extends Phaser.Scene
 
     audioClick;
     audioClack;
+    menuSong;
 
     //Metodos publicos
     constructor(scene) 
@@ -34,6 +35,7 @@ class Menu extends Phaser.Scene
         this.load.image("menu", "../Assets/UI/Screens/MainMenu/menu.png");
         this.load.audio("click", "../Assets/UI/Sounds/Minimalist4.wav");
         this.load.audio("clack", "../Assets/UI/Sounds/Minimalist7.wav");
+        this.load.audio("menuSong", "../Assets/Sounds/Music/MenuSong.wav");
     }
 
     create()
@@ -46,6 +48,12 @@ class Menu extends Phaser.Scene
 
         this.audioClick = this.sound.add("click");
         this.audioClack = this.sound.add("clack");
+
+        this.menuSong = this.sound.add("menuSong");
+
+        if(!this.menuSong.isPlaying){
+            this.menuSong.play();
+        }
 
         //mitad izquierda
         //this.buttonPlay = this.add.image(game.config.width / 2.833, game.config.height / 2, "play");
@@ -144,6 +152,7 @@ class Menu extends Phaser.Scene
     }
 
     startGame() {
+        this.game.sound.stopAll();
         console.log("Iniciando el juego");
         this.scene.start("GameplayScene");
 

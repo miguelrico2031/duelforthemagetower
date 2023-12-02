@@ -48,6 +48,8 @@ class Wizard
     _shieldIsCasted = false;
     _shieldDuration = 3.0;
     _shieldCastedTime = 0.0;
+
+
     
 
     constructor(scene, id, position, xDirection)
@@ -127,6 +129,7 @@ class Wizard
     spellHit(wizard, spell)
     {
         this.takeDamage(spell.damage);
+        this._scene._audioHit.play();
         spell.explode();
     }
 
@@ -188,6 +191,7 @@ class Wizard
         {
             if(this.jumpInput && this.body.touching.down)
             {
+                this._scene._audioJump.play();
                 this.body.setVelocityY(-this._jumpForce);
                 this._isJumping = true;
                 this._jumpTimer = 0;
@@ -208,6 +212,7 @@ class Wizard
             if(this.castInput)
             {
                 //cast
+                this._scene._audioBlast.play();
                 this._isOnCooldown = true;
                 this._cooldownTimer = 0;
                 //console.log("Bala");
@@ -229,6 +234,7 @@ class Wizard
         {
             if(this.shieldCastInput)
             {
+                this._scene._audioShield.play();
                 this._isShieldOnCooldown = true;
                 this._shieldCooldownTimer = 0;
                 //console.log("Escudo");

@@ -103,8 +103,9 @@ class Gameover extends Phaser.Scene{
     exitMenu()
     {   
         console.log("Salir al menú");
-        this.scene.restart("GameplayScene"); 
-        this.scene.start("MenuScene"); 
+        this.scene.launch("MenuScene");
+        this.scene.stop("GameplayScene");
+        this.scene.sleep("GameoverScene");
         
     }
 

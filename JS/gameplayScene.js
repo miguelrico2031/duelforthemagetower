@@ -31,6 +31,8 @@ class GameplayScene extends Phaser.Scene
     pauseKeyIsPressed;
     pauseSound;
 
+    gameEnded;
+
     preload()
     {
         //fondo
@@ -469,6 +471,16 @@ class GameplayScene extends Phaser.Scene
 
     launchGameOverScene(winnerId){
         //console.log(winnerId);
-        this.scene.start('GameoverScene', { winner: winnerId });
+        this.scene.pause("GameplayScene");
+        if(!this.scene.get('GameoverScene', { winner: winnerId }).loaded)
+        {
+            this.scene.get('GameoverScene', { winner: winnerId }).loaded = true;
+            this.scene.launch('GameoverScene', { winner: winnerId }); // pone el menu de pausa por encima
+        }
+        else
+        {
+            this.scene.wake('GameoverScene', { winner: winnerId }); // reactiva el menú de pausa (que ya estaba por encima)
+        }
+        this.scene.run('GameoverScene', { winner: winnerId });
     }
 }

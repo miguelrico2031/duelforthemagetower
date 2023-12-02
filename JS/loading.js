@@ -11,7 +11,7 @@ class Loading extends Phaser.Scene
     preload()
     {
         console.log("preload del load");
-        this.load.image("loadingScreen", "../Assets/UI/Screens/Loading/Loading.png");
+        this.load.image("loadingScreen", "../Assets/UI/Screens/Loading/LoadingLogo.png");
 
 
 		this.load.on('complete', this.complete, this);
@@ -21,7 +21,7 @@ class Loading extends Phaser.Scene
     {
         console.log("Create del load");
         this.add.image(0, 0, "loadingScreen").setOrigin(0, 0);
-        setTimeout(() => {this.minTimeOver = true; this.complete()}, 1000 * 2)
+        setTimeout(() => {this.minTimeOver = true; this.complete()}, 1000 * 3)
 
     }
 

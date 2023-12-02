@@ -61,8 +61,9 @@ class Menu extends Phaser.Scene
         this.menuSong = this.sound.add("menuSong");
 
         if(!this._isAudioPlaying){
-            console.log(this.menuSong.isPlaying);
+
             this.menuSong.play();
+            this.menuSong.setLoop(true);
         }
 
         //mitad izquierda
@@ -163,18 +164,15 @@ class Menu extends Phaser.Scene
 
     startGame() {
         this.game.sound.stopAll();
-        console.log("Iniciando el juego");
         this.scene.start("GameplayScene");
 
     }
 
     showHelp() {
-        console.log("Cómo jugar");
         this.scene.start("TutorialScene");
     }
 
     showCredits() {
-        console.log("Pantalla de créditos");
         this.scene.start("CreditsScene");
     }
 }

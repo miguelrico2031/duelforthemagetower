@@ -61,7 +61,6 @@ class Spell extends Phaser.Physics.Arcade.Sprite
     calcAngle()
     {
         let angle = Math.atan2(this.body.velocity.y, this.body.velocity.x) * (180/Math.PI);
-        console.log(angle);
         angle -= 90;
         this.angle = angle;
     }

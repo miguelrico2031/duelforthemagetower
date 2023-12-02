@@ -11,7 +11,7 @@ class Shield extends Phaser.Physics.Arcade.Sprite{
         this.id = id;
         scene.shields.add(this, true);
         
-        this.body.setCircle(this.shieldRadius);
+        //this.body.setCircle(this.shieldRadius);
         this.setScale(0.25).refreshBody();
         this.shieldDuration *= 1000;
     }

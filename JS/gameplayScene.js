@@ -43,9 +43,9 @@ class GameplayScene extends Phaser.Scene
     preload()
     {
         //fondo
-        this.load.image("bg", "../Assets/Scenery/Background/bg.png");
+        this.load.image("bg", "../Assets/Scenery/Background/fondo.png");
         //suelo
-        this.load.image("floor", "../Assets/Scenery/Background/floor.png");
+        this.load.image("floor", "../Assets/Scenery/Background/suelo.png");
         //plataformas
         this.load.image("plataforma1", "../Assets/Scenery/Background/p4.png");
         this.load.image("plataforma2", "../Assets/Scenery/Background/p1.png");
@@ -139,7 +139,7 @@ class GameplayScene extends Phaser.Scene
         this.add.image(viewport.width/2, viewport.height/2, "bg");
         
         this.ground = this.physics.add.staticGroup();
-        this.ground.create(viewport.width/2, viewport.height-123/2, "floor").setScale(1).refreshBody();
+        this.ground.create(viewport.width/2, viewport.height-123/2, "floor").setScale(1.75).refreshBody();
         this.ground.create(viewport.width/2, viewport.height/2, "plataforma1").setScale(2.5).refreshBody();
 
         //plataformas mitad izquierda

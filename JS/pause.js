@@ -90,7 +90,7 @@ class Pause extends Phaser.Scene
     {
         this.game.sound.stopAll();
         this._audioUnpause.play();
-        this.scene.launch("MenuScene");
+        this.scene.launch("MenuScene", { isPlaying: false });
         this.scene.stop("GameplayScene");
         this.scene.sleep("PauseScene");
     }

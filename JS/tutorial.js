@@ -105,7 +105,7 @@ class Tutorial extends Phaser.Scene
 
     closeTutorial() {
         console.log("Vuelta al menú");
-        this.scene.start("MenuScene");
+        this.scene.start("MenuScene", { isPlaying: true });
 
     }
 

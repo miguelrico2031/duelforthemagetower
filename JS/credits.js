@@ -78,7 +78,7 @@ class Credits extends Phaser.Scene
 
     closeCredits() {
         console.log("Vuelta al menú");
-        this.scene.start("MenuScene");
+        this.scene.start("MenuScene", { isPlaying: true });
 
     }
 

@@ -21,6 +21,7 @@ class Menu extends Phaser.Scene
     audioClack;
     menuSong;
 
+    _isAudioPlaying;
     //Metodos publicos
     constructor(scene) 
     {
@@ -39,6 +40,10 @@ class Menu extends Phaser.Scene
         this.load.audio("menuSong", "../Assets/Sounds/Music/MenuSong.wav");
     }
 
+    init(data){
+        this._isAudioPlaying = data.isPlaying;
+    }
+
     create()
     {
         this.buttonPressed = false;
@@ -55,7 +60,8 @@ class Menu extends Phaser.Scene
         
         this.menuSong = this.sound.add("menuSong");
 
-        if(!this.menuSong.isPlaying){
+        if(!this._isAudioPlaying){
+            console.log(this.menuSong.isPlaying);
             this.menuSong.play();
         }
 

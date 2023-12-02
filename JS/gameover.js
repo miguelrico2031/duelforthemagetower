@@ -105,7 +105,7 @@ class Gameover extends Phaser.Scene{
     {   
         console.log("Salir al menú");
         this.game.sound.stopAll();
-        this.scene.launch("MenuScene");
+        this.scene.launch("MenuScene", { isPlaying: false });
         this.scene.stop("GameplayScene");
         this.scene.sleep("GameoverScene");
         

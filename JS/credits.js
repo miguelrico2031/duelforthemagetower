@@ -60,7 +60,7 @@ class Credits extends Phaser.Scene
     initCloseButton()
     {
         
-        let button = this.add.sprite((game.config.width / 3.8) * 3, (game.config.height / 9.8) * 2, "cerrar")
+        let button = this.add.sprite((game.config.width / 3.8) * 3.1, (game.config.height / 9.8) * 1.6, "cerrar")
             .setInteractive({ useHandCursor: true })
             // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
             .on('pointerdown', () => { this.enterButtonClickState(this.buttonClose) })

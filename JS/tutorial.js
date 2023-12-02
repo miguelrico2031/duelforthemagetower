@@ -5,9 +5,13 @@ class Tutorial extends Phaser.Scene
 
     //privadas
 
+    tutorialScreen;
+    currentScreenIdx;
+
     buttonPressed;
 
     buttonClose;
+    buttonArrow;
 
     audioClick;
     audioClack;
@@ -21,7 +25,9 @@ class Tutorial extends Phaser.Scene
     preload()
     {
         this.load.spritesheet("cerrar", "../Assets/UI/Screens/Tutorial/cerrar.png", { frameWidth: 87, frameHeight: 55 });
+        this.load.spritesheet("flecha", "../Assets/UI/Screens/Tutorial/next.png", { frameWidth: 87, frameHeight: 55 });
         this.load.image("tutorial", "../Assets/UI/Screens/Tutorial/controles.png");
+        this.load.image("objetivo", "../Assets/UI/Screens/Tutorial/objetivo.png");
         this.load.audio("click", "../Assets/UI/Sounds/Minimalist4.wav");
         this.load.audio("clack", "../Assets/UI/Sounds/Minimalist7.wav");
     }
@@ -32,12 +38,15 @@ class Tutorial extends Phaser.Scene
 
         this.tutorial = true;
 
-        this.add.image(0, 0, "tutorial").setOrigin(0, 0);
+        this.tutorialScreen = this.add.image(0, 0, "tutorial").setOrigin(0, 0);
+        this.objectiveScreen = this.add.image(0, 0, "objetivo").setOrigin(0, 0).setVisible(false);
+        this.currentScreenIdx = 1;
 
         this.audioClick = this.sound.add("click");
         this.audioClack = this.sound.add("clack");
 
         this.buttonClose = this.initCloseButton();
+        this.buttonArrow = this.initArrowButton();
         
     }
     
@@ -60,7 +69,7 @@ class Tutorial extends Phaser.Scene
     initCloseButton()
     {
         
-        let button = this.add.sprite((game.config.width / 3.8) * 3, (game.config.height / 9.8) * 2, "cerrar")
+        let button = this.add.sprite((game.config.width / 3.8) * 3.1, (game.config.height / 9.8) * 1.6, "cerrar")
             .setInteractive({ useHandCursor: true })
             // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
             .on('pointerdown', () => { this.enterButtonClickState(this.buttonClose) })
@@ -76,10 +85,47 @@ class Tutorial extends Phaser.Scene
         return button;
     }
 
+    initArrowButton()
+    {
+        let button = this.add.sprite((game.config.width / 3.8) * 0.7, (game.config.height / 9.8) * 1.6, "flecha")
+            .setInteractive({ useHandCursor: true })
+            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
+            .on('pointerdown', () => { this.enterButtonClickState(this.buttonArrow) })
+            .on('pointerup', () => 
+            { 
+                this.enterButtonRestState(this.buttonArrow);
+                this.showNextPage(); 
+            })
+            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
+            .on('pointerout', () => this.enterButtonRestState(this.buttonArrow) 
+        );
+
+        return button;
+    }
+
     closeTutorial() {
         console.log("Vuelta al menú");
         this.scene.start("MenuScene");
 
+    }
+
+    showNextPage()
+    {
+        if (this.currentScreenIdx == 1)
+        {
+            this.tutorialScreen.setVisible(false);
+            this.objectiveScreen.setVisible(true);
+            this.currentScreenIdx = 2;
+            this.buttonArrow.toggleFlipX();
+        }
+        else if (this.currentScreenIdx == 2)
+        {
+            this.tutorialScreen.setVisible(true);
+            this.objectiveScreen.setVisible(false);
+            this.currentScreenIdx = 1;
+            this.buttonArrow.toggleFlipX();
+            
+        }
     }
 
 }

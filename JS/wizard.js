@@ -248,8 +248,7 @@ class Wizard
 
     _shieldTimer(delta){
         this._shieldCastedTime += delta;
-        console.log(this._shieldCastedTime);
-        console.log(this._shieldDuration);
+
         if(this._shieldCastedTime >= this._shieldDuration){
             this._shieldIsCasted = false;
             this._shieldCastedTime = 0.0;

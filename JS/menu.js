@@ -16,9 +16,12 @@ class Menu extends Phaser.Scene
     buttonPlay;
     buttonHelp;
     buttonCredits;
+    buttonMute;
+    buttonSound;
 
     audioClick;
     audioClack;
+    audioOpen;
     menuSong;
 
     _isAudioPlaying;
@@ -33,11 +36,14 @@ class Menu extends Phaser.Scene
         this.load.spritesheet("play", "../Assets/UI/Screens/MainMenu/PlayButton.png", { frameWidth: 267, frameHeight: 168 });
         this.load.spritesheet("credits", "../Assets/UI/Screens/MainMenu/CreditsButton.png", { frameWidth: 214, frameHeight: 135 });
         this.load.spritesheet("help", "../Assets/UI/Screens/MainMenu/HelpButton.png", { frameWidth: 214, frameHeight: 135 });
+        this.load.spritesheet("sonido", "../Assets/UI/sonido.png", { frameWidth: 87, frameHeight: 55 });
+        this.load.spritesheet("mute", "../Assets/UI/mute.png", { frameWidth: 87, frameHeight: 55 });
         this.load.image("menu", "../Assets/UI/Screens/MainMenu/menu.png");
         this.load.image("logo", "../Assets/UI/Screens/MainMenu/LogoMenu.png");
         this.load.audio("click", "../Assets/UI/Sounds/Minimalist4.wav");
         this.load.audio("clack", "../Assets/UI/Sounds/Minimalist7.wav");
         this.load.audio("menuSong", "../Assets/Sounds/Music/MenuSong.wav");
+        this.load.audio("open", "../Assets/UI/Sounds/Pause.wav");
     }
 
     init(data){
@@ -54,38 +60,26 @@ class Menu extends Phaser.Scene
 
         this.audioClick = this.sound.add("click");
         this.audioClack = this.sound.add("clack");
+        this.audioOpen = this.sound.add("open");
 
         this.Logo = this.add.image(game.config.width / 2.833, game.config.height / 3, "logo");
 
         
-        this.menuSong = this.sound.add("menuSong");
+        this.menuSong = this.sound.add("menuSong", {volume: 0.35});
 
         if(!this._isAudioPlaying){
-            console.log(this.menuSong.isPlaying);
+
             this.menuSong.play();
+            this.menuSong.setLoop(true);
         }
 
-        //mitad izquierda
-        //this.buttonPlay = this.add.image(game.config.width / 2.833, game.config.height / 2, "play");
-        //this.buttonPlay.setInteractive().on('pointerdown', this.startGame, this);
-
         this.buttonPlay = this.initPlayButton();
-
-
-
-        //mitad derecha, arriba
-        //this.buttonHelp = this.add.image((game.config.width / 4.425) * 3, game.config.height / 3.6, "help");
-        //this.buttonHelp.setInteractive();//.on('pointerdown', this.showHelp, this);
-
         this.buttonHelp = this.initHelpButton();
-
-        //mitad derecha, abajo
-        //this.buttonCredits = this.add.image((game.config.width / 4.425) * 3, (game.config.height / 2.82) * 2, "credits");
-        //this.buttonCredits.setInteractive();//.on('pointerdown', this.showCredits, this);
-
         this.buttonCredits = this.initCreditsButton();
-        
-        //this.menuKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB);
+        this.buttonMute = this.initMuteButton();
+        this.buttonSound = this.initSoundButton();
+
+        this.buttonMute.setVisible(false);
     }
     
 
@@ -161,20 +155,75 @@ class Menu extends Phaser.Scene
         return button;
     }
 
-    startGame() {
+    initMuteButton()
+    {
+        
+        let button = this.add.sprite((game.config.width / 4.425) * 3, (game.config.height / 2.95) * 2, "mute")
+            .setInteractive({ useHandCursor: true })
+            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
+            .on('pointerdown', () => { this.enterButtonClickState(this.buttonCredits) })
+            .on('pointerup', () => 
+            { 
+                this.enterButtonRestState(this.buttonCredits);
+                this.toggleSound(); 
+            })
+            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
+            .on('pointerout', () => this.enterButtonRestState(this.buttonCredits) 
+        );
+        return button;
+    }
+
+    initSoundButton()
+    {
+        
+        let button = this.add.sprite((game.config.width / 4.425) * 3, (game.config.height / 2.95) * 2, "sonido")
+            .setInteractive({ useHandCursor: true })
+            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
+            .on('pointerdown', () => { this.enterButtonClickState(this.buttonCredits) })
+            .on('pointerup', () => 
+            { 
+                this.enterButtonRestState(this.buttonCredits);
+                this.toggleSound(); 
+            })
+            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
+            .on('pointerout', () => this.enterButtonRestState(this.buttonCredits) 
+        );
+        return button;
+    }
+
+    startGame() 
+    {
         this.game.sound.stopAll();
-        console.log("Iniciando el juego");
         this.scene.start("GameplayScene");
 
     }
 
-    showHelp() {
-        console.log("Cómo jugar");
+    showHelp() 
+    {
+        this.audioOpen.play();
         this.scene.start("TutorialScene");
     }
 
-    showCredits() {
-        console.log("Pantalla de créditos");
+    showCredits() 
+    {
+        this.audioOpen.play();
         this.scene.start("CreditsScene");
+    }
+
+    toggleSound()
+    {
+        if (!this.game.sound.mute)
+        {
+            this.game.sound.mute = true;
+            this.buttonSound.setVisible(false);
+            this.buttontrue.setVisible(true);
+        }
+        else if (this.game.sound.mute)
+        {
+            his.game.sound.mute = false;
+            this.buttonSound.setVisible(true);
+            this.buttontrue.setVisible(false);
+        }
+
     }
 }

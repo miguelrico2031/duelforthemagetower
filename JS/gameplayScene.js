@@ -30,6 +30,7 @@ class GameplayScene extends Phaser.Scene
 
     pauseKeyIsPressed;
     pauseSound;
+    gameoverSound;
 
     gameEnded;
 
@@ -94,6 +95,7 @@ class GameplayScene extends Phaser.Scene
 
         //sonido pausa
         this.load.audio("pauseSound", "../Assets/UI/Sounds/Pause.wav");
+        this.load.audio("gameoverSound", "../Assets/Sounds/Movement/88_Teleport_02.wav");
 
         this.load.audio("blastAudio", "../Assets/Sounds/Battle/03_Claw_03.wav");
         this.load.audio("shieldAudio", "../Assets/Sounds/Powerups/02_Heal_02.wav");
@@ -110,14 +112,15 @@ class GameplayScene extends Phaser.Scene
 
         this._audioBlast = this.sound.add("blastAudio");
         this._audioShield = this.sound.add("shieldAudio");
-        this._audioHit = this.sound.add("hitAudio");
-        this._audioDeflect = this.sound.add("deflectAudio");
-        this._audioJump = this.sound.add("jumpAudio");
-        this._musicIngame = this.sound.add("ingameSong");
+        this._audioHit = this.sound.add("hitAudio", {volume: 1.75});
+        this._audioDeflect = this.sound.add("deflectAudio", {volume: 3});
+        this._audioJump = this.sound.add("jumpAudio", {volume: 2.5});
+
 
 
         this.pauseKeyIsPressed = false;
         this.pauseSound = this.sound.add("pauseSound");
+        this.gameoverSound = this.sound.add("gameoverSound");
 
         this.playersInput.wasdKeys = this.input.keyboard.addKeys("W,A,S,D");
         this.playersInput.jumpKey1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -139,27 +142,29 @@ class GameplayScene extends Phaser.Scene
         this.add.image(viewport.width/2, viewport.height/2, "bg");
         
         this.ground = this.physics.add.staticGroup();
-        this.ground.create(viewport.width/2, viewport.height-123/2, "floor").setScale(1.75).refreshBody();
-        this.ground.create(viewport.width/2, viewport.height/2, "plataforma1").setScale(2.5).refreshBody();
-
-        //plataformas mitad izquierda
-        this.ground.create(100, viewport.height*2/3, "plataforma1").setScale(2).refreshBody();
-        this.ground.create(500, viewport.height*4/5.8, "plataforma4").setScale(2).refreshBody();
-        this.ground.create(350, viewport.height*1/3.5, "plataforma4").setScale(2).refreshBody();
-        this.ground.create(50, viewport.height*4/9, "plataforma2").setScale(2).refreshBody();  
-        this.ground.create(300, viewport.height*4/7.7, "plataforma3").setScale(1.75).refreshBody(); 
+        this.ground.create(viewport.width/2, viewport.height-100/2, "floor").setScale(2.25).refreshBody();
         
-        //plataformas mitad derecha
-        this.ground.create(game.config.width - 100, viewport.height*2/3, "plataforma1").setScale(2).refreshBody();
-        this.ground.create(game.config.width - 500, viewport.height*4/5.8, "plataforma4").setScale(2).refreshBody();
-        this.ground.create(game.config.width - 350, viewport.height*1/3.5, "plataforma4").setScale(2).refreshBody();
-        this.ground.create(game.config.width - 50, viewport.height*4/9, "plataforma2").setScale(2).refreshBody();  
-        this.ground.create(game.config.width - 300, viewport.height*4/7.7, "plataforma3").setScale(1.75).refreshBody();
+        // Plataforma central
+        this.ground.create(viewport.width/2, viewport.height/2 - 48, "plataforma1").setScale(2.8, 2.5).refreshBody();
 
+        //plataformas
+        // Techo
+        this.createSymmetricPlatforms(510, 0, "plataforma4", 2, 0.9); 
+        // Arriba dcha
+        this.createSymmetricPlatforms(320, viewport.height*1/3.5 - 15, "plataforma4", 0.95, 1.5); 
+        // Pixel
+        this.createSymmetricPlatforms(20, viewport.height*1/3.5 - 32, "plataforma4", 0.6, 1.5); 
+        // Pequeña central
+        this.createSymmetricPlatforms(300, viewport.height*4/7.7, "plataforma3", 1.75);
+        // Gorda
+        this.createSymmetricPlatforms(50, viewport.height*4/9, "plataforma2", 3, 2); 
+        // Izq abajo
+        this.createSymmetricPlatforms(500, viewport.height*4/5.6, "plataforma4", 2);
+        // Dcha abajo
+        this.createSymmetricPlatforms(100, viewport.height*4/5.6, "plataforma1", 2); 
         
 
         this.barrera = this.physics.add.staticSprite(viewport.width/2, viewport.height/2.3, "barrier");
-
 
 
         this.barrera.anims.create({
@@ -211,10 +216,11 @@ class GameplayScene extends Phaser.Scene
         this.gameEnded = false;
         gameplayResourcesLoaded = true; //para evitar volver a cargar las animaciones porque se cargan de manera global
 
-        this._musicIngame = this.sound.add('ingameSong');
+        this._musicIngame = this.sound.add('ingameSong', {volume: 0.35});
         
 
         this._musicIngame.play();
+        this._musicIngame.setLoop(true);
 
 
     }
@@ -450,35 +456,46 @@ class GameplayScene extends Phaser.Scene
             runChildUpdate: true 
         });
 
-        // proyectil azul
-        this.anims.create
-        ({
-            key: "blueSpell",
-            frames: this.anims.generateFrameNumbers("blueSpell", { start: 0, end: 2 }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create
-        ({
-            key: "blueExplosion",
-            frames: this.anims.generateFrameNumbers("blueExplosion", { start: 0, end: 5 }),
-            frameRate: 20
-        });
+        if (!gameplayResourcesLoaded) 
+        {
+            // proyectil azul
+            this.anims.create
+            ({
+                key: "blueSpell",
+                frames: this.anims.generateFrameNumbers("blueSpell", { start: 0, end: 2 }),
+                frameRate: 10,
+                repeat: -1
+            });
+            this.anims.create
+            ({
+                key: "blueExplosion",
+                frames: this.anims.generateFrameNumbers("blueExplosion", { start: 0, end: 5 }),
+                frameRate: 20
+            });
 
-        // proyectil rojo
-        this.anims.create
-        ({
-            key: "redSpell",
-            frames: this.anims.generateFrameNumbers("redSpell", { start: 0, end: 2 }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create
-        ({
-            key: "redExplosion",
-            frames: this.anims.generateFrameNumbers("redExplosion", { start: 0, end: 5 }),
-            frameRate: 20
-        });
+            // proyectil rojo
+            this.anims.create
+            ({
+                key: "redSpell",
+                frames: this.anims.generateFrameNumbers("redSpell", { start: 0, end: 2 }),
+                frameRate: 10,
+                repeat: -1
+            });
+            this.anims.create
+            ({
+                key: "redExplosion",
+                frames: this.anims.generateFrameNumbers("redExplosion", { start: 0, end: 5 }),
+                frameRate: 20
+            });
+        }
+    }
+
+    createSymmetricPlatforms(x, y, key, scaleX, scaleY = scaleX) 
+    {
+        // Plataforma lado izquierdo
+        this.ground.create(x, y, key).setScale(scaleX, scaleY).refreshBody();
+        //Plataforma lado derecho
+        this.ground.create(game.config.width - x, y, key).setScale(scaleX, scaleY).refreshBody();
     }
 
     // Al igual que en la escena de pausa, es para evitar que dejar pulsado el botón haga cosas feas
@@ -500,6 +517,8 @@ class GameplayScene extends Phaser.Scene
     launchPauseMenu() 
     {
         this.pauseKeyIsPressed = false;
+        // Pausa la música del juego
+        this._musicIngame.pause();
         // Reproduce el efecto de sonido
         this.pauseSound.play();
         // Pausa el juego
@@ -518,7 +537,12 @@ class GameplayScene extends Phaser.Scene
     }
 
     launchGameOverScene(winnerId){
-        //console.log(winnerId);
+
+        // Pausa la música
+        this._musicIngame.pause();
+        // Sonidito game over
+        this.gameoverSound.play()
+        // Finaliza el juego
         this.scene.pause("GameplayScene");
         if(!this.scene.get('GameoverScene', { winner: winnerId }).loaded)
         {

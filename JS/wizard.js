@@ -31,7 +31,6 @@ class Wizard
     _moveSpeed = 200; //velocidad de movimiento (horizontal)
     _jumpForce = 1000; //fuerza de salto
     _castCooldown = 0.5; //tiempo a esperar entre disparo y disparo
-    _shieldCastCooldown = 5.0; // tiempo a esperar entre escudo y escudo
     _isJumping = false; //control para evitar doble salto
     _isOnCooldown = false; //control para el cooldown del disparo
     _isShieldOnCooldown = false; //control para el cooldown del escudo
@@ -46,7 +45,8 @@ class Wizard
     _isOnShieldState = false;
     _shieldObject;
     _shieldIsCasted = false;
-    _shieldDuration = 3.0;
+    _shieldCastCooldown = 15.0;      // tiempo a esperar entre escudo y escudo
+    _shieldDuration = 1.75;         // DURACION ESCUDITOS (creo)
     _shieldCastedTime = 0.0;
 
 

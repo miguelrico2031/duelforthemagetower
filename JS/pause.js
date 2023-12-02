@@ -79,6 +79,9 @@ class Pause extends Phaser.Scene
     _resumeGame()
     {
         this.pauseKeyIsPressed = false;
+        // Continuar la música
+        this.scene.get("GameplayScene")._musicIngame.resume();
+        // Sonido del menú
         this._audioUnpause.play();
         // aqui la gracia es hacer que esta escena de pausa se oculte
         this.scene.resume("GameplayScene"); // continua la ejecucion del juego

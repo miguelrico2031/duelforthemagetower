@@ -18,7 +18,7 @@ const config =
         arcade:
         {
             gravity: { y: 3200 },
-            debug: true
+            debug: false
         }
     },
     scene: [Loading, Menu, GameplayScene, Pause, Gameover, Credits, Tutorial]

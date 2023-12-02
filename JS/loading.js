@@ -10,7 +10,6 @@ class Loading extends Phaser.Scene
 
     preload()
     {
-        console.log("preload del load");
         this.load.image("loadingScreen", "../Assets/UI/Screens/Loading/LoadingLogo.png");
 
 
@@ -19,9 +18,8 @@ class Loading extends Phaser.Scene
 
     create()
     {
-        console.log("Create del load");
         this.add.image(0, 0, "loadingScreen").setOrigin(0, 0);
-        setTimeout(() => {this.minTimeOver = true; this.complete()}, 1000 * 3)
+        setTimeout(() => {this.minTimeOver = true; this.complete()}, 0 /*1000 * 3*/)
 
     }
 
@@ -29,6 +27,6 @@ class Loading extends Phaser.Scene
     {
         if(!this.minTimeOver) return;
         this.scene.start("MenuScene");
-		console.log("COMPLETE!");
+		console.log("Game Loaded!");
 	}
 }

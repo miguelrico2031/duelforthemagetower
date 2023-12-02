@@ -11,6 +11,7 @@ class Credits extends Phaser.Scene
 
     audioClick;
     audioClack;
+    audioClose;
 
     //Metodos publicos
     constructor(scene) 
@@ -24,6 +25,7 @@ class Credits extends Phaser.Scene
         this.load.image("creditos", "../Assets/UI/Screens/Credits/credits.png");
         this.load.audio("click", "../Assets/UI/Sounds/Minimalist4.wav");
         this.load.audio("clack", "../Assets/UI/Sounds/Minimalist7.wav");
+        this.load.audio("close", "../Assets/UI/Sounds/Unpause.wav");
     }
 
     create()
@@ -36,6 +38,7 @@ class Credits extends Phaser.Scene
 
         this.audioClick = this.sound.add("click");
         this.audioClack = this.sound.add("clack");
+        this.audioClose = this.sound.add("close");
 
         this.buttonClose = this.initCloseButton();
         
@@ -76,8 +79,9 @@ class Credits extends Phaser.Scene
         return button;
     }
 
-    closeCredits() {
-        console.log("Vuelta al menú");
+    closeCredits() 
+    {
+        this.audioClose.play();
         this.scene.start("MenuScene", { isPlaying: true });
 
     }

@@ -19,20 +19,39 @@
             display: block;
             /*width: 800px;*/
         }
+        .container 
+        {
+            height: 100px;
+            position: relative;
+            /*border: 3px solid green;*/
+        }
+
+        .vertical-center 
+        {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
     </style>
 </head>
 <body>
-    <script src="JS/loading.js"></script>
-    <script src="JS/spell.js"></script>
-    <script src="JS/wizard.js"></script>
-    <script src="JS/pause.js"></script>
-    <script src="JS/gameover.js"></script>
-    <script src="JS/menu.js"></script>
-    <script src="JS/HUD.js"></script>
-    <script src="JS/gameplayScene.js"></script>
-    <script src="JS/shield.js"></script>
-    <script src="JS/tutorial.js"></script>
-    <script src="JS/credits.js"></script>
-    <script src="JS/game.js"></script>
+    <div class="container">
+        <div class="vertical-center">
+            <script src="JS/loading.js"></script>
+            <script src="JS/spell.js"></script>
+            <script src="JS/wizard.js"></script>
+            <script src="JS/pause.js"></script>
+            <script src="JS/gameover.js"></script>
+            <script src="JS/menu.js"></script>
+            <script src="JS/HUD.js"></script>
+            <script src="JS/gameplayScene.js"></script>
+            <script src="JS/shield.js"></script>
+            <script src="JS/tutorial.js"></script>
+            <script src="JS/credits.js"></script>
+            <script src="JS/game.js"></script>
+        </div>
+    </div>
 </body>
 </html>

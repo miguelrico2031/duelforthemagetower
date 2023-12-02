@@ -1,5 +1,5 @@
 // menu principal
-// no funciona :3
+
 class Menu extends Phaser.Scene
 {
     //publicas
@@ -155,7 +155,7 @@ class Menu extends Phaser.Scene
 
     showHelp() {
         console.log("Cómo jugar");
-        //mimimi la interfaz no existe
+        this.scene.start("TutorialScene");
     }
 
     showCredits() {

@@ -21,7 +21,7 @@ const config =
             debug: false
         }
     },
-    scene: [Loading, Menu, GameplayScene, Pause, Gameover]
+    scene: [Loading, Menu, GameplayScene, Pause, Gameover, Tutorial]
 };
 
 const game = new Phaser.Game(config);

@@ -160,6 +160,6 @@ class Menu extends Phaser.Scene
 
     showCredits() {
         console.log("Pantalla de créditos");
-        //mimimi la interfaz no existe
+        this.scene.start("CreditsScene");
     }
 }

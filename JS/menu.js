@@ -32,6 +32,7 @@ class Menu extends Phaser.Scene
         this.load.spritesheet("credits", "../Assets/UI/Screens/MainMenu/CreditsButton.png", { frameWidth: 214, frameHeight: 135 });
         this.load.spritesheet("help", "../Assets/UI/Screens/MainMenu/HelpButton.png", { frameWidth: 214, frameHeight: 135 });
         this.load.image("menu", "../Assets/UI/Screens/MainMenu/menu.png");
+        this.load.image("logo", "../Assets/UI/Screens/MainMenu/LogoMenu.png");
         this.load.audio("click", "../Assets/UI/Sounds/Minimalist4.wav");
         this.load.audio("clack", "../Assets/UI/Sounds/Minimalist7.wav");
     }
@@ -47,6 +48,9 @@ class Menu extends Phaser.Scene
         this.audioClick = this.sound.add("click");
         this.audioClack = this.sound.add("clack");
 
+        this.Logo = this.add.image(game.config.width / 2.833, game.config.height / 3, "logo");
+
+        
         //mitad izquierda
         //this.buttonPlay = this.add.image(game.config.width / 2.833, game.config.height / 2, "play");
         //this.buttonPlay.setInteractive().on('pointerdown', this.startGame, this);
@@ -89,7 +93,7 @@ class Menu extends Phaser.Scene
     initPlayButton()
     {
         
-        let button = this.add.sprite(game.config.width / 2.833, game.config.height / 2, "play")
+        let button = this.add.sprite(game.config.width / 2.833, game.config.height / 1.44, "play")
             .setInteractive({ useHandCursor: true })
             // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
             .on('pointerdown', () => { this.enterButtonClickState(this.buttonPlay) })
@@ -108,7 +112,7 @@ class Menu extends Phaser.Scene
     initHelpButton()
     {
         
-        let button = this.add.sprite((game.config.width / 4.425) * 3, game.config.height / 3.6, "help")
+        let button = this.add.sprite((game.config.width / 4.425) * 3, game.config.height / 2.7, "help")
             .setInteractive({ useHandCursor: true })
             // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
             .on('pointerdown', () => { this.enterButtonClickState(this.buttonHelp) })
@@ -127,7 +131,7 @@ class Menu extends Phaser.Scene
     initCreditsButton()
     {
         
-        let button = this.add.sprite((game.config.width / 4.425) * 3, (game.config.height / 2.82) * 2, "credits")
+        let button = this.add.sprite((game.config.width / 4.425) * 3, (game.config.height / 2.95) * 2, "credits")
             .setInteractive({ useHandCursor: true })
             // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
             .on('pointerdown', () => { this.enterButtonClickState(this.buttonCredits) })

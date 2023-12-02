@@ -8,6 +8,7 @@ class Spell extends Phaser.Physics.Arcade.Sprite
     _spellRadius = 6;
     _explosion;
     _scene;
+    _deflectedByShield = false;
 
     constructor(scene, id, x, y, direction)
     {
@@ -26,8 +27,8 @@ class Spell extends Phaser.Physics.Arcade.Sprite
 
 
         const sign = id === 1 ? -1 : 1;
-        this.angle = this.angle + (90 * sign);
         this.body.offset = new Phaser.Math.Vector2(-sign * 6,8)
+        this.calcAngle();
 
 
         this.anims.play(key, true);
@@ -49,7 +50,18 @@ class Spell extends Phaser.Physics.Arcade.Sprite
 
     onCollision(other)
     {
+        this.calcAngle();
+
+        if(other instanceof Shield) this._deflectedByShield = true;
+
+        if(!this._deflectedByShield && ((this.id === 1 && this.body.velocity.x < 0) || (this.id ===2 && this.body.velocity.x > 0)))
+            this.explode();
+    }
+
+    calcAngle()
+    {
         let angle = Math.atan2(this.body.velocity.y, this.body.velocity.x) * (180/Math.PI);
+        console.log(angle);
         angle -= 90;
         this.angle = angle;
     }

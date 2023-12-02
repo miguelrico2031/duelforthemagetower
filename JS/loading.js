@@ -19,7 +19,7 @@ class Loading extends Phaser.Scene
     create()
     {
         this.add.image(0, 0, "loadingScreen").setOrigin(0, 0);
-        setTimeout(() => {this.minTimeOver = true; this.complete()}, 1000 * 3)
+        setTimeout(() => {this.minTimeOver = true; this.complete()}, 0 /*1000 * 3*/)
 
     }
 

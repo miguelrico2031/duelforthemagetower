@@ -112,10 +112,10 @@ class GameplayScene extends Phaser.Scene
 
         this._audioBlast = this.sound.add("blastAudio");
         this._audioShield = this.sound.add("shieldAudio");
-        this._audioHit = this.sound.add("hitAudio");
-        this._audioDeflect = this.sound.add("deflectAudio");
-        this._audioJump = this.sound.add("jumpAudio");
-        this._musicIngame = this.sound.add("ingameSong");
+        this._audioHit = this.sound.add("hitAudio", {volume: 1.75});
+        this._audioDeflect = this.sound.add("deflectAudio", {volume: 3});
+        this._audioJump = this.sound.add("jumpAudio", {volume: 2.5});
+
 
 
         this.pauseKeyIsPressed = false;
@@ -142,17 +142,26 @@ class GameplayScene extends Phaser.Scene
         this.add.image(viewport.width/2, viewport.height/2, "bg");
         
         this.ground = this.physics.add.staticGroup();
-        this.ground.create(viewport.width/2, viewport.height-123/2, "floor").setScale(2).refreshBody();
+        this.ground.create(viewport.width/2, viewport.height-100/2, "floor").setScale(2.25).refreshBody();
         
         // Plataforma central
-        this.ground.create(viewport.width/2, viewport.height/2, "plataforma1").setScale(2.5).refreshBody();
+        this.ground.create(viewport.width/2, viewport.height/2 - 48, "plataforma1").setScale(2.8, 2.5).refreshBody();
 
         //plataformas
-        this.createSymmetricPlatforms(100, viewport.height*2/3, "plataforma1", 2); 
-        this.createSymmetricPlatforms(500, viewport.height*4/5.8, "plataforma4", 2); 
-        this.createSymmetricPlatforms(350, viewport.height*1/3.5, "plataforma4", 2); 
-        this.createSymmetricPlatforms(50, viewport.height*4/9, "plataforma2", 2); 
-        this.createSymmetricPlatforms(300, viewport.height*4/7.7, "plataforma3", 1.75); 
+        // Techo
+        this.createSymmetricPlatforms(510, 0, "plataforma4", 2, 0.9); 
+        // Arriba dcha
+        this.createSymmetricPlatforms(320, viewport.height*1/3.5 - 15, "plataforma4", 0.95, 1.5); 
+        // Pixel
+        this.createSymmetricPlatforms(20, viewport.height*1/3.5 - 32, "plataforma4", 0.6, 1.5); 
+        // Pequeña central
+        this.createSymmetricPlatforms(300, viewport.height*4/7.7, "plataforma3", 1.75);
+        // Gorda
+        this.createSymmetricPlatforms(50, viewport.height*4/9, "plataforma2", 3, 2); 
+        // Izq abajo
+        this.createSymmetricPlatforms(500, viewport.height*4/5.6, "plataforma4", 2);
+        // Dcha abajo
+        this.createSymmetricPlatforms(100, viewport.height*4/5.6, "plataforma1", 2); 
         
 
         this.barrera = this.physics.add.staticSprite(viewport.width/2, viewport.height/2.3, "barrier");
@@ -207,7 +216,7 @@ class GameplayScene extends Phaser.Scene
         this.gameEnded = false;
         gameplayResourcesLoaded = true; //para evitar volver a cargar las animaciones porque se cargan de manera global
 
-        this._musicIngame = this.sound.add('ingameSong');
+        this._musicIngame = this.sound.add('ingameSong', {volume: 0.35});
         
 
         this._musicIngame.play();
@@ -481,12 +490,12 @@ class GameplayScene extends Phaser.Scene
         }
     }
 
-    createSymmetricPlatforms(x, y, key, scale) 
+    createSymmetricPlatforms(x, y, key, scaleX, scaleY = scaleX) 
     {
         // Plataforma lado izquierdo
-        this.ground.create(x, y, key).setScale(scale).refreshBody();
+        this.ground.create(x, y, key).setScale(scaleX, scaleY).refreshBody();
         //Plataforma lado derecho
-        this.ground.create(game.config.width - x, y, key).setScale(scale).refreshBody();
+        this.ground.create(game.config.width - x, y, key).setScale(scaleX, scaleY).refreshBody();
     }
 
     // Al igual que en la escena de pausa, es para evitar que dejar pulsado el botón haga cosas feas

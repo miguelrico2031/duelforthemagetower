@@ -66,6 +66,8 @@ En la batalla por la Torre de los Magos, dos hechiceros compiten saltando entre 
    
     5.2. Efectos de sonido
 
+6. Diagrama de flujo entre pantallas
+
 
 
 # 1. Introducción
@@ -334,6 +336,10 @@ Si los jugadores lo desean pueden desactivar el sonido del juego tanto en el men
 **Efectos de sonido de la interfaz:** Al pausar-reanudar el juego y pulsar y levantar los botones, se reproducen algunos sonidos para dar mayor feedback al jugador.
 
 
+# 6. Diagrama de flujo entre pantallas
+
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/flowchart.png)
+_Figura 16: Diagrama de flujo entre las diferentes pantallas del juego_
 
 
 

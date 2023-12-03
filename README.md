@@ -133,6 +133,9 @@ En esta sección se hablarán de todos los elementos que conforman el juego, as�
 
 ## 2.1. Jugabilidad
 
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/gameplay.png)
+_Figura 1: captura de una partida del juego_
+
 **Nivel**
 
 Duel for the Mage Tower consta de un único nivel, en el cual los 2 jugadores deberán enfrentarse en un duelo de magia. Este nivel consta de un suelo y varias plataformas flotantes distribuidas por toda la pantalla, a las cuales los jugadores pueden subirse saltando sobre ellas.
@@ -211,25 +214,43 @@ En este apartado se comentan todas las interfaces que el juego requiere para su 
 Esta es la primera pantalla que se muestra nada más iniciar el juego. En ella aparecen el título del juego, un fondo simple común a todos los menús del juego, y 3 botones con las siguientes funcionalidades:
 
 - **Jugar:** Con este botón se inicia una partida.
-- **Cómo jugar:** Con este botón se abre la pantalla de tutoril, donde se explican brevemente los controles y objetivo del juego.
+- **Cómo jugar:** Con este botón se abre la pantalla de tutorial, donde se explican brevemente los controles y objetivo del juego.
 - **Créditos:** Con este botón se muestran los créditos de los desarrolladores y de los Assets externos usados.
-![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/image-004.png)
+- 
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/menu.png)
+_Figura 2: Menú principal del juego_
+
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/tutorial.png)
+_Figura 3: Pantalla de tutorial_
+
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/credits.png)
+_Figura 4: Pantalla de créditos_
 
   
 ## 3.2. Interfaz In-Game o HUD
 
 La interfaz In-Game es bastante sencilla. En esta se muestran las vidas correspondientes a cada jugador en forma de 3 corazones (cada uno representa 2 puntos de vida, al sufrir daño se quita medio corazón), y un icono animado con el personaje de cada jugador. La disposición de estos elementos en la pantalla serán en la esquina superior izquierda, para el jugador 1, y en la esquina superior derecha, para el jugador 2.
-![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/image-006.png)
+
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/hud1.png)
+_Figura 5: Interfaz In-Game del jugador 1_
+
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/hud2.png)
+_Figura 6: Interfaz In-Game del jugador 2_
 
   
 ## 3.3. Menú de Pausa
 
 En caso de pausar el juego en mitad de una partida, se despliega esta interfaz. Esta contiene 2 botones en el centro de la pantalla y un botón en la esquina superior derecha para silenciar el volumen del juego. Los botones correspondientes son **Continuar**, que permite continuar con la partida, y **Salir** , la cual lleva a los jugadores al menú principal.
-![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/image-007.png)
+
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/pause.png)
+_Figura 7: Menú de pausa_
 
 
 ## 3.4. Menú de Game Over
 Este menú aparece cuando uno de los jugadores llega a 0 puntos de vida, haciendo que termine la partida. Aparece a cada lado del menú una ilsutración mostrando a cada mago, si perdió, en el suelo derrotado; y si ganó, de pie. Debajo de cada uan hay un texto indicando el mago que perdió y el que ganó. Además, hay 2 botones en la mitad: **Jugar otra vez**, para iniciar una partida nueva, y **Menú**, para volver al menú principal.
+
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/gameover.png)
+_Figura 8: Menú de Game Over
 
 
 # 4. Arte
@@ -241,12 +262,27 @@ En este apartado se describirá brevemente el arte visual del juego, que ha sido
 Esta fase de desarrollo del juego cuenta con 2 personajes: el Mago Azul y el Mago Rojo. Ambos pertenecen al mismo autor, y se nota que su diseño es similar. Ambos tienen animaciones de correr, saltar, lanzar un hechizo, activar el escudo, recibir daño y morir.
 Los assets del proyectil y escudo son de otro autor, pero encajan bien en la estética. El escudo puede desentonar un poco más por la resolución del Asset. En entregas posteriores se buscará un Asset más consistente con el resto para el escudo.
 
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/mage1.png)
+_Figura 9: Personaje del jugador 1_
+
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/mage2.png)
+_Figura 10: Personaje del jugador 2_
+
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/spell.png)
+_Figura 11: Spritesheet del proyectil del mago 1_
+
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/shield.png)
+_Figura 12: Mago 1 con el escudo activado_
+
 
 ## 4.2. Escenario
 
 El juego consta de un único escenario con múltiples plataformas, sencillo, pero manteniendo la estética de magia y hechicería. Está ambientado en el interior de la torre que los personajes luchan por conseguir. El escenario y las plataformas pertenecen al mismo Asset, y se nota que es consistente con el resto del arte del juego. 
 
 El campo de fuerza que sepaara las 2 mitades del escenario está representado con una especia de rayo mágico animado. Este asset no es pixel art, así que no encaja con los demás. En entregas posteriores se reemplazará por un asset mejor.
+
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/scene.png)
+_Figura 13: Escenario del juego y campo de fuerza_
 
 
 ## 4.3. Interfaces
@@ -255,11 +291,16 @@ Los menús de pausa, Game Over y menú principal tienen el mismo estilo: Un pane
 
 Para el HUD o interfaz in-game, cada jugador tiene un icono con bordes animados y una imagen de su personaje.
 
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/interface.png)
+_Figura 14: Panel de las interfaces de los menús_
+
   
 ## 4.4. Logo
 
 En la siguiente imagen se muestran distintas versiones del logo del juego.
-![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/image-015.jpg)
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/logos.jpg)
+_Figura 15: Variaciones del logo del juego_
+
 
 
 

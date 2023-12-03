@@ -232,9 +232,11 @@ _Figura 4: Pantalla de créditos_
 La interfaz In-Game es bastante sencilla. En esta se muestran las vidas correspondientes a cada jugador en forma de 3 corazones (cada uno representa 2 puntos de vida, al sufrir daño se quita medio corazón), y un icono animado con el personaje de cada jugador. La disposición de estos elementos en la pantalla serán en la esquina superior izquierda, para el jugador 1, y en la esquina superior derecha, para el jugador 2.
 
 ![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/hud1.png)
+
 _Figura 5: Interfaz In-Game del jugador 1_
 
 ![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/hud2.png)
+
 _Figura 6: Interfaz In-Game del jugador 2_
 
   
@@ -263,15 +265,19 @@ Esta fase de desarrollo del juego cuenta con 2 personajes: el Mago Azul y el Mag
 Los assets del proyectil y escudo son de otro autor, pero encajan bien en la estética. El escudo puede desentonar un poco más por la resolución del Asset. En entregas posteriores se buscará un Asset más consistente con el resto para el escudo.
 
 ![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/mage1.png)
+
 _Figura 9: Personaje del jugador 1_
 
 ![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/mage2.png)
+
 _Figura 10: Personaje del jugador 2_
 
 ![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/spell.png)
+
 _Figura 11: Spritesheet del proyectil del mago 1_
 
 ![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/shield.png)
+
 _Figura 12: Mago 1 con el escudo activado_
 
 
@@ -298,6 +304,7 @@ _Figura 14: Panel de las interfaces de los menús_
 ## 4.4. Logo
 
 En la siguiente imagen se muestran distintas versiones del logo del juego.
+
 ![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/logos.jpg)
 _Figura 15: Variaciones del logo del juego_
 

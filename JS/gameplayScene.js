@@ -176,6 +176,7 @@ class GameplayScene extends Phaser.Scene
 
 
         
+        
 
         
         this.initPlayer1();
@@ -192,9 +193,6 @@ class GameplayScene extends Phaser.Scene
         
 
         this.shields = this.physics.add.staticGroup();
-
-
-
 
 
 
@@ -227,7 +225,6 @@ class GameplayScene extends Phaser.Scene
 
     update(time, delta)
     {
-    
         this.processInput();
 
         this.player1.update(time, delta);

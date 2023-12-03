@@ -14,61 +14,61 @@ En la batalla por la Torre de los Magos, dos hechiceros compiten saltando entre 
 
 # Contenido
 
-[1. INTRODUCCIÓN]
+1. Introducción
 
-[1.1. Concepto]
+    1.1. Concepto
 
-[1.2. Características]
+    1.2. Características
 
-[1.3. Género]
+    1.3. Género
 
-[1.4. Propósito]
+    1.4. Propósito
 
-[1.5. Público Objetivo ]
+    1.5. Público Objetivo 
 
-[1.6. Estilo Visual]
+    1.6. Estilo Visual
 
-[1.7. Alcance]
+    1.7. Alcance
 
-[1.8. Referencias]
+    1.8. Referencias
 
-[2. Mecánicas de Juego
+2. Mecánicas de Juego
 
-[2.1. Jugabilidad]
+    2.1. Jugabilidad
 
-[2.2. Flujo de juego]
+    2.2. Flujo de juego
 
-[2.3. Personajes]
+    2.3. Controles
 
-[2.4. _Power Ups]
+3. Interfaces
 
-[2.5. Controles]
+    3.1. Menú Principal
 
-[3. Interfaces]
+    3.2. Interfaz In-Game o HUD
 
-[3.1. Menú Principal]
+    3.3. Menú de Pausa
 
-[3.2. Selector de personajes]
+    3.4. Menú de Game Over
 
-[3.3. Interfaz In-Game]
+4. Arte
 
-[3.4. Menú de Pausa]
+    4.1. Personajes
 
-[3.5. Menú de Controles]
+    4.2. Escenario
 
-[4. Arte]
+    4.3. Interfaces
 
-[4.1. Inspiración]
+    4.4. Logo
 
-[4.2. Personajes]
+5. Sonido
 
-[4.3. Escenario]
+    5.1. Música
+   
+    5.2. Efectos de sonido
 
-[4.4. Logo]
 
 
-
-# 1. INTRODUCCIÓN
+# 1. Introducción
 
 Esto es el documento de desarrollo de Duel for the Mage Tower. Como objetivo, se busca plasmar las ideas implementadas en el juego en este documento.
 

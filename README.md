@@ -211,12 +211,12 @@ En este apartado se comentan todas las interfaces que el juego requiere para su 
   
 ## 3.1. Menú Principal
 
-Esta es la primera pantalla que se muestra nada más iniciar el juego. En ella aparecen el título del juego, un fondo simple común a todos los menús del juego, y 3 botones con las siguientes funcionalidades:
+Esta es la primera pantalla que se muestra nada más iniciar el juego. En ella aparecen el título del juego, un fondo simple común a todos los menús del juego, un botón de desactivar el sonido, y 3 botones con las siguientes funcionalidades:
 
 - **Jugar:** Con este botón se inicia una partida.
 - **Cómo jugar:** Con este botón se abre la pantalla de tutorial, donde se explican brevemente los controles y objetivo del juego.
 - **Créditos:** Con este botón se muestran los créditos de los desarrolladores y de los Assets externos usados.
-- 
+  
 ![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/menu.png)
 _Figura 2: Menú principal del juego_
 
@@ -249,10 +249,10 @@ _Figura 7: Menú de pausa_
 
 
 ## 3.4. Menú de Game Over
-Este menú aparece cuando uno de los jugadores llega a 0 puntos de vida, haciendo que termine la partida. Aparece a cada lado del menú una ilsutración mostrando a cada mago, si perdió, en el suelo derrotado; y si ganó, de pie. Debajo de cada uan hay un texto indicando el mago que perdió y el que ganó. Además, hay 2 botones en la mitad: **Jugar otra vez**, para iniciar una partida nueva, y **Menú**, para volver al menú principal.
+Este menú aparece cuando uno de los jugadores llega a 0 puntos de vida, haciendo que termine la partida. Aparece a cada lado del menú una ilsutración mostrando a cada mago, si perdió, en el suelo derrotado; y si ganó, de pie. Debajo de cada una hay un texto indicando el mago que perdió y el que ganó. Además, hay 2 botones en la mitad: **Jugar otra vez**, para iniciar una partida nueva, y **Menú**, para volver al menú principal.
 
 ![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/gameover.png)
-_Figura 8: Menú de Game Over
+_Figura 8: Menú de Game Over_
 
 
 # 4. Arte
@@ -320,7 +320,7 @@ En esta sección se hablará brevemente de los efectos de sonido y música utili
 
 Duel of the Mage Tower cuenta con 2 canciones: el tema del menú principal y el tema del juego.
 Ambas son canciones muy similares, con un estilo retro y simple, que combinan adecuadamente con la estética visual pixel art que tiene el juego. 
-Si los jugadores lo desean pueden desactivar el sonido del juego tanto en el menú principal como el menú de pausa
+Si los jugadores lo desean pueden desactivar el sonido del juego tanto en el menú principal como el menú de pausa.
 
 
 ## 5.2. Efectos de sonido

@@ -79,7 +79,16 @@ class Menu extends Phaser.Scene
         this.buttonMute = this.initMuteButton();
         this.buttonSound = this.initSoundButton();
 
-        this.buttonMute.setVisible(false);
+        if (!this.game.sound.mute) 
+        {
+            this.buttonSound.setVisible(true);
+            this.buttonMute.setVisible(false);
+        } 
+        else if (this.game.sound.mute) 
+        {
+            this.buttonSound.setVisible(false);
+            this.buttonMute.setVisible(true);
+        }
     }
     
 
@@ -158,17 +167,17 @@ class Menu extends Phaser.Scene
     initMuteButton()
     {
         
-        let button = this.add.sprite((game.config.width / 4.425) * 3, (game.config.height / 2.95) * 2, "mute")
+        let button = this.add.sprite((game.config.width / 3.8) * 3.1, (game.config.height / 9.8) * 1.6, "mute")
             .setInteractive({ useHandCursor: true })
             // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonCredits) })
+            .on('pointerdown', () => { this.enterButtonClickState(this.buttonMute) })
             .on('pointerup', () => 
             { 
-                this.enterButtonRestState(this.buttonCredits);
+                this.enterButtonRestState(this.buttonMute);
                 this.toggleSound(); 
             })
             // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonCredits) 
+            .on('pointerout', () => this.enterButtonRestState(this.buttonMute) 
         );
         return button;
     }
@@ -176,17 +185,17 @@ class Menu extends Phaser.Scene
     initSoundButton()
     {
         
-        let button = this.add.sprite((game.config.width / 4.425) * 3, (game.config.height / 2.95) * 2, "sonido")
+        let button = this.add.sprite((game.config.width / 3.8) * 3.1, (game.config.height / 9.8) * 1.6, "sonido")
             .setInteractive({ useHandCursor: true })
             // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonCredits) })
+            .on('pointerdown', () => { this.enterButtonClickState(this.buttonSound) })
             .on('pointerup', () => 
             { 
-                this.enterButtonRestState(this.buttonCredits);
+                this.enterButtonRestState(this.buttonSound);
                 this.toggleSound(); 
             })
             // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonCredits) 
+            .on('pointerout', () => this.enterButtonRestState(this.buttonSound) 
         );
         return button;
     }
@@ -216,13 +225,13 @@ class Menu extends Phaser.Scene
         {
             this.game.sound.mute = true;
             this.buttonSound.setVisible(false);
-            this.buttontrue.setVisible(true);
+            this.buttonMute.setVisible(true);
         }
         else if (this.game.sound.mute)
         {
-            his.game.sound.mute = false;
+            this.game.sound.mute = false;
             this.buttonSound.setVisible(true);
-            this.buttontrue.setVisible(false);
+            this.buttonMute.setVisible(false);
         }
 
     }

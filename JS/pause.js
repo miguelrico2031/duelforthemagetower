@@ -27,6 +27,8 @@ class Pause extends Phaser.Scene
         this.load.image("pause_screen", "../Assets/UI/Screens/Pause/Pause.png");
         this.load.spritesheet("continuar", "../Assets/UI/Screens/Pause/ContinueButton.png", { frameWidth: 167, frameHeight: 106 });
         this.load.spritesheet("salir", "../Assets/UI/Screens/Pause/ExitButton.png", { frameWidth: 167, frameHeight: 106 });
+        this.load.spritesheet("sonido", "../Assets/UI/sonido.png", { frameWidth: 87, frameHeight: 55 });
+        this.load.spritesheet("mute", "../Assets/UI/mute.png", { frameWidth: 87, frameHeight: 55 });
         this.load.audio("click", "../Assets/UI/Sounds/Minimalist4.wav");
         this.load.audio("clack", "../Assets/UI/Sounds/Minimalist7.wav");
         this.load.audio("unpause", "../Assets/UI/Sounds/Unpause.wav");
@@ -47,6 +49,10 @@ class Pause extends Phaser.Scene
 
         this._buttonContinue = this._initContinueButton();
         this._buttonExit = this._initExitButton();
+        this._buttonMute = this._initMuteButton();
+        this._buttonSound = this._initSoundButton();
+
+        
         
         this._pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     }
@@ -54,6 +60,20 @@ class Pause extends Phaser.Scene
     update()
     {
         this._checkPauseKeyPressed();
+
+        // mira esto es terrible pero en el create no va y son la 1 de la mañana y me quiero ir a dormir
+        if (!this.game.sound.mute) 
+        {
+            console.log("SONIDO")
+            this._buttonSound.setVisible(true);
+            this._buttonMute.setVisible(false);
+        } 
+        else if (this.game.sound.mute) 
+        {
+            console.log("MUTE")
+            this._buttonSound.setVisible(false);
+            this._buttonMute.setVisible(true);
+        }
     }
 
     //Metodos privados
@@ -98,6 +118,23 @@ class Pause extends Phaser.Scene
         this.scene.sleep("PauseScene");
     }
 
+    _toggleSound()
+    {
+        if (!this.game.sound.mute)
+        {
+            this.game.sound.mute = true;
+            this._buttonSound.setVisible(false);
+            this._buttonMute.setVisible(true);
+        }
+        else if (this.game.sound.mute)
+        {
+            this.game.sound.mute = false;
+            this._buttonSound.setVisible(true);
+            this._buttonMute.setVisible(false);
+        }
+
+    }
+
     // Esto es lo que debe hacer el boton al ser pulsado
     _enterButtonClickState(button) 
     {
@@ -107,7 +144,7 @@ class Pause extends Phaser.Scene
     }
 
     // Esto seria cuando el boton deja de estar pulsado
-    enterButtonRestState(button)
+    _enterButtonRestState(button)
     {
         // pongo el frame de la animacion sin pulsar pq si no se ve como si se quedase pillado y no queremos eso
         if(this._buttonPressed) this._audioClack.play();
@@ -124,11 +161,11 @@ class Pause extends Phaser.Scene
             .on('pointerdown', () => { this._enterButtonClickState(this._buttonContinue) })
             .on('pointerup', () => 
             { 
-                this.enterButtonRestState(this._buttonContinue);
+                this._enterButtonRestState(this._buttonContinue);
                 this._resumeGame(); 
             })
             // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this._buttonContinue) 
+            .on('pointerout', () => this._enterButtonRestState(this._buttonContinue) 
         );
 
         return button;
@@ -142,12 +179,48 @@ class Pause extends Phaser.Scene
             .on('pointerdown', () => { this._enterButtonClickState(this._buttonExit) })
             .on('pointerup', () => 
             { 
-                this.enterButtonRestState(this._buttonExit);
+                this._enterButtonRestState(this._buttonExit);
                 this._exitGame(); 
             }) 
-            .on('pointerout', () => this.enterButtonRestState(this._buttonExit)
+            .on('pointerout', () => this._enterButtonRestState(this._buttonExit)
         );
 
+        return button;
+    }
+
+    _initMuteButton()
+    {
+        
+        let button = this.add.sprite(viewport.width/2 + 240, viewport.height/2 - 140, "mute")
+            .setInteractive({ useHandCursor: true })
+            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
+            .on('pointerdown', () => { this._enterButtonClickState(this._buttonMute) })
+            .on('pointerup', () => 
+            { 
+                this._enterButtonRestState(this._buttonMute);
+                this._toggleSound(); 
+            })
+            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
+            .on('pointerout', () => this._enterButtonRestState(this._buttonMute) 
+        );
+        return button;
+    }
+
+    _initSoundButton()
+    {
+        
+        let button = this.add.sprite(viewport.width/2 + 240, viewport.height/2 - 140, "sonido")
+            .setInteractive({ useHandCursor: true })
+            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
+            .on('pointerdown', () => { this._enterButtonClickState(this._buttonSound) })
+            .on('pointerup', () => 
+            { 
+                this._enterButtonRestState(this._buttonSound);
+                this._toggleSound(); 
+            })
+            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
+            .on('pointerout', () => this._enterButtonRestState(this._buttonSound) 
+        );
         return button;
     }
 }

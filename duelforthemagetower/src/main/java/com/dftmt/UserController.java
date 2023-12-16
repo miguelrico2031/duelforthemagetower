@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController
 {
 	@Autowired
-	private UserService userService = new UserService();
+	private UserService userService;
 	
 	@PostMapping("/signup")
 	public ResponseEntity<GameUser> signUp(@RequestBody GameUser user)

@@ -13,16 +13,8 @@ public class UserService
 {
 	private HashMap<String, GameUser> users = null;
 	
-	//private final String filePath = "data/users.txt";
 	private final String filePath = System.getProperty("user.dir") + "/src/main/resources/data/users.txt";
-//	@Override
-//	protected void finalize()
-//	{
-//		for(GameUser user : users.values()) user.setLogged(false);
-//		System.out.println("finalize");
-//		saveUsers();
-//	}
-	
+
 	public GameUser signUp(GameUser user)
 	{	
 		if(users == null) loadUsers();
@@ -108,7 +100,7 @@ public class UserService
 	{
 		if(users == null) loadUsers();
 		
-		System.out.println();
+		System.out.println("\nUSERS:");
 		for (String key: users.keySet()) {
 		    GameUser value = users.get(key);
 		    System.out.println(key + " -> " + 

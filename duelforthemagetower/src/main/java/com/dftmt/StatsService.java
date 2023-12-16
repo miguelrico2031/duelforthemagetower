@@ -1,6 +1,5 @@
 package com.dftmt;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -33,7 +32,7 @@ public class StatsService
 		
 		if(userService.getUser(username) != null)
 		{
-			UserStats newStats = new UserStats(username, 0, 0);
+			UserStats newStats = new UserStats(username);
 			stats.put(username, newStats);
 			printStats();
 			return newStats;
@@ -70,12 +69,11 @@ public class StatsService
 		return existingStat;
 	}
 	
-	public UserStats deleteStats(GameUser user)
+	public UserStats deleteStats(String username)
 	{
 		if(stats == null) loadStats();
-		if(user == null) return null;
 		
-		UserStats existingStat = getStats(user.getUsername());
+		UserStats existingStat = getStats(username);
 		if(existingStat == null) return null;
 		
 		stats.remove(existingStat.getUsername());

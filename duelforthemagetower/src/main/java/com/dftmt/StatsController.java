@@ -20,7 +20,7 @@ public class StatsController
 	private StatsService statsService;
 	
 	@GetMapping("/{username}")
-	public ResponseEntity<UserStats> GetStats(@PathVariable String username)
+	public ResponseEntity<UserStats> getStats(@PathVariable String username)
 	{
 		UserStats stat = statsService.getStats(username);
 		if(stat == null)
@@ -31,5 +31,47 @@ public class StatsController
 		
 		return new ResponseEntity<>(stat, HttpStatus.OK);
 	}
+	
+	@PutMapping("/set")
+	public ResponseEntity<UserStats> setStats(@RequestBody UserStats stat)
+	{
+		stat = statsService.setStats(stat);
+		if(stat == null)
+		{
+			//error de usuario no encontrado
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<>(stat, HttpStatus.OK);
+	}
+	
+	@PutMapping("/increase")
+	public ResponseEntity<UserStats> increaseStats(@RequestBody UserStats stat)
+	{
+		stat = statsService.increaseStats(stat);
+		if(stat == null)
+		{
+			//error de usuario no encontrado
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<>(stat, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/{username}")
+	public ResponseEntity<UserStats> deleteStats(@PathVariable String username)
+	{
+		UserStats stat = statsService.deleteStats(username);
+		if(stat == null)
+		{
+			//error de usuario no encontrado
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<>(stat, HttpStatus.OK);	
+	}
+	
+	
+	
 	
 }

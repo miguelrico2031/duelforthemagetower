@@ -181,12 +181,12 @@ class Login extends Phaser.Scene
         // Yo creo que lo mejor sería hacer que se cree el usuario y
 
         // si el usuario ya existía
-        this.userAlreadyExists();
+        //this.userAlreadyExists();
 
         // si no existía
         // creas al usuario e inmediatamente le inicias sesión con
-        const inputUsername = this.getChildByName("text").value;
-        const inputPassword = this.getChildByName("pass").value;
+        const inputUsername = this.usernameForm.getChildByName("text").value;
+        const inputPassword = this.passwordForm.getChildByName("pass").value;
 
         if (inputUsername !== '' && inputPassword !== '')
         {
@@ -206,8 +206,17 @@ class Login extends Phaser.Scene
                     "Content-type":"application/json"
                 }
             })
-            .done((data, textStatus, jqXHR) => console.log(textStatus+" "+jqXHR.statusCode()))
-            .fail((data, textStatus, jqXHR) => console.log(textStatus+" "+jqXHR.statusCode()));
+            .done((data, textStatus, jqXHR) => 
+            {
+                console.log(textStatus+" "+ jqXHR.status);
+                console.log(data);
+                console.log(jqXHR.statusCode())
+            })
+            .fail((data, textStatus, jqXHR) => 
+            {
+                this.userAlreadyExists();
+                console.log(textStatus+" "+jqXHR.status);
+            });
 
         }
     }

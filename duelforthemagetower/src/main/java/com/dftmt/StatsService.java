@@ -35,6 +35,7 @@ public class StatsService
 		{
 			UserStats newStats = new UserStats(username, 0, 0);
 			stats.put(username, newStats);
+			printStats();
 			return newStats;
 		}
 		

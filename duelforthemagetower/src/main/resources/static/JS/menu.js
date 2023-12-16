@@ -16,6 +16,7 @@ class Menu extends Phaser.Scene
     buttonPlay;
     buttonHelp;
     buttonCredits;
+    buttonUser;
     buttonMute;
     buttonSound;
 
@@ -36,6 +37,7 @@ class Menu extends Phaser.Scene
         this.load.spritesheet("play", "../Assets/UI/Screens/MainMenu/PlayButton.png", { frameWidth: 267, frameHeight: 168 });
         this.load.spritesheet("credits", "../Assets/UI/Screens/MainMenu/CreditsButton.png", { frameWidth: 214, frameHeight: 135 });
         this.load.spritesheet("help", "../Assets/UI/Screens/MainMenu/HelpButton.png", { frameWidth: 214, frameHeight: 135 });
+        this.load.spritesheet("user", "../Assets/UI/Screens/MainMenu/UserButton.png", { frameWidth: 167, frameHeight: 106 });
         this.load.spritesheet("sonido", "../Assets/UI/sonido.png", { frameWidth: 87, frameHeight: 55 });
         this.load.spritesheet("mute", "../Assets/UI/mute.png", { frameWidth: 87, frameHeight: 55 });
         this.load.image("menu", "../Assets/UI/Screens/MainMenu/menu.png");
@@ -44,6 +46,7 @@ class Menu extends Phaser.Scene
         this.load.audio("clack", "../Assets/UI/Sounds/Minimalist7.wav");
         this.load.audio("menuSong", "../Assets/Sounds/Music/MenuSong.wav");
         this.load.audio("open", "../Assets/UI/Sounds/Pause.wav");
+        this.load.audio("close", "../Assets/UI/Sounds/Unpause.wav");
     }
 
     init(data){
@@ -76,6 +79,7 @@ class Menu extends Phaser.Scene
         this.buttonPlay = this.initPlayButton();
         this.buttonHelp = this.initHelpButton();
         this.buttonCredits = this.initCreditsButton();
+        this.buttonUser = this.initUserButton();
         this.buttonMute = this.initMuteButton();
         this.buttonSound = this.initSoundButton();
 
@@ -129,7 +133,7 @@ class Menu extends Phaser.Scene
     initHelpButton()
     {
         
-        let button = this.add.sprite((game.config.width / 4.425) * 3, game.config.height / 2.7, "help")
+        let button = this.add.sprite(865, 200, "help")
             .setInteractive({ useHandCursor: true })
             // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
             .on('pointerdown', () => { this.enterButtonClickState(this.buttonHelp) })
@@ -148,7 +152,7 @@ class Menu extends Phaser.Scene
     initCreditsButton()
     {
         
-        let button = this.add.sprite((game.config.width / 4.425) * 3, (game.config.height / 2.95) * 2, "credits")
+        let button = this.add.sprite(865, 400, "credits")
             .setInteractive({ useHandCursor: true })
             // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
             .on('pointerdown', () => { this.enterButtonClickState(this.buttonCredits) })
@@ -159,6 +163,25 @@ class Menu extends Phaser.Scene
             })
             // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
             .on('pointerout', () => this.enterButtonRestState(this.buttonCredits) 
+        );
+
+        return button;
+    }
+
+    initUserButton()
+    {
+        
+        let button = this.add.sprite(865, 550, "user")
+            .setInteractive({ useHandCursor: true })
+            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
+            .on('pointerdown', () => { this.enterButtonClickState(this.buttonUser) })
+            .on('pointerup', () => 
+            { 
+                this.enterButtonRestState(this.buttonUser);
+                this.loginScreen(); 
+            })
+            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
+            .on('pointerout', () => this.enterButtonRestState(this.buttonUser) 
         );
 
         return button;
@@ -217,6 +240,12 @@ class Menu extends Phaser.Scene
     {
         this.audioOpen.play();
         this.scene.start("CreditsScene");
+    }
+
+    loginScreen()
+    {
+        this.audioOpen.play();
+        this.scene.start("LoginScene");
     }
 
     toggleSound()

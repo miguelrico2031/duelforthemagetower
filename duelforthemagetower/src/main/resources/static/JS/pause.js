@@ -64,13 +64,11 @@ class Pause extends Phaser.Scene
         // mira esto es terrible pero en el create no va y son la 1 de la mañana y me quiero ir a dormir
         if (!this.game.sound.mute) 
         {
-            console.log("SONIDO")
             this._buttonSound.setVisible(true);
             this._buttonMute.setVisible(false);
         } 
         else if (this.game.sound.mute) 
         {
-            console.log("MUTE")
             this._buttonSound.setVisible(false);
             this._buttonMute.setVisible(true);
         }

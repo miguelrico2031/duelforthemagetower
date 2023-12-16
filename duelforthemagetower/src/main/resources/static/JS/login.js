@@ -20,6 +20,9 @@ class Login extends Phaser.Scene
     audioOpen;
     audioClose;
 
+    usernameForm;
+    passwordForm;
+
     //Metodos publicos
     constructor(scene) 
     {
@@ -34,6 +37,10 @@ class Login extends Phaser.Scene
         this.load.spritesheet("login", "../Assets/UI/Screens/User/LoginButton.png", { frameWidth: 167, frameHeight: 106 });
         this.load.spritesheet("signup", "../Assets/UI/Screens/User/SignupButton.png", { frameWidth: 167, frameHeight: 106 });
         this.load.spritesheet("okback", "../Assets/UI/Screens/User/OkBackButton.png", { frameWidth: 167, frameHeight: 106 });
+
+        this.load.html({key : "textform", value : "../textform.html"});
+        this.load.html({key : "passwordform", value : "../passwordform.html"});
+
     }
 
     create()
@@ -56,6 +63,14 @@ class Login extends Phaser.Scene
         this.buttonLogin = this.initLoginButton();
         this.buttonSignup = this.initSignupButton();
         this.buttonBack = this.initBackButton();
+
+        // Usuario
+        this.usernameForm = this.add.dom(650, 325).createFromCache("textform")
+        this.usernameForm.setPosition(960, 325);
+
+        // Contraseña
+        this.passwordForm = this.add.dom(650, 325).createFromCache("passwordform");
+        this.passwordForm.setPosition(960, 400);
     }
     
 
@@ -170,8 +185,31 @@ class Login extends Phaser.Scene
 
         // si no existía
         // creas al usuario e inmediatamente le inicias sesión con
+        const inputUsername = this.getChildByName("text").value;
+        const inputPassword = this.getChildByName("pass").value;
 
-        //this.loginFunc()
+        if (inputUsername !== '' && inputPassword !== '')
+        {
+            const user = 
+            {
+                username: inputUsername,
+                password: inputPassword
+            }
+            
+            $.ajax
+            ({
+                method: "POST",
+                url: "http://127.0.0.1:8080/users/signup",
+                data: JSON.stringify(user),
+                headers: 
+                {
+                    "Content-type":"application/json"
+                }
+            })
+            .done((data, textStatus, jqXHR) => console.log(textStatus+" "+jqXHR.statusCode()))
+            .fail((data, textStatus, jqXHR) => console.log(textStatus+" "+jqXHR.statusCode()));
+
+        }
     }
 
     closeLogin() 
@@ -188,6 +226,8 @@ class Login extends Phaser.Scene
         this.buttonClose.setVisible(false);
         this.buttonLogin.setVisible(false);
         this.buttonSignup.setVisible(false);
+        this.usernameForm.setVisible(false);
+        this.passwordForm.setVisible(false);
     }
 
     goBack()
@@ -197,6 +237,8 @@ class Login extends Phaser.Scene
         this.buttonClose.setVisible(true);
         this.buttonLogin.setVisible(true);
         this.buttonSignup.setVisible(true);
+        this.usernameForm.setVisible(true);
+        this.passwordForm.setVisible(true);
         this.userExists = false;
     }
 

@@ -8,6 +8,7 @@ let gameplayResourcesLoaded = false;
 
 const config =
 {
+    parent: "form",
     type: Phaser.AUTO,
     mipmapFilter: 'LINEAR_MIPMAP_LINEAR',
     width: viewport.width,
@@ -21,6 +22,9 @@ const config =
             debug: false
         }
     },
+    dom: {
+        createContainer: true
+      },
     scene: [Loading, Menu, Login, User, GameplayScene, Pause, Gameover, Credits, Tutorial]
 };
 

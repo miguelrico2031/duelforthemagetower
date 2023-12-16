@@ -1,5 +1,8 @@
 package com.dftmt;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -11,107 +14,82 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserController
 {
+	@Autowired
+	private UserService userService = new UserService();
+	
 	@PostMapping("/signup")
-	public LoginUser signUp(@RequestBody LoginUser user)
+	public ResponseEntity<GameUser> signUp(@RequestBody GameUser user)
 	{
-		if(!GameUser.signUp(user.username, user.password))
+		user = userService.signUp(user);
+		
+		if(user == null)
 		{
 			//error de usuario ya existente
-			return null;
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		//usuario creado
-		return user;
+		return new ResponseEntity<>(user, HttpStatus.CREATED);
 	}
 	
 	@PostMapping("/login")
-	public LoginUser logIn(@RequestBody LoginUser user)
+	public ResponseEntity<GameUser> logIn(@RequestBody GameUser user)
 	{
-		GameUser gameUser = GameUser.getUser(user.username);
+		user = userService.logIn(user);
 		
-		if(gameUser == null)
+		if(user == null)
 		{
 			//error de usuario no existente
-			return null;
-		}
-		
-		if(!gameUser.logIn(user.password))
-		{
-			//error de contraseña incorrecta
-			return null;
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		//usuario loggeado
-		return user;
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
 	@PostMapping("/logout")
-	public LoginUser logOut(@RequestBody LoginUser user)
+	public ResponseEntity<GameUser> logOut(@RequestBody GameUser user)
 	{
-		GameUser gameUser = GameUser.getUser(user.username);
+		user = userService.logOut(user);
 		
-		if(gameUser == null)
+		if(user == null)
 		{
-			//error de usuario no encontrado
-			return null;
-		}
-		
-		if(!gameUser.logOut())
-		{
-			//error de usuario no estaba loggeado
-			return null;
+			//error de usuario no existente
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		//usuario desloggeado
-		return user;
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
 	@PutMapping("/changepassword")
-	public LoginUser changePassword(@RequestBody LoginUser user)
+	public ResponseEntity<GameUser> changePassword(@RequestBody GameUser user)
 	{
-		GameUser gameUser = GameUser.getUser(user.username);
+		user = userService.changePassword(user);
 		
-		if(gameUser == null)
+		if(user == null)
 		{
-			//error de usuario no encontrado
-			return null;
+			//error de usuario no existente o no loggeado
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
-		if(!gameUser.isLogged())
-		{
-			//error usuario no loggeado
-			return null;
-		}
-		
-		if(!gameUser.changePassword(user.password))
-		{
-			//error de contraseña igual a anterior/nula
-			return null;
-		}
-		
-		//usuario cambio de contraseña
-		return user;
+		//usuario con contraseña cambiada
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete")
-	public LoginUser deleteUser(@RequestBody LoginUser user)
+	public ResponseEntity<GameUser> deleteUser(@RequestBody GameUser user)
 	{
-		GameUser gameUser = GameUser.getUser(user.username);
+		user = userService.deleteUser(user);
 		
-		if(gameUser == null)
+		if(user == null)
 		{
-			//error de usuario no encontrado
-			return null;
+			//error de usuario no existente o no loggeado
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
-		if(!gameUser.deleteUser())
-		{
-			//error usuario no loggeado
-			return null;
-		}
-
-		//usuario borrado
-		return user;
+		//usuario eliminado
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
 	

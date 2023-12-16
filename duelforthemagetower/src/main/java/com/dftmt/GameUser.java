@@ -1,76 +1,36 @@
 package com.dftmt;
-import java.util.HashMap;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GameUser
 {
-	private static HashMap<String, GameUser> users = null;
-	
-	private String username = null;
+	private final String username;
 	private String password = null;
 	private boolean logged = false;
-	private UserStats stats = null;
 	
-	private GameUser(String username, String password)
+	public GameUser(@JsonProperty("username")String username, @JsonProperty("password")String password)
 	{
 		this.username = username;
 		this.password = password;
 		this.logged = true;
-		stats = new UserStats();
 	}
 	
-	public static boolean signUp(String username, String password)
+	public String getPassword() { return password; }
+	public String getUsername() { return username; }
+	public boolean getLogged() { return logged; }
+	
+	public boolean setPassword(String p)
 	{
-		if(users == null) users = new HashMap<String, GameUser>();
-		
-		if(users.containsKey(username)) return false;
-		
-		GameUser newUser = new GameUser(username, password);
-		
-		users.put(username, newUser);
+		if(p.equals(password)) return false;
+		password = p;
 		return true;
 	}
 	
-	public static GameUser getUser(String username)
+	public boolean setLogged(boolean l)
 	{
-		if(users.containsKey(username)) return users.get(username);
-		
-		return null;
-	}
-	
-	public boolean isLogged()
-	{
-		return logged;
-	}
-	
-	public boolean logIn(String password)
-	{
-		logged = this.password.equals(password);
-		return logged;
-	}
-	
-	public boolean logOut()
-	{
-		if(!logged) return false;
-		
-		logged = false;
+		if(l == logged) return false;
+		logged = l;
 		return true;
 	}
 	
-	public boolean changePassword(String newPassword)
-	{
-		if(newPassword == null || newPassword.equals(password)) return false;
-		
-		password = newPassword;
-		return true;
-	}
-	
-	public UserStats getStats() { return stats; }
-	
-	public boolean deleteUser()
-	{
-		if(!logged) return false;
-		
-		users.remove(username);
-		return true;
-	}
 }

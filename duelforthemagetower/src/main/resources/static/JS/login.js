@@ -1,3 +1,5 @@
+// IMPORTANTE AÑADIR QUE SE MANTENGA LA SESION INICIADA
+
 class Login extends Phaser.Scene
 {
     //publicas
@@ -20,6 +22,8 @@ class Login extends Phaser.Scene
     audioOpen;
     audioClose;
 
+    errorText;
+
     usernameForm;
     passwordForm;
 
@@ -38,8 +42,8 @@ class Login extends Phaser.Scene
         this.load.spritesheet("signup", "../Assets/UI/Screens/User/SignupButton.png", { frameWidth: 167, frameHeight: 106 });
         this.load.spritesheet("okback", "../Assets/UI/Screens/User/OkBackButton.png", { frameWidth: 167, frameHeight: 106 });
 
-        this.load.html({key : "textform", value : "../textform.html"});
-        this.load.html({key : "passwordform", value : "../passwordform.html"});
+        this.load.html({key : "textform", url : "../textform.html"});
+        this.load.html({key : "passwordform", url : "../passwordform.html"});
 
     }
 
@@ -53,6 +57,13 @@ class Login extends Phaser.Scene
         // Pantalla de error si el usuario ya existe
         this.userExistsScreen = this.add.image(0, 0, "alreadyExistsScreen").setOrigin(0, 0);
         this.userExistsScreen.setVisible(false);
+        // Texto de error de contraseña
+        this.errorText = this.add.text(viewport.width / 2 - 180, viewport.height / 2, 'El usuario \no contraseña \nson erróneos', 
+        { 
+            fontFamily: 'GrapeSoda',
+            fontSize: '16px', 
+            fill: 'red' 
+        }).setOrigin(0.5, 0.5).setVisible(false);
 
         this.audioClick = this.sound.add("click");
         this.audioClack = this.sound.add("clack");
@@ -170,9 +181,51 @@ class Login extends Phaser.Scene
     loginFunc()
     {
         // cosas de la api
+        const inputUsername = this.usernameForm.getChildByName("text").value;
+        const inputPassword = this.passwordForm.getChildByName("pass").value;
 
-        this.audioOpen.play();
-        this.scene.start("UserScene", { isplaying: true });
+        if (inputUsername !== '' && inputPassword !== '')
+        {
+            
+            const user = 
+            {
+                username: inputUsername,
+                password: inputPassword
+            }
+
+            $.ajax
+            ({
+                method: "POST",
+                url: "http://127.0.0.1:8080/users/login",
+                data: JSON.stringify(user),
+                headers: 
+                {
+                    "Content-type":"application/json"
+                }
+            })
+            .done((data, textStatus, jqXHR) => 
+            {
+                console.log(textStatus+" "+ jqXHR.status);
+                console.log(data);
+                console.log(jqXHR.statusCode())
+
+                // Actualizo los datos para saber que usuario soy
+                this.game.config.username = inputUsername;
+                this.game.config.password = inputPassword;
+
+                this.audioOpen.play();
+                this.scene.start("UserScene", { isplaying: true });
+
+            })
+            .fail((data, textStatus, jqXHR) => 
+            {
+                console.log(textStatus+" "+jqXHR.status);
+
+                this.wrongCredentials();
+            });            
+        }
+
+
     }
 
     signupFunc()
@@ -190,6 +243,9 @@ class Login extends Phaser.Scene
 
         if (inputUsername !== '' && inputPassword !== '')
         {
+            this.game.config.username = inputUsername;
+            this.game.config.password = inputPassword;
+
             const user = 
             {
                 username: inputUsername,
@@ -211,6 +267,11 @@ class Login extends Phaser.Scene
                 console.log(textStatus+" "+ jqXHR.status);
                 console.log(data);
                 console.log(jqXHR.statusCode())
+
+                // creo el usuario nuevo y le inicio sesion directamente para ahorrar mensaje de confirmacion
+                // de "cuenta creada"
+
+                this.loginFunc();
             })
             .fail((data, textStatus, jqXHR) => 
             {
@@ -227,6 +288,17 @@ class Login extends Phaser.Scene
         this.scene.start("MenuScene", { isPlaying: true });
     }
 
+    wrongCredentials()
+    {
+        this.errorText.setVisible(true);
+        //this.time.delayedCall(300000000, this.hideText()); este mierdon no va
+    }
+
+    hideText()
+    {
+        this.errorText.setVisible(false);
+    }
+
     // se que todo esto es super optimizable pero bueno
     userAlreadyExists()
     {
@@ -237,6 +309,7 @@ class Login extends Phaser.Scene
         this.buttonSignup.setVisible(false);
         this.usernameForm.setVisible(false);
         this.passwordForm.setVisible(false);
+        this.errorText.setVisible(false);
     }
 
     goBack()

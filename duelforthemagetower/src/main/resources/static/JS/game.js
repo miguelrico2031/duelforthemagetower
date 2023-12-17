@@ -4,6 +4,8 @@ const viewport =
     height: 720,
 }
 
+const user = {}
+
 let gameplayResourcesLoaded = false;
 
 const config =
@@ -22,10 +24,13 @@ const config =
             debug: false
         }
     },
-    dom: {
+    dom: 
+    {
         createContainer: true
-      },
-    scene: [Loading, Menu, Login, User, GameplayScene, Pause, Gameover, Credits, Tutorial]
+    },
+    scene: [Loading, Menu, Login, User, GameplayScene, Pause, Gameover, Credits, Tutorial],
+    username: "",
+    password: ""
 };
 
 const game = new Phaser.Game(config);

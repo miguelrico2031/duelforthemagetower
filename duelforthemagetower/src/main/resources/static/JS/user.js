@@ -14,6 +14,8 @@ class User extends Phaser.Scene
 
     buttonPressed;
 
+    user;
+
     userScreen;
     confirmationScreen;
     changeScreen;
@@ -28,6 +30,9 @@ class User extends Phaser.Scene
     hitsDeflected = 0;
     wins = 0;
     losses = 0;
+
+    oldPasswordForm;
+    newPasswordForm;
 
     // Botones
     buttonLogout;
@@ -47,6 +52,9 @@ class User extends Phaser.Scene
 
     preload()
     {
+        // Cuenta del usuario !!!!
+        this.loadUserAccount();
+
         // Sprites botones
         this.load.spritesheet("logout", "../Assets/UI/Screens/User/LogoutButton.png", { frameWidth: 167, frameHeight: 106 });
         this.load.spritesheet("delete", "../Assets/UI/Screens/User/DeleteAccountButton.png", { frameWidth: 167, frameHeight: 106 });
@@ -67,6 +75,10 @@ class User extends Phaser.Scene
 
         // Audio y música
         this.load.audio("warning", "../Assets/UI/Sounds/Denied.wav");
+
+        // Entrada
+        this.load.html({key : "oldpasswordform", url : "../oldpasswordform.html"});
+        this.load.html({key : "newpasswordform", url : "../newpasswordform.html"});
     }
 
     create()
@@ -81,7 +93,7 @@ class User extends Phaser.Scene
 
         // Texto
         // Nombre de usuario
-        this.username = this.add.text(viewport.width / 2, 125, 'USER', 
+        this.username = this.add.text(viewport.width / 2, 125, this.user.username, 
         { 
             fontFamily: 'GrapeSoda',
             fontSize: '64px', 
@@ -100,6 +112,16 @@ class User extends Phaser.Scene
             fontSize: '32px', 
             fill: '#000' 
         }).setOrigin(0.5, 0.5);
+
+        // Cambio de contraseña
+
+         // Contraseña vieja
+         this.oldPasswordForm = this.add.dom(650, 325).createFromCache("oldpasswordform");
+         this.oldPasswordForm.setPosition(960, 325).setVisible(false);
+
+         // Contraseña nueva
+         this.newPasswordForm = this.add.dom(650, 325).createFromCache("newpasswordform");
+         this.newPasswordForm.setPosition(960, 400).setVisible(false);
 
         // Botones
         this.buttonLogout = this.initLogoutButton();
@@ -294,29 +316,103 @@ class User extends Phaser.Scene
         return button;
     }
 
+    loadUserAccount()
+    {
+        user = 
+        {
+            username: this.game.config.username,
+            password: this.game.config.password
+        }
+    }
+
     logoutFunc()
     {
 
         // cosas de API para cerrar sesión
 
-        this.audioClose.play();
-        this.scene.start("LoginScene");
+        $.ajax
+            ({
+                method: "POST",
+                url: "http://127.0.0.1:8080/users/logout",
+                data: JSON.stringify(user),
+                headers: 
+                {
+                    "Content-type":"application/json"
+                }
+            })
+            .done((data, textStatus, jqXHR) => 
+            {
+                console.log(textStatus+" "+ jqXHR.status);
+                console.log(data);
+                console.log(jqXHR.statusCode())
+
+                // Borro los datos del config
+                this.game.config.username = "";
+                this.game.config.password = "";
+
+                this.audioClose.play();
+                this.scene.start("LoginScene", { isplaying: true });
+            })
+            .fail((data, textStatus, jqXHR) => 
+            {
+                console.log(textStatus+" "+jqXHR.status);
+                console.log("Error cerrando sesión");
+            });
+
     }
 
     askChangePassword()
     {
         this.hideUserBaseScreen();
         this.changeScreen.setVisible(true);
+        this.oldPasswordForm.setVisible(true);
+        this.newPasswordForm.setVisible(true);
         this.buttonSave.setVisible(true);
         this.buttonCancel.setVisible(true);
     }
 
-    changePassword()
+    changePassword() //DUDAS
     {
         // cosas de API
 
-        this.hideChangeScreen();
-        this.showUserBaseScreen();
+        const oldPassword = this.usernameForm.getChildByName("oldpass").value;
+        const newPassword = this.passwordForm.getChildByName("newpass").value;
+
+        if ((oldPassword !== '' && newPassword !== '') && (oldPassword === this.user.password))
+        {
+            // no se si tengo que modificar al usuario aqui y ahora pasarle esto o que
+            this.user.password(newPassword);
+            $.ajax
+            ({
+                method: "PUT",
+                url: "http://127.0.0.1:8080/users/changepassword",
+                data: JSON.stringify(user),
+                headers: 
+                {
+                    "Content-type":"application/json"
+                }
+            })
+            .done((data, textStatus, jqXHR) => 
+            {
+                console.log(textStatus+" "+ jqXHR.status);
+                console.log(data);
+                console.log(jqXHR.statusCode())
+
+                // Actualizo la contraseña en la config
+                this.game.config.password = newPassword;
+
+                this.hideChangeScreen();
+                this.showUserBaseScreen();
+            })
+            .fail((data, textStatus, jqXHR) => 
+            {
+                console.log(textStatus+" "+jqXHR.status);
+
+                console.log("Error cambiando la contraseña");
+            });            
+        }
+
+
     }
 
     askDeleteAccount()
@@ -336,9 +432,38 @@ class User extends Phaser.Scene
     {
         // cosas de API para borrar la cuenta
 
-        // y que te mande al menu de login supongo
-        this.scene.get("MenuScene").menuSong.setVolume(0.35);
-        this.scene.start("LoginScene");
+        $.ajax
+        ({
+            method: "DELETE",
+            url: "http://127.0.0.1:8080/users/delete",
+            data: JSON.stringify(user),
+            headers: 
+            {
+                "Content-type":"application/json"
+            }
+        })
+        .done((data, textStatus, jqXHR) => 
+        {
+            console.log(textStatus+" "+ jqXHR.status);
+            console.log(data);
+            console.log(jqXHR.statusCode())
+
+            // Borro los datos del config
+            this.game.config.username = "";
+            this.game.config.password = "";
+
+            // y que te mande al menu de login supongo
+            this.audioClose.play();
+            this.scene.get("MenuScene").menuSong.setVolume(0.35);
+            this.scene.start("LoginScene");
+        })
+        .fail((data, textStatus, jqXHR) => 
+        {
+            console.log(textStatus+" "+jqXHR.status);
+            console.log("Error eliminando la cuenta");
+        });            
+
+        
     }
 
     closeUserScreen() 
@@ -379,6 +504,8 @@ class User extends Phaser.Scene
     hideChangeScreen()
     {
         this.changeScreen.setVisible(false);
+        this.oldPasswordForm.setVisible(false);
+        this.newPasswordForm.setVisible(false);
         this.buttonCancel.setVisible(false);
         this.buttonSave.setVisible(false);
     }

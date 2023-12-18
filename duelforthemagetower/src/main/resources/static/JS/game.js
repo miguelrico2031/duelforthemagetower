@@ -13,6 +13,7 @@ let IP = ""
 const config =
 {
     parent: "parent",
+    autoCenter: Phaser.Scale.CENTER_BOTH,
     type: Phaser.AUTO,
     mipmapFilter: 'LINEAR_MIPMAP_LINEAR',
     width: viewport.width,

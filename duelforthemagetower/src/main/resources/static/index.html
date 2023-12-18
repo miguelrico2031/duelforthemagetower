@@ -6,20 +6,6 @@
     <title>Duel for the Mage Tower</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
-    
-    <script>
-        loadFont("GrapeSoda", "../Assets/Fonts/GrapeSoda.ttf");
-        
-        function loadFont(name, url) 
-        {
-            var newFont = new FontFace(name, `url(${url})`);
-            newFont.load().then(function (loaded) {
-                document.fonts.add(loaded);
-            }).catch(function (error) {
-                return error;
-            });
-        }
-    </script>
 
     <style type="text/css">
         body
@@ -53,7 +39,7 @@
         .formCSS
         {
             border-color: transparent;
-            font-family: GrapeSoda;
+            font: GrapeSoda;
         }
     </style>
 </head>
@@ -63,6 +49,8 @@
     <div class="container">
         <div class="vertical-center">
             <script src="JS/loading.js"></script>
+            <script src="JS/loadFonts.js"></script>
+            <script src="JS/button.js"></script>
             <script src="JS/spell.js"></script>
             <script src="JS/wizard.js"></script>
             <script src="JS/pause.js"></script>

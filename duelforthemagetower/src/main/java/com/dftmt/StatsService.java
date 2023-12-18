@@ -62,8 +62,11 @@ public class StatsService
 		UserStats existingStat = getStats(stat.getUsername());
 		if(existingStat == null) return null;
 		
-		existingStat.increaseStat1(stat.getStat1());
-		existingStat.increaseStat2(stat.getStat2());
+		existingStat.increaseHitsGiven(stat.getHitsGiven());
+		existingStat.increaseHitsTaken(stat.getHitsTaken());
+		existingStat.increaseHitsDeflected(stat.getHitsDeflected());
+		existingStat.increaseWins(stat.getWins());
+		existingStat.increaseLosses(stat.getLosses());
 		
 		saveStats();
 		return existingStat;
@@ -89,8 +92,11 @@ public class StatsService
 		System.out.println("\nSTATS:");
 		for (String key: stats.keySet()) {
 		    UserStats value = stats.get(key);
-		    System.out.println(key + " -> stat1: " + 
-		    value.getStat1() + " -> stat2: " + value.getStat2());
+		    System.out.println(key + " -> Hits Given: " + 
+		    value.getHitsGiven() + " -> Hits Taken: " + value.getHitsTaken()
+		    + " -> Hits Deflected: " + value.getHitsDeflected()
+		    + " -> Wins: " + value.getWins()
+		    + " -> Losses: " + value.getLosses());
 		}
 	}
 	

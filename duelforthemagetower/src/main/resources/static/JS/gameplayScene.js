@@ -28,6 +28,9 @@ class GameplayScene extends Phaser.Scene
     healthbar1;
     healthbar2;
 
+    playerStats; 
+
+
     pauseKeyIsPressed;
     pauseSound;
     gameoverSound;
@@ -109,6 +112,8 @@ class GameplayScene extends Phaser.Scene
 
     create()
     {   
+        // Aqui en el username deberia ir el usuario loggeado
+        this.playerStats = {username : "miguel", hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
 
         this._audioBlast = this.sound.add("blastAudio");
         this._audioShield = this.sound.add("shieldAudio");
@@ -234,6 +239,9 @@ class GameplayScene extends Phaser.Scene
     }
 
     onShieldCollision(spell, other){
+        if(other.id === 1){
+            this.playerStats.hitsDeflected++;
+        }
         this._audioDeflect.play();
     }
 
@@ -281,10 +289,12 @@ class GameplayScene extends Phaser.Scene
 
     processDeath(){
         if(!this.player1._isAlive){
+            this.playerStats.losses++;
             this.launchGameOverScene(2);
         }
 
         if(!this.player2._isAlive){
+            this.playerStats.wins++;
             this.launchGameOverScene(1);
         }
     }
@@ -535,6 +545,8 @@ class GameplayScene extends Phaser.Scene
 
     launchGameOverScene(winnerId){
 
+        this.updatePlayerStats();
+
         // Pausa la música
         this._musicIngame.pause();
         // Sonidito game over
@@ -551,5 +563,18 @@ class GameplayScene extends Phaser.Scene
             this.scene.wake('GameoverScene', { winner: winnerId }); // reactiva el menú de pausa (que ya estaba por encima)
         }
         this.scene.run('GameoverScene', { winner: winnerId });
+    }
+
+    updatePlayerStats(){
+        $.ajax({
+            type: 'PUT',
+            url: IP + "/stats/increase",
+            contentType: 'application/json',
+            data: JSON.stringify(this.playerStats)
+        }).done(function (data) {
+            console.log('SUCCESS');
+        }).fail(function (error) {
+            console.log('FAIL');
+        });
     }
 }

@@ -8,6 +8,8 @@ let user = null;
 
 let gameplayResourcesLoaded = false;
 
+let IP = ""
+
 const config =
 {
     parent: "parent",
@@ -24,13 +26,12 @@ const config =
             debug: false
         }
     },
+    scene: [Loading, Menu, Login, User, GameplayScene, Pause, Gameover, Stats, Credits, Tutorial],
     dom: 
     {
         createContainer: true
     },
-    scene: [Loading, Menu, Login, User, GameplayScene, Pause, Gameover, Credits, Tutorial],
-    // username: "",
-    // password: ""
+
 };
 
 const game = new Phaser.Game(config);

@@ -196,7 +196,7 @@ class Login extends Phaser.Scene
             $.ajax
             ({
                 method: "POST",
-                url: "http://127.0.0.1:8080/users/login",
+                url: IP + "/users/login",
                 data: JSON.stringify(loginUser),
                 headers: 
                 {
@@ -256,7 +256,7 @@ class Login extends Phaser.Scene
             $.ajax
             ({
                 method: "POST",
-                url: "http://127.0.0.1:8080/users/signup",
+                url: IP + "/users/signup",
                 data: JSON.stringify(loginUser),
                 headers: 
                 {

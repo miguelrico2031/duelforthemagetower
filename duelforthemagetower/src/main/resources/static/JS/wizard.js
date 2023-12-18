@@ -128,6 +128,12 @@ class Wizard
     
     spellHit(wizard, spell)
     {
+        if(this.id === 1){
+            this._scene.playerStats.hitsTaken++;
+        }
+        if(this.id === 2){
+            this._scene.playerStats.hitsGiven++;
+        }
         this.takeDamage(spell.damage);
         this._scene._audioHit.play();
         spell.explode();

@@ -247,7 +247,7 @@ class Login extends Phaser.Scene
         if (inputUsername !== '' && inputPassword !== '')
         {
 
-            const loginUser = 
+            const signupUser = 
             {
                 username: inputUsername,
                 password: inputPassword
@@ -257,7 +257,7 @@ class Login extends Phaser.Scene
             ({
                 method: "POST",
                 url: IP + "/users/signup",
-                data: JSON.stringify(loginUser),
+                data: JSON.stringify(signupUser),
                 headers: 
                 {
                     "Content-type":"application/json"

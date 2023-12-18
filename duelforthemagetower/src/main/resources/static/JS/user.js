@@ -66,7 +66,7 @@ class User extends Phaser.Scene
         this.load.image("error", "../Assets/UI/Screens/User/ChangePassError.png");
 
         // Fuente (FUNCION CREADA ABAJO)
-        this.loadFont("GrapeSoda", "../Assets/Fonts/GrapeSoda.ttf");
+        //this.loadFont("GrapeSoda", "../Assets/Fonts/GrapeSoda.ttf");
 
         // Audio y música
         this.load.audio("warning", "../Assets/UI/Sounds/Denied.wav");
@@ -358,7 +358,7 @@ class User extends Phaser.Scene
         this.buttonCancel.setVisible(true);
     }
 
-    changePassword() //DUDAS
+    changePassword() 
     {
         // cosas de API
         console.log("cambiar contraseña")
@@ -369,12 +369,18 @@ class User extends Phaser.Scene
         if ((oldPassword !== '' && newPassword !== '') && (oldPassword === user.password))
         {
             // no se si tengo que modificar al usuario aqui y ahora pasarle esto o que
-            this.user.password(newPassword);
+
+            const modifiedUser = 
+            {
+                username: user.username,
+                password: newPassword
+            }
+
             $.ajax
             ({
                 method: "PUT",
                 url: IP + "/users/changepassword",
-                data: JSON.stringify(user),
+                data: JSON.stringify(modifiedUser),
                 headers: 
                 {
                     "Content-type":"application/json"
@@ -497,13 +503,13 @@ class User extends Phaser.Scene
         this.buttonSave.setVisible(false);
     }
 
-    loadFont(name, url) {
-        var newFont = new FontFace(name, `url(${url})`);
-        newFont.load().then(function (loaded) {
-            document.fonts.add(loaded);
-        }).catch(function (error) {
-            return error;
-        });
-    }
+    // loadFont(name, url) {
+    //     var newFont = new FontFace(name, `url(${url})`);
+    //     newFont.load().then(function (loaded) {
+    //         document.fonts.add(loaded);
+    //     }).catch(function (error) {
+    //         return error;
+    //     });
+    // }
 
 }

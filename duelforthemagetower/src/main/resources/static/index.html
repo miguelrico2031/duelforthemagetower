@@ -2,9 +2,26 @@
 <html lang="en"> 
 <head> 
     <meta charset="UTF-8" />
+    <link rel="icon" href="favicon.gif" type="image/gif" >
     <title>Duel for the Mage Tower</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
+    
+    <script>
+        loadFont("GrapeSoda", "../Assets/Fonts/GrapeSoda.ttf");
+
+        var newFont = new FontFace(name, `url(${url})`);
+        loadFont(name, url) 
+        {
+            var newFont = new FontFace(name, `url(${url})`);
+            newFont.load().then(function (loaded) {
+                document.fonts.add(loaded);
+            }).catch(function (error) {
+                return error;
+            });
+        }
+    </script>
+
     <style type="text/css">
         body
         {
@@ -26,7 +43,6 @@
             position: relative;
             /*border: 3px solid green;*/
         }
-
         .vertical-center 
         {
             margin: 0;
@@ -34,6 +50,11 @@
             top: 50%;
             -ms-transform: translateY(-50%);
             transform: translateY(-50%);
+        }
+        .formCSS
+        {
+            border-color: transparent;
+            font-family: GrapeSoda;
         }
     </style>
 </head>

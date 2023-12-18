@@ -4,7 +4,7 @@ const viewport =
     height: 720,
 }
 
-const user = {}
+let user = null;
 
 let gameplayResourcesLoaded = false;
 
@@ -29,8 +29,8 @@ const config =
         createContainer: true
     },
     scene: [Loading, Menu, Login, User, GameplayScene, Pause, Gameover, Credits, Tutorial],
-    username: "",
-    password: ""
+    // username: "",
+    // password: ""
 };
 
 const game = new Phaser.Game(config);

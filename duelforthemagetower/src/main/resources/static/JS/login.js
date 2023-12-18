@@ -187,7 +187,7 @@ class Login extends Phaser.Scene
         if (inputUsername !== '' && inputPassword !== '')
         {
             
-            const user = 
+            const loginUser = 
             {
                 username: inputUsername,
                 password: inputPassword
@@ -197,7 +197,7 @@ class Login extends Phaser.Scene
             ({
                 method: "POST",
                 url: "http://127.0.0.1:8080/users/login",
-                data: JSON.stringify(user),
+                data: JSON.stringify(loginUser),
                 headers: 
                 {
                     "Content-type":"application/json"
@@ -210,8 +210,11 @@ class Login extends Phaser.Scene
                 console.log(jqXHR.statusCode())
 
                 // Actualizo los datos para saber que usuario soy
-                this.game.config.username = inputUsername;
-                this.game.config.password = inputPassword;
+                user = 
+                {
+                    username: data.username,
+                    password: data.password
+                }
 
                 this.audioOpen.play();
                 this.scene.start("UserScene", { isplaying: true });
@@ -243,10 +246,8 @@ class Login extends Phaser.Scene
 
         if (inputUsername !== '' && inputPassword !== '')
         {
-            this.game.config.username = inputUsername;
-            this.game.config.password = inputPassword;
 
-            const user = 
+            const loginUser = 
             {
                 username: inputUsername,
                 password: inputPassword
@@ -256,7 +257,7 @@ class Login extends Phaser.Scene
             ({
                 method: "POST",
                 url: "http://127.0.0.1:8080/users/signup",
-                data: JSON.stringify(user),
+                data: JSON.stringify(loginUser),
                 headers: 
                 {
                     "Content-type":"application/json"
@@ -271,7 +272,15 @@ class Login extends Phaser.Scene
                 // creo el usuario nuevo y le inicio sesion directamente para ahorrar mensaje de confirmacion
                 // de "cuenta creada"
 
-                this.loginFunc();
+                // Actualizo los datos para saber que usuario soy
+                user = 
+                {
+                    username: data.username,
+                    password: data.password
+                }
+
+                this.audioOpen.play();
+                this.scene.start("UserScene", { isplaying: true });
             })
             .fail((data, textStatus, jqXHR) => 
             {

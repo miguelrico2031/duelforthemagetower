@@ -14,8 +14,6 @@ class User extends Phaser.Scene
 
     buttonPressed;
 
-    user;
-
     userScreen;
     confirmationScreen;
     changeScreen;
@@ -23,7 +21,7 @@ class User extends Phaser.Scene
 
     // Texto
 
-    username;
+    usernameText;
     stats;
     hitsGiven = 0;
     hitsTaken = 0;
@@ -52,9 +50,6 @@ class User extends Phaser.Scene
 
     preload()
     {
-        // Cuenta del usuario !!!!
-        this.loadUserAccount();
-
         // Sprites botones
         this.load.spritesheet("logout", "../Assets/UI/Screens/User/LogoutButton.png", { frameWidth: 167, frameHeight: 106 });
         this.load.spritesheet("delete", "../Assets/UI/Screens/User/DeleteAccountButton.png", { frameWidth: 167, frameHeight: 106 });
@@ -93,7 +88,7 @@ class User extends Phaser.Scene
 
         // Texto
         // Nombre de usuario
-        this.username = this.add.text(viewport.width / 2, 125, this.user.username, 
+        this.usernameText = this.add.text(viewport.width / 2, 125, user.username, 
         { 
             fontFamily: 'GrapeSoda',
             fontSize: '64px', 
@@ -118,6 +113,8 @@ class User extends Phaser.Scene
          // Contraseña vieja
          this.oldPasswordForm = this.add.dom(650, 325).createFromCache("oldpasswordform");
          this.oldPasswordForm.setPosition(960, 325).setVisible(false);
+         console.log("passform creado")
+         console.log(this.oldPasswordForm)
 
          // Contraseña nueva
          this.newPasswordForm = this.add.dom(650, 325).createFromCache("newpasswordform");
@@ -316,15 +313,6 @@ class User extends Phaser.Scene
         return button;
     }
 
-    loadUserAccount()
-    {
-        user = 
-        {
-            username: this.game.config.username,
-            password: this.game.config.password
-        }
-    }
-
     logoutFunc()
     {
 
@@ -346,9 +334,9 @@ class User extends Phaser.Scene
                 console.log(data);
                 console.log(jqXHR.statusCode())
 
-                // Borro los datos del config
-                this.game.config.username = "";
-                this.game.config.password = "";
+                // Borro los datos globales
+                user.username = null;
+                user.password = null;
 
                 this.audioClose.play();
                 this.scene.start("LoginScene", { isplaying: true });
@@ -374,11 +362,12 @@ class User extends Phaser.Scene
     changePassword() //DUDAS
     {
         // cosas de API
+        console.log("cambiar contraseña")
+        console.log(this.oldPasswordForm)
+        const oldPassword = this.oldPasswordForm.getChildByName("oldpass").value;
+        const newPassword = this.newPasswordForm.getChildByName("newpass").value;
 
-        const oldPassword = this.usernameForm.getChildByName("oldpass").value;
-        const newPassword = this.passwordForm.getChildByName("newpass").value;
-
-        if ((oldPassword !== '' && newPassword !== '') && (oldPassword === this.user.password))
+        if ((oldPassword !== '' && newPassword !== '') && (oldPassword === user.password))
         {
             // no se si tengo que modificar al usuario aqui y ahora pasarle esto o que
             this.user.password(newPassword);
@@ -398,8 +387,8 @@ class User extends Phaser.Scene
                 console.log(data);
                 console.log(jqXHR.statusCode())
 
-                // Actualizo la contraseña en la config
-                this.game.config.password = newPassword;
+                // Actualizo la contraseña en la variable global
+                user.password = data.password;
 
                 this.hideChangeScreen();
                 this.showUserBaseScreen();
@@ -449,8 +438,8 @@ class User extends Phaser.Scene
             console.log(jqXHR.statusCode())
 
             // Borro los datos del config
-            this.game.config.username = "";
-            this.game.config.password = "";
+            user.username = null;
+            user.password = null;
 
             // y que te mande al menu de login supongo
             this.audioClose.play();

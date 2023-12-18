@@ -4,10 +4,13 @@ const viewport =
     height: 720,
 }
 
+let user = null;
+
 let gameplayResourcesLoaded = false;
 
 const config =
 {
+    parent: "form",
     type: Phaser.AUTO,
     mipmapFilter: 'LINEAR_MIPMAP_LINEAR',
     width: viewport.width,
@@ -21,7 +24,12 @@ const config =
             debug: false
         }
     },
-    scene: [Loading, Menu, Login, User, GameplayScene, Pause, Gameover, Stats, Credits, Tutorial]
+    scene: [Loading, Menu, Login, User, GameplayScene, Pause, Gameover, Stats, Credits, Tutorial],
+    dom: 
+    {
+        createContainer: true
+    },
+
 };
 
 const game = new Phaser.Game(config);

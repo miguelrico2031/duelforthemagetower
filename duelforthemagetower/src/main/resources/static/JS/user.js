@@ -94,6 +94,8 @@ class User extends Phaser.Scene
         }).setOrigin(0.5, 0.5);
 
         // Estadísticas
+
+        
         this.stats = this.add.text(viewport.width / 2, 350, 
         'Golpes asestados:\t\t' + this.hitsGiven + '\n' +
         'Golpes recibidos:\t\t' + this.hitsTaken + '\n' +
@@ -105,6 +107,25 @@ class User extends Phaser.Scene
             fontSize: '32px', 
             fill: '#000' 
         }).setOrigin(0.5, 0.5);
+        
+        $.ajax({
+            url: IP + "/stats/" + user.username
+        }).done((data) =>
+        {
+            //this.loadUserStats()
+
+            this.stats.text = 
+                ('Golpes asestados:\t\t' + data.hitsGiven + '\n' +
+                'Golpes recibidos:\t\t' + data.hitsTaken + '\n' +
+                'Golpes desviados:\t\t' + data.hitsDeflected + '\n' +
+                'Victorias:\t\t' + data.wins + '\n' +
+                'Derrotas:\t\t' + data.losses);
+
+        })
+        .fail((error) =>
+        {
+            console.log(error);
+        });
 
         // Audios
         this.audioClick = this.sound.add("click");

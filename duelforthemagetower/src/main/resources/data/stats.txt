@@ -1,1 +1,1 @@
-{"miguel":{"username":"miguel","hitsGiven":26,"hitsTaken":22,"hitsDeflected":7,"wins":4,"losses":2},"julio":{"username":"julio","hitsGiven":0,"hitsTaken":0,"hitsDeflected":0,"wins":0,"losses":0}}
+{"miguel":{"username":"miguel","hitsGiven":32,"hitsTaken":38,"hitsDeflected":7,"wins":5,"losses":4},"julio":{"username":"julio","hitsGiven":0,"hitsTaken":0,"hitsDeflected":0,"wins":0,"losses":0}}

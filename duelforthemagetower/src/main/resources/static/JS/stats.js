@@ -107,10 +107,10 @@ class Stats extends Phaser.Scene
         }).setOrigin(0.5, 0.5);
 
     
-            })
-            .catch((error) => {
-                console.error("Error en la solicitud AJAX:", error);
-            });
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud AJAX:", error);
+        });
 
         
     }

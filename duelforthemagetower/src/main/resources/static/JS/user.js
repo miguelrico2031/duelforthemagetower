@@ -73,6 +73,7 @@ class User extends Phaser.Scene
         this.load.html({key : "newpasswordform", url : "../newpasswordform.html"});
     }
 
+
     create()
     {
         this.buttonPressed = false;

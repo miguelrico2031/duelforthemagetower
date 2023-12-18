@@ -546,7 +546,7 @@ class GameplayScene extends Phaser.Scene
     launchGameOverScene(winnerId){
 
         this.updatePlayerStats();
-
+        this.enableInput(false);
         // Pausa la música
         this._musicIngame.pause();
         // Sonidito game over
@@ -576,5 +576,11 @@ class GameplayScene extends Phaser.Scene
         }).fail(function (error) {
             console.log('FAIL');
         });
+    }
+
+    enableInput(enable) 
+    {
+        if(enable) this.input.keyboard.enableGlobalCapture() 
+        else this.input.keyboard.disableGlobalCapture() 
     }
 }

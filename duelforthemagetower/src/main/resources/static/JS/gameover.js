@@ -163,7 +163,7 @@ class Gameover extends Phaser.Scene{
             .on('pointerup', () => 
             { 
                 this.enterButtonRestState(this.buttonGg);
-                //this.showHelp(); 
+                this.ggButtonFunction();
             })
             // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
             .on('pointerout', () => this.enterButtonRestState(this.buttonGg) 
@@ -228,6 +228,50 @@ class Gameover extends Phaser.Scene{
 
         return button;
     }
+
+    ggButtonFunction(){
+
+        console.log("okkk");
+        if (this.ChatStarted == true) this.startChatFunction();
+        
+    }
+
+    //ajax
+    startChatFunction() {
+
+        const gameUser = 
+        {
+            username: user.username,
+            password: user.password
+        };
+        $.ajax
+            ({
+                method: "POST",
+                url: IP + "/chat/start",
+                data: JSON.stringify(gameUser),
+                headers: 
+                {
+                    "Content-type":"application/json"
+                }
+            })
+
+            .done((data, textStatus, jqXHR) => 
+            {
+                // DEBUG estado servidor
+                console.log(textStatus+" "+ jqXHR.status);
+                console.log(data);
+                console.log(jqXHR.statusCode())  
+                console.log("chat iniciado");
+                this.ChatStarted = true;          
+            })
+            .fail((data, textStatus, jqXHR) => 
+            {
+                // Texto de error
+                console.log(textStatus+" "+jqXHR.status);
+                console.log("error al iniciar chat");
+            });  
+    }
+
 
 
 

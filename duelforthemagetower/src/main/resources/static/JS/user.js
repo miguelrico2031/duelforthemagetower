@@ -335,8 +335,7 @@ class User extends Phaser.Scene
                 console.log(jqXHR.statusCode())
 
                 // Borro los datos globales
-                user.username = null;
-                user.password = null;
+                user = null;
 
                 this.audioClose.play();
                 this.scene.start("LoginScene", { isplaying: true });
@@ -438,8 +437,7 @@ class User extends Phaser.Scene
             console.log(jqXHR.statusCode())
 
             // Borro los datos del config
-            user.username = null;
-            user.password = null;
+            user = null;
 
             // y que te mande al menu de login supongo
             this.audioClose.play();

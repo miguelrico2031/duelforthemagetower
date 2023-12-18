@@ -10,7 +10,7 @@ let gameplayResourcesLoaded = false;
 
 const config =
 {
-    parent: "form",
+    parent: "parent",
     type: Phaser.AUTO,
     mipmapFilter: 'LINEAR_MIPMAP_LINEAR',
     width: viewport.width,

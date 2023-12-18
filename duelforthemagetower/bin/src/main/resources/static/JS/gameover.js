@@ -7,6 +7,7 @@ class Gameover extends Phaser.Scene{
 
     _buttonMenu;
     _buttonPlayAgain;
+    _buttonStats;
 
     _audioClick;
     _audioClack;
@@ -21,6 +22,7 @@ class Gameover extends Phaser.Scene{
 
         this.load.spritesheet("btn_menu", "../Assets/UI/Screens/GameOver/MenuButton.png", { frameWidth: 167, frameHeight: 106 });
         this.load.spritesheet("btn_replay", "../Assets/UI/Screens/GameOver/ReplayButton.png", { frameWidth: 167, frameHeight: 106 });
+        this.load.spritesheet("btn_stats", "../Assets/UI/Screens/GameOver/StatsButton.png", { frameWidth: 167, frameHeight: 106 });
         this.load.audio("click", "../Assets/UI/Sounds/Minimalist4.wav");
         this.load.audio("clack", "../Assets/UI/Sounds/Minimalist7.wav");
     }
@@ -43,6 +45,8 @@ class Gameover extends Phaser.Scene{
         this._audioClack = this.sound.add("clack");
         
         this._buttonMenu = this.initMenuButton();
+
+        this._buttonStats = this.initStatsButton();
 
         this._buttonPlayAgain = this.initPlayAgainButton();
     }
@@ -73,14 +77,30 @@ class Gameover extends Phaser.Scene{
                 this.exitMenu(); 
             })
             .on('pointerout', () => this.enterButtonRestState(this._buttonMenu) 
-        );
+        ).setScale(.7);
+
+        return button;
+    }
+
+    initStatsButton()
+    {
+        let button = this.add.sprite(viewport.width/2, 40 + viewport.height/2, "btn_stats")
+            .setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => { this.enterButtonClickState(this._buttonStats) })
+            .on('pointerup', () => 
+            { 
+                this.enterButtonRestState(this._buttonStats);
+                this.seeStats(); 
+            })
+            .on('pointerout', () => this.enterButtonRestState(this._buttonStats) 
+        ).setScale(.7);
 
         return button;
     }
 
     initPlayAgainButton()
     {
-        let button = this.add.sprite(viewport.width/2, viewport.height/2 - 10, "btn_replay")
+        let button = this.add.sprite(viewport.width/2, viewport.height/2 - 40, "btn_replay")
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => { this.enterButtonClickState(this._buttonPlayAgain) })
             .on('pointerup', () => 
@@ -89,7 +109,7 @@ class Gameover extends Phaser.Scene{
                 this.restartGame(); 
             }) 
             .on('pointerout', () => this.enterButtonRestState(this._buttonPlayAgain)
-        );
+        ).setScale(.7);
 
         return button;
     }
@@ -111,5 +131,11 @@ class Gameover extends Phaser.Scene{
         
     }
 
+    seeStats(){
+        this.scene.sleep("GameoverScene");
+        
+        this.scene.start("StatsScene"); 
+        
+    }
 
 }

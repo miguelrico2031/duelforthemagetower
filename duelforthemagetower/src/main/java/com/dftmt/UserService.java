@@ -1,17 +1,19 @@
 package com.dftmt;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;  
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 @Service
 public class UserService
 {
 	private HashMap<String, GameUser> users = null;
+	private List<GameUser> loggedUsers = new ArrayList<>();
 	
 	private final String filePath = System.getProperty("user.dir") + "/src/main/resources/data/users.txt";
 
@@ -36,6 +38,7 @@ public class UserService
 		return null;
 	}
 	
+	
 	public GameUser logIn(GameUser user)
 	{
 		if(users == null) loadUsers();
@@ -48,6 +51,7 @@ public class UserService
 		
 		existentUser.setLogged(true);
 		printUsers();
+		loggedUsers.add(existentUser);
 		return existentUser;
 	}
 	
@@ -62,6 +66,7 @@ public class UserService
 		
 		existentUser.setLogged(false);
 		printUsers();
+		loggedUsers.remove(existentUser);
 		return existentUser;
 	}
 	
@@ -91,10 +96,13 @@ public class UserService
 		
 		users.remove(existentUser.getUsername());
 		printUsers();
+		loggedUsers.remove(existentUser);
 		saveUsers();
 		return existentUser;
 
 	}
+	
+	public final List<GameUser> getLoggedUsers() { return loggedUsers; }
 	
 	private void printUsers()
 	{
@@ -109,7 +117,7 @@ public class UserService
 	}
 	
 	
-	public void saveUsers()
+	private void saveUsers()
 	{
 	    ObjectMapper objectMapper = new ObjectMapper();
 
@@ -126,7 +134,7 @@ public class UserService
 	    }
     }
 	
-	public void loadUsers()
+	private void loadUsers()
 	{
         ObjectMapper objectMapper = new ObjectMapper();
 

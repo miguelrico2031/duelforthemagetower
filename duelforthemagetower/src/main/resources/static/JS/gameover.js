@@ -9,6 +9,8 @@ class Gameover extends Phaser.Scene{
     _buttonPlayAgain;
     _buttonStats;
 
+    buttonGg;
+
     _audioClick;
     _audioClack;
 
@@ -20,9 +22,15 @@ class Gameover extends Phaser.Scene{
         this.load.image("p1_win", "../Assets/UI/Screens/GameOver/P1Win.png");
         this.load.image("p2_win", "../Assets/UI/Screens/GameOver/P2Win.png");
 
+        this.load.spritesheet("bye", "../Assets/UI/Screens/GameOver/byeButton.png", { frameWidth: 320, frameHeight: 45 });
+        this.load.spritesheet("congrats", "../Assets/UI/Screens/GameOver/enhorabuenaButton.png", { frameWidth: 320, frameHeight: 45 });
+        this.load.spritesheet("other", "../Assets/UI/Screens/GameOver/otraButton.png", { frameWidth: 320, frameHeight: 45 });
+        this.load.spritesheet("gg", "../Assets/UI/Screens/GameOver/bienButton.png", { frameWidth: 320, frameHeight: 45 });
+
         this.load.spritesheet("btn_menu", "../Assets/UI/Screens/GameOver/MenuButton.png", { frameWidth: 167, frameHeight: 106 });
         this.load.spritesheet("btn_replay", "../Assets/UI/Screens/GameOver/ReplayButton.png", { frameWidth: 167, frameHeight: 106 });
         this.load.spritesheet("btn_stats", "../Assets/UI/Screens/GameOver/StatsButton.png", { frameWidth: 167, frameHeight: 106 });
+        
         this.load.audio("click", "../Assets/UI/Sounds/Minimalist4.wav");
         this.load.audio("clack", "../Assets/UI/Sounds/Minimalist7.wav");
     }
@@ -49,6 +57,13 @@ class Gameover extends Phaser.Scene{
         this._buttonStats = this.initStatsButton();
 
         this._buttonPlayAgain = this.initPlayAgainButton();
+
+        this.buttonGg = this.initGgButton();
+        this.buttonCongrats = this.initCongratsButton();
+        this.buttonOther = this.initOtherButton();
+        this.buttonBye = this.initByeButton();
+
+
     }
 
     
@@ -68,7 +83,7 @@ class Gameover extends Phaser.Scene{
 
     initMenuButton()
     {
-        let button = this.add.sprite(viewport.width/2, 120 + viewport.height/2, "btn_menu")
+        let button = this.add.sprite(150 + viewport.width/2, 230 + viewport.height/2, "btn_menu")
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => { this.enterButtonClickState(this._buttonMenu) })
             .on('pointerup', () => 
@@ -84,7 +99,7 @@ class Gameover extends Phaser.Scene{
 
     initStatsButton()
     {
-        let button = this.add.sprite(viewport.width/2, 40 + viewport.height/2, "btn_stats")
+        let button = this.add.sprite(viewport.width/2 - 150, 230 + viewport.height/2, "btn_stats")
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => { this.enterButtonClickState(this._buttonStats) })
             .on('pointerup', () => 
@@ -100,7 +115,7 @@ class Gameover extends Phaser.Scene{
 
     initPlayAgainButton()
     {
-        let button = this.add.sprite(viewport.width/2, viewport.height/2 - 40, "btn_replay")
+        let button = this.add.sprite(viewport.width/2, 230 + viewport.height/2, "btn_replay")
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => { this.enterButtonClickState(this._buttonPlayAgain) })
             .on('pointerup', () => 
@@ -137,5 +152,83 @@ class Gameover extends Phaser.Scene{
         this.scene.start("StatsScene"); 
         
     }
+
+    initGgButton()
+    {
+        
+        let button = this.add.sprite(635, 300, "gg")
+            .setInteractive({ useHandCursor: true })
+            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
+            .on('pointerdown', () => { this.enterButtonClickState(this.buttonGg) })
+            .on('pointerup', () => 
+            { 
+                this.enterButtonRestState(this.buttonGg);
+                //this.showHelp(); 
+            })
+            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
+            .on('pointerout', () => this.enterButtonRestState(this.buttonGg) 
+        );
+
+        return button;
+    }
+
+    initCongratsButton()
+    {
+        
+        let button = this.add.sprite(635, 420, "congrats")
+            .setInteractive({ useHandCursor: true })
+            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
+            .on('pointerdown', () => { this.enterButtonClickState(this.buttonCongrats) })
+            .on('pointerup', () => 
+            { 
+                this.enterButtonRestState(this.buttonCongrats);
+                //this.showHelp(); 
+            })
+            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
+            .on('pointerout', () => this.enterButtonRestState(this.buttonCongrats) 
+        );
+
+        return button;
+    }
+
+    initOtherButton()
+    {
+        
+        let button = this.add.sprite(635, 360, "other")
+            .setInteractive({ useHandCursor: true })
+            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
+            .on('pointerdown', () => { this.enterButtonClickState(this.buttonOther) })
+            .on('pointerup', () => 
+            { 
+                this.enterButtonRestState(this.buttonOther);
+                //this.showHelp(); 
+            })
+            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
+            .on('pointerout', () => this.enterButtonRestState(this.buttonOther) 
+        );
+
+        return button;
+    }
+
+    initByeButton()
+    {
+        
+        let button = this.add.sprite(635, 480, "bye")
+            .setInteractive({ useHandCursor: true })
+            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
+            .on('pointerdown', () => { this.enterButtonClickState(this.buttonBye) })
+            .on('pointerup', () => 
+            { 
+                this.enterButtonRestState(this.buttonBye);
+                //this.showHelp(); 
+            })
+            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
+            .on('pointerout', () => this.enterButtonRestState(this.buttonBye) 
+        );
+
+        return button;
+    }
+
+
 
 }

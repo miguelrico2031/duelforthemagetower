@@ -2,9 +2,11 @@
 <html lang="en"> 
 <head> 
     <meta charset="UTF-8" />
+    <link rel="icon" href="favicon.gif" type="image/gif" >
     <title>Duel for the Mage Tower</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
+
     <style type="text/css">
         body
         {
@@ -26,7 +28,6 @@
             position: relative;
             /*border: 3px solid green;*/
         }
-
         .vertical-center 
         {
             margin: 0;
@@ -34,6 +35,11 @@
             top: 50%;
             -ms-transform: translateY(-50%);
             transform: translateY(-50%);
+        }
+        .formCSS
+        {
+            border-color: transparent;
+            font: GrapeSoda;
         }
     </style>
 </head>
@@ -43,6 +49,8 @@
     <div class="container">
         <div class="vertical-center">
             <script src="JS/loading.js"></script>
+            <script src="JS/loadFonts.js"></script>
+            <script src="JS/button.js"></script>
             <script src="JS/spell.js"></script>
             <script src="JS/wizard.js"></script>
             <script src="JS/pause.js"></script>

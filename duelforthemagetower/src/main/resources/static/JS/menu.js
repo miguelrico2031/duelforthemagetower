@@ -244,8 +244,17 @@ class Menu extends Phaser.Scene
 
     loginScreen()
     {
-        this.audioOpen.play();
-        this.scene.start("LoginScene");
+        
+
+        if (user === null)
+        {
+            this.scene.start("LoginScene");
+            this.audioOpen.play();
+        }
+        else
+        {
+            this.loginFunction();
+        }
     }
 
     toggleSound()
@@ -263,5 +272,39 @@ class Menu extends Phaser.Scene
             this.buttonMute.setVisible(false);
         }
 
+    }
+
+    loginFunction()
+    {
+        const loginUser = 
+        {
+            username: user.username,
+            password: user.password
+        }
+
+        $.ajax
+        ({
+            method: "POST",
+            url: "http://127.0.0.1:8080/users/login",
+            data: JSON.stringify(loginUser),
+            headers: 
+            {
+                "Content-type":"application/json"
+            }
+        })
+        .done((data, textStatus, jqXHR) => 
+        {
+            console.log(textStatus+" "+ jqXHR.status);
+            console.log(data);
+            console.log(jqXHR.statusCode())
+
+            this.audioOpen.play();
+            this.scene.start("UserScene", { isplaying: true });
+
+        })
+        .fail((data, textStatus, jqXHR) => 
+        {
+            console.log(textStatus+" "+jqXHR.status);
+        });
     }
 }

@@ -9,9 +9,8 @@
     
     <script>
         loadFont("GrapeSoda", "../Assets/Fonts/GrapeSoda.ttf");
-
-        var newFont = new FontFace(name, `url(${url})`);
-        loadFont(name, url) 
+        
+        function loadFont(name, url) 
         {
             var newFont = new FontFace(name, `url(${url})`);
             newFont.load().then(function (loaded) {

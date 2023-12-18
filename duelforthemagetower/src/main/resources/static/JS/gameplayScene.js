@@ -568,7 +568,7 @@ class GameplayScene extends Phaser.Scene
     updatePlayerStats(){
         $.ajax({
             type: 'PUT',
-            url: "http://127.0.0.1:8080/stats/increase",
+            url: IP + "/stats/increase",
             contentType: 'application/json',
             data: JSON.stringify(this.playerStats)
         }).done(function (data) {

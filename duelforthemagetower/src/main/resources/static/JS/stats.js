@@ -122,7 +122,7 @@ class Stats extends Phaser.Scene
     _getUser(username) {
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: "http://127.0.0.1:8080/stats/" + username
+                url: IP + "/stats/" + username
             }).done(function (data) {
                 resolve(data);
             }).fail(function (error) {

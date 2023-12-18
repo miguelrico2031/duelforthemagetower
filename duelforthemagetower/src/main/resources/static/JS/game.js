@@ -8,6 +8,8 @@ let user = null;
 
 let gameplayResourcesLoaded = false;
 
+let IP = ""
+
 const config =
 {
     parent: "form",

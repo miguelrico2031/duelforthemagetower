@@ -321,7 +321,7 @@ class User extends Phaser.Scene
         $.ajax
             ({
                 method: "POST",
-                url: "http://127.0.0.1:8080/users/logout",
+                url: IP + "/users/logout",
                 data: JSON.stringify(user),
                 headers: 
                 {
@@ -374,7 +374,7 @@ class User extends Phaser.Scene
             $.ajax
             ({
                 method: "PUT",
-                url: "http://127.0.0.1:8080/users/changepassword",
+                url: IP + "/users/changepassword",
                 data: JSON.stringify(user),
                 headers: 
                 {
@@ -424,7 +424,7 @@ class User extends Phaser.Scene
         $.ajax
         ({
             method: "DELETE",
-            url: "http://127.0.0.1:8080/users/delete",
+            url: IP + "/users/delete",
             data: JSON.stringify(user),
             headers: 
             {

@@ -14,6 +14,8 @@ class Gameover extends Phaser.Scene{
     _audioClick;
     _audioClack;
 
+    opponent;
+
     constructor(){
         super("GameoverScene");
     }
@@ -49,21 +51,19 @@ class Gameover extends Phaser.Scene{
         }
         
 
-        this._audioClick = this.sound.add("click");
-        this._audioClack = this.sound.add("clack");
+        this.audioClick = this.sound.add("click");
+        this.audioClack = this.sound.add("clack");
         
-        this._buttonMenu = this.initMenuButton();
-
-        this._buttonStats = this.initStatsButton();
-
-        this._buttonPlayAgain = this.initPlayAgainButton();
+        this._buttonMenu = new Button(this, 150 + viewport.width/2, 230 + viewport.height/2, 0.7, true, "btn_menu", ()=>this.exitMenu());
+        this._buttonStats = new Button(this, viewport.width/2 - 150, 230 + viewport.height/2, 0.7, true, "btn_stats", ()=>this.seeStats());
+        this._buttonPlayAgain = new Button(this, viewport.width/2, 230 + viewport.height/2, 0.7, true, "btn_replay", ()=>this.restartGame());
 
         this.buttonGg = this.initGgButton();
         this.buttonCongrats = this.initCongratsButton();
         this.buttonOther = this.initOtherButton();
         this.buttonBye = this.initByeButton();
 
-
+        this.ChatStarted = false;
     }
 
     
@@ -79,54 +79,6 @@ class Gameover extends Phaser.Scene{
         if(this._buttonPressed) this._audioClack.play();
         button.setFrame(0);
         this._buttonPressed = false;
-    }
-
-    initMenuButton()
-    {
-        let button = this.add.sprite(150 + viewport.width/2, 230 + viewport.height/2, "btn_menu")
-            .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => { this.enterButtonClickState(this._buttonMenu) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this._buttonMenu);
-                this.exitMenu(); 
-            })
-            .on('pointerout', () => this.enterButtonRestState(this._buttonMenu) 
-        ).setScale(.7);
-
-        return button;
-    }
-
-    initStatsButton()
-    {
-        let button = this.add.sprite(viewport.width/2 - 150, 230 + viewport.height/2, "btn_stats")
-            .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => { this.enterButtonClickState(this._buttonStats) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this._buttonStats);
-                this.seeStats(); 
-            })
-            .on('pointerout', () => this.enterButtonRestState(this._buttonStats) 
-        ).setScale(.7);
-
-        return button;
-    }
-
-    initPlayAgainButton()
-    {
-        let button = this.add.sprite(viewport.width/2, 230 + viewport.height/2, "btn_replay")
-            .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => { this.enterButtonClickState(this._buttonPlayAgain) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this._buttonPlayAgain);
-                this.restartGame(); 
-            }) 
-            .on('pointerout', () => this.enterButtonRestState(this._buttonPlayAgain)
-        ).setScale(.7);
-
-        return button;
     }
 
     restartGame()
@@ -163,7 +115,7 @@ class Gameover extends Phaser.Scene{
             .on('pointerup', () => 
             { 
                 this.enterButtonRestState(this.buttonGg);
-                this.ggButtonFunction();
+                this.chatButtonFunction("¡Bien jugado!"); 
             })
             // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
             .on('pointerout', () => this.enterButtonRestState(this.buttonGg) 
@@ -182,7 +134,7 @@ class Gameover extends Phaser.Scene{
             .on('pointerup', () => 
             { 
                 this.enterButtonRestState(this.buttonCongrats);
-                //this.showHelp(); 
+                this.chatButtonFunction("¡Enhorabuena!"); 
             })
             // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
             .on('pointerout', () => this.enterButtonRestState(this.buttonCongrats) 
@@ -201,7 +153,7 @@ class Gameover extends Phaser.Scene{
             .on('pointerup', () => 
             { 
                 this.enterButtonRestState(this.buttonOther);
-                //this.showHelp(); 
+                this.chatButtonFunction("¿Jugamos otra?"); 
             })
             // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
             .on('pointerout', () => this.enterButtonRestState(this.buttonOther) 
@@ -220,7 +172,7 @@ class Gameover extends Phaser.Scene{
             .on('pointerup', () => 
             { 
                 this.enterButtonRestState(this.buttonBye);
-                //this.showHelp(); 
+                this.chatButtonFunction("Adiós"); 
             })
             // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
             .on('pointerout', () => this.enterButtonRestState(this.buttonBye) 
@@ -229,11 +181,11 @@ class Gameover extends Phaser.Scene{
         return button;
     }
 
-    ggButtonFunction(){
-
+    
+    chatButtonFunction(text){
         console.log("okkk");
-        if (this.ChatStarted == true) this.startChatFunction();
-        
+        if (this.ChatStarted == false) this.startChatFunction();
+        this.sendMessage(text);
     }
 
     //ajax
@@ -244,6 +196,8 @@ class Gameover extends Phaser.Scene{
             username: user.username,
             password: user.password
         };
+
+        if (user == null) return;
         $.ajax
             ({
                 method: "POST",
@@ -254,7 +208,7 @@ class Gameover extends Phaser.Scene{
                     "Content-type":"application/json"
                 }
             })
-
+            
             .done((data, textStatus, jqXHR) => 
             {
                 // DEBUG estado servidor
@@ -262,7 +216,8 @@ class Gameover extends Phaser.Scene{
                 console.log(data);
                 console.log(jqXHR.statusCode())  
                 console.log("chat iniciado");
-                this.ChatStarted = true;          
+                this.ChatStarted = true; 
+                this.opponent = data.otherUsername;    
             })
             .fail((data, textStatus, jqXHR) => 
             {
@@ -272,7 +227,38 @@ class Gameover extends Phaser.Scene{
             });  
     }
 
+    sendMessage(msg){
+        const message = {
+            username: user.username,
+            otherUsername: this.opponent,
+            text: msg
+        }
+        $.ajax
+        ({
+            method: "PUT",
+            url: IP + "/chat/send",
+            data: JSON.stringify(message),
+            headers: 
+            {
+                "Content-type":"application/json"
+            }
+        })
+        .done((data, textStatus, jqXHR) => 
+            {
+                // DEBUG estado servidor
+                console.log(textStatus+" "+ jqXHR.status);
+                console.log(data);
+                console.log(jqXHR.statusCode())  
+                console.log("mensaje enviado");            
+            })
+            .fail((data, textStatus, jqXHR) => 
+            {
+                // Texto de error
+                console.log(textStatus+" "+jqXHR.status);
+                console.log("error al enviar mensaje");
+            }); 
 
+    }
 
 
 }

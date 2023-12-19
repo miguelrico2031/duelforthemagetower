@@ -213,10 +213,10 @@ class Login extends Phaser.Scene
     wrongCredentials()
     {
         this.errorText.setVisible(true);
-        //this.time.delayedCall(300000000, this.hideText()); este mierdon no va
+        this.time.delayedCall(3000, () => this.hideText()); 
     }
 
-    // NO ACTIVA. Función para ocultar el texto de error
+    // Función para ocultar el texto de error
     hideText()
     {
         this.errorText.setVisible(false);
@@ -237,6 +237,8 @@ class Login extends Phaser.Scene
         this.buttonSignup.setVisible(!showScreen);
         this.usernameForm.setVisible(!showScreen);
         this.passwordForm.setVisible(!showScreen);
-        this.errorText.setVisible(!showScreen);
+
+        // La oculto pase lo que pase
+        this.errorText.setVisible(false);
     }
 }

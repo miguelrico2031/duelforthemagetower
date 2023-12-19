@@ -107,10 +107,10 @@ class Stats extends Phaser.Scene
         }).setOrigin(0.5, 0.5);
 
     
-        })
-        .catch((error) => {
-            console.error("Error en la solicitud AJAX:", error);
-        });
+            })
+            .catch((error) => {
+                console.error("Error en la solicitud AJAX:", error);
+            });
 
         
     }
@@ -122,7 +122,7 @@ class Stats extends Phaser.Scene
     _getUser(username) {
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: IP + "/stats/" + username
+                url: "http://127.0.0.1:8080/stats/" + username
             }).done(function (data) {
                 resolve(data);
             }).fail(function (error) {

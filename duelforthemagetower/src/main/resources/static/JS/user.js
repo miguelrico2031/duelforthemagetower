@@ -34,13 +34,13 @@ class User extends Phaser.Scene
 
     // Botones
     buttonLogout;
-    buttonChange;
-    buttonDelete;
-    buttonClose;
-    buttonConfirm;
-    buttonGoBack;
-    buttonSave;
-    buttonCancel;
+    buttonChangePass;
+    buttonDeleteAccount;
+    buttonExit;
+    buttonConfirmDeletion;
+    buttonAbortDeletion;
+    buttonSaveNewPass;
+    buttonAbortChange;
 
     // Audio
     audioClick;
@@ -58,23 +58,21 @@ class User extends Phaser.Scene
         this.load.spritesheet("goBack", "../Assets/UI/Screens/User/NoButton.png", { frameWidth: 167, frameHeight: 106 });
         this.load.spritesheet("save", "../Assets/UI/Screens/User/SaveChangesButton.png", { frameWidth: 167, frameHeight: 106 });
         this.load.spritesheet("cancel", "../Assets/UI/Screens/User/CancelButton.png", { frameWidth: 167, frameHeight: 106 });
-        this.load.spritesheet("cerrar", "../Assets/UI/Screens/Credits/cerrar.png", { frameWidth: 87, frameHeight: 55 });    
+        this.load.spritesheet("exit", "../Assets/UI/Screens/Credits/cerrar.png", { frameWidth: 87, frameHeight: 55 });    
 
-        // Pantalla de confirmación
+        // Pantallas de confirmación
         this.load.image("confirmation", "../Assets/UI/Screens/User/DeleteConfirmation.png");
         this.load.image("changePass", "../Assets/UI/Screens/User/ChangePassScreen.png");
         this.load.image("error", "../Assets/UI/Screens/User/ChangePassError.png");
 
-        // Fuente (FUNCION CREADA ABAJO)
-        this.loadFont("GrapeSoda", "../Assets/Fonts/GrapeSoda.ttf");
-
-        // Audio y música
+        // Efectos de sonido
         this.load.audio("warning", "../Assets/UI/Sounds/Denied.wav");
 
-        // Entrada
+        // Entrada de texto
         this.load.html({key : "oldpasswordform", url : "../oldpasswordform.html"});
         this.load.html({key : "newpasswordform", url : "../newpasswordform.html"});
     }
+
 
     create()
     {
@@ -96,6 +94,40 @@ class User extends Phaser.Scene
         }).setOrigin(0.5, 0.5);
 
         // Estadísticas
+
+        this.retrieveStats();
+
+        // Audios
+        this.audioClick = this.sound.add("click");
+        this.audioClack = this.sound.add("clack");
+        this.audioClose = this.sound.add("close");
+        this.audioWarning = this.sound.add("warning");
+        
+        // Botones
+        // Menú usuario
+        this.buttonLogout = new Button(this, 350, 580, 1, true, "logout", () => this.logoutFunc());             // Cerrar sesión
+        this.buttonChangePass = new Button(this, 650, 580, 1, true, "change", () => this.askChangePassword());  // Cambiar contraseña
+        this.buttonDeleteAccount = new Button(this, 950, 580, 1, true, "delete", () => this.askDeleteAccount());// Borrar cuenta
+        // Cambiar contraseña
+        this.buttonSaveNewPass = new Button(this, 500, 475, 1, false, "save", () => this.changePassword());            // Guardar cambios
+        this.buttonAbortChange = new Button(this, 800, 475, 1, false, "cancel", () => this.abortPasswordChange());     // Cancelar cambios
+        // Borrar cuenta
+        this.buttonConfirmDeletion = new Button(this, 500, 475, 1, false, "confirm", () => this.deleteAccount());      // Borrar cuenta
+        this.buttonAbortDeletion = new Button(this, 800, 475, 1, false, "goBack", () => this.abortAccountDeletion());  // Cancelar borrado
+        // Salir del menú
+        this.buttonExit = new Button(this, 1045, 120, 1, true, "exit", () => this.closeUserScreen());           // Salir del perfil
+
+        // Campos de texto cambio de contraseña
+        // Contraseña vieja
+        this.oldPasswordForm = this.add.dom(650, 325).createFromCache("oldpasswordform");
+        this.oldPasswordForm.setPosition(viewport.width / 2, 325).setVisible(false);
+        // Contraseña nueva
+        this.newPasswordForm = this.add.dom(650, 325).createFromCache("newpasswordform");
+        this.newPasswordForm.setPosition(viewport.width / 2, 400).setVisible(false);
+    }
+
+    retrieveStats()
+    {
         this.stats = this.add.text(viewport.width / 2, 350, 
         'Golpes asestados:\t\t' + this.hitsGiven + '\n' +
         'Golpes recibidos:\t\t' + this.hitsTaken + '\n' +
@@ -107,217 +139,31 @@ class User extends Phaser.Scene
             fontSize: '32px', 
             fill: '#000' 
         }).setOrigin(0.5, 0.5);
-
-        // Cambio de contraseña
-
-         // Contraseña vieja
-         this.oldPasswordForm = this.add.dom(650, 325).createFromCache("oldpasswordform");
-         this.oldPasswordForm.setPosition(960, 325).setVisible(false);
-         console.log("passform creado")
-         console.log(this.oldPasswordForm)
-
-         // Contraseña nueva
-         this.newPasswordForm = this.add.dom(650, 325).createFromCache("newpasswordform");
-         this.newPasswordForm.setPosition(960, 400).setVisible(false);
-
-        // Botones
-        this.buttonLogout = this.initLogoutButton();
-        this.buttonChange = this.initChangeButton();
-        this.buttonDelete = this.initDeleteButton();
-        this.buttonClose = this.initCloseButton();
-        this.buttonConfirm = this.initConfirmButton();
-        this.buttonGoBack = this.initGoBackButton();
-        this.buttonSave = this.initSaveButton();
-        this.buttonCancel = this.initCancelButton();
-
-        // Audios
-        this.audioClick = this.sound.add("click");
-        this.audioClack = this.sound.add("clack");
-        this.audioClose = this.sound.add("close");
-        this.audioWarning = this.sound.add("warning");
-    }
-    
-
-    enterButtonClickState(button) 
-    {
-        this.audioClick.play(); 
-        button.setFrame(1);
-        this.buttonPressed = true;
-    }
-
-    enterButtonRestState(button)
-    {
-        // pongo el frame de la animacion sin pulsar pq si no se ve como si se quedase pillado y no queremos eso
-        if(this.buttonPressed) this.audioClack.play();
-        button.setFrame(0);
-        this.buttonPressed = false;
-    }
-
-    initLogoutButton()
-    {
-        let button = this.add.sprite(350, 580, "logout")
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonLogout) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this.buttonLogout);
-                this.logoutFunc(); 
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonLogout) 
-        );
-
-        return button;
-    }
-
-    // botón rojo de "borrar cuenta"
-    initDeleteButton()
-    {
-        let button = this.add.sprite(950, 580, "delete")
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonDelete) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this.buttonDelete);
-                this.askDeleteAccount(); 
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonDelete) 
-        );
-
-        return button;
-    }
-
-    initChangeButton()
-    {
-        let button = this.add.sprite(650, 580, "change")
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonChange) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this.buttonChange);
-                this.askChangePassword(); 
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonChange) 
-        );
-
-        return button;
-    }
-
-    initCloseButton()
-    {
         
-        let button = this.add.sprite((game.config.width / 3.8) * 3.1, (game.config.height / 9.8) * 1.6, "cerrar")
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonClose) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this.buttonClose);
-                this.closeUserScreen(); 
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonClose) 
-        );
+        $.ajax({
+            url: IP + "/stats/" + user.username
+        }).done((data) =>
+        {
+            //this.loadUserStats()
 
-        return button;
+            this.stats.text = 
+                ('Golpes asestados:\t\t' + data.hitsGiven + '\n' +
+                'Golpes recibidos:\t\t' + data.hitsTaken + '\n' +
+                'Golpes desviados:\t\t' + data.hitsDeflected + '\n' +
+                'Victorias:\t\t' + data.wins + '\n' +
+                'Derrotas:\t\t' + data.losses);
+
+        })
+        .fail((error) =>
+        {
+            console.log(error);
+        });
     }
 
-    // botón de "si, borrar cuenta"
-    initConfirmButton()
-    {
-        
-        let button = this.add.sprite(500, 475, "confirm")
-            .setVisible(false)
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonConfirm) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this.buttonConfirm);
-                this.deleteAccount();
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonConfirm) 
-        );
-
-        return button;
-    }
-
-    // boton de "no, volver"
-    initGoBackButton()
-    {
-        let button = this.add.sprite(800, 475, "goBack")
-            .setVisible(false)
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonGoBack) })
-            .on('pointerup', () => 
-            { 
-                this.scene.get("MenuScene").menuSong.setVolume(0.35);
-                this.enterButtonRestState(this.buttonGoBack);
-                this.hideAccountDeletionScreen();
-                this.showUserBaseScreen();
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonGoBack) 
-        );
-
-        return button;
-    }
-
-    // botón de "guardar cambios"
-    initSaveButton()
-    {
-        
-        let button = this.add.sprite(500, 475, "save")
-            .setVisible(false)
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonSave) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this.buttonSave);
-                this.changePassword();
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonSave) 
-        );
-
-        return button;
-    }
-
-    // botón de "cancelar"
-    initCancelButton()
-    {
-        
-        let button = this.add.sprite(800, 475, "cancel")
-            .setVisible(false)
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonCancel) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this.buttonCancel);
-                this.hideChangeScreen();
-                this.showUserBaseScreen();
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonCancel) 
-        );
-
-        return button;
-    }
-
+    // Función cierre de sesión
     logoutFunc()
     {
-
-        // cosas de API para cerrar sesión
-
+        // jQuery POST logout
         $.ajax
             ({
                 method: "POST",
@@ -334,10 +180,10 @@ class User extends Phaser.Scene
                 console.log(data);
                 console.log(jqXHR.statusCode())
 
-                // Borro los datos globales
-                user.username = null;
-                user.password = null;
+                // Borra los datos globales
+                user = null;
 
+                // Sale a la pantalla de login
                 this.audioClose.play();
                 this.scene.start("LoginScene", { isplaying: true });
             })
@@ -349,17 +195,23 @@ class User extends Phaser.Scene
 
     }
 
+    // Funciones cambio de contraseña
+    // Pantalla de confirmación
     askChangePassword()
     {
-        this.hideUserBaseScreen();
-        this.changeScreen.setVisible(true);
-        this.oldPasswordForm.setVisible(true);
-        this.newPasswordForm.setVisible(true);
-        this.buttonSave.setVisible(true);
-        this.buttonCancel.setVisible(true);
+        this.setUserBaseScreenVisibility(false);
+
+        this.setPasswordChangeScreenVisibility(true);
     }
 
-    changePassword() //DUDAS
+    abortPasswordChange()
+    {
+        this.setPasswordChangeScreenVisibility(false);
+        this.setUserBaseScreenVisibility(true);
+    }
+
+    // Cambio de contraseña
+    changePassword() 
     {
         // cosas de API
         console.log("cambiar contraseña")
@@ -370,12 +222,18 @@ class User extends Phaser.Scene
         if ((oldPassword !== '' && newPassword !== '') && (oldPassword === user.password))
         {
             // no se si tengo que modificar al usuario aqui y ahora pasarle esto o que
-            this.user.password(newPassword);
+
+            const modifiedUser = 
+            {
+                username: user.username,
+                password: newPassword
+            }
+
             $.ajax
             ({
                 method: "PUT",
                 url: IP + "/users/changepassword",
-                data: JSON.stringify(user),
+                data: JSON.stringify(modifiedUser),
                 headers: 
                 {
                     "Content-type":"application/json"
@@ -390,8 +248,8 @@ class User extends Phaser.Scene
                 // Actualizo la contraseña en la variable global
                 user.password = data.password;
 
-                this.hideChangeScreen();
-                this.showUserBaseScreen();
+                this.setPasswordChangeScreenVisibility(false);
+                this.setUserBaseScreenVisibility(true);
             })
             .fail((data, textStatus, jqXHR) => 
             {
@@ -403,24 +261,33 @@ class User extends Phaser.Scene
 
 
     }
-
+    
+    // Funciones borrado de cuenta
+    // Pantalla de confirmación
     askDeleteAccount()
     {
         this.scene.get("MenuScene").menuSong.setVolume(0);
         this.audioWarning.play();
 
-        this.hideUserBaseScreen();
+        this.setUserBaseScreenVisibility(false);
+
         // pantalla de confirmacion de eliminar
-        this.confirmationScreen.setVisible(true);
-        this.buttonConfirm.setVisible(true);
-        this.buttonGoBack.setVisible(true);
+        this.setAccountDeletionScreenVisibility(true);
 
     }
 
+    // Cancelación borrado
+    abortAccountDeletion()
+    {
+        this.scene.get("MenuScene").menuSong.setVolume(0.35);
+        this.setAccountDeletionScreenVisibility(false);
+        this.setUserBaseScreenVisibility(true);
+    }
+
+    // Borrado de cuenta
     deleteAccount()
     {
-        // cosas de API para borrar la cuenta
-
+        //jQuery DELETE account
         $.ajax
         ({
             method: "DELETE",
@@ -438,10 +305,9 @@ class User extends Phaser.Scene
             console.log(jqXHR.statusCode())
 
             // Borro los datos del config
-            user.username = null;
-            user.password = null;
+            user = null;
 
-            // y que te mande al menu de login supongo
+            // Devuelve al usuario al menú de login
             this.audioClose.play();
             this.scene.get("MenuScene").menuSong.setVolume(0.35);
             this.scene.start("LoginScene");
@@ -455,57 +321,40 @@ class User extends Phaser.Scene
         
     }
 
+    // Función para ocultar el menú base cuando se ponga otro por encima
+    setUserBaseScreenVisibility(visibility)
+    {
+        // Gestiona la visibilidad de los botones de debajo 
+        // (no es lo mas bonito pero es que si no se quedan al frente y es un poco feo)
+        this.buttonLogout.setVisible(visibility);
+        this.buttonChangePass.setVisible(visibility);
+        this.buttonDeleteAccount.setVisible(visibility);
+        this.buttonExit.setVisible(visibility);
+        // también el texto de las estadísticas
+        this.stats.setVisible(visibility);
+    }
+
+    setAccountDeletionScreenVisibility(visibility)
+    {
+        this.confirmationScreen.setVisible(visibility);
+        this.buttonConfirmDeletion.setVisible(visibility);
+        this.buttonAbortDeletion.setVisible(visibility);
+    }
+
+    setPasswordChangeScreenVisibility(visibility)
+    {
+        this.changeScreen.setVisible(visibility);
+        this.oldPasswordForm.setVisible(visibility);
+        this.newPasswordForm.setVisible(visibility);
+        this.buttonAbortChange.setVisible(visibility);
+        this.buttonSaveNewPass.setVisible(visibility);
+    }
+
+    // Salir de la pantalla de usuario
     closeUserScreen() 
     {
         this.audioClose.play();
         this.scene.start("MenuScene", { isPlaying: true });
-    }
-
-    hideUserBaseScreen()
-    {
-        // oculto los botones de debajo (no es lo mas bonito pero es que si no se quedan al frente y es un poco feo)
-        this.buttonLogout.setVisible(false);
-        this.buttonChange.setVisible(false);
-        this.buttonDelete.setVisible(false);
-        this.buttonClose.setVisible(false);
-        // también el texto de las estadísticas
-        this.stats.setVisible(false);
-    }
-
-    showUserBaseScreen()
-    {
-        // restaura las cosas del usuario
-        this.stats.setVisible(true);
-        this.buttonLogout.setVisible(true);
-        this.buttonChange.setVisible(true);
-        this.buttonDelete.setVisible(true);
-        this.buttonClose.setVisible(true);
-    }
-
-    hideAccountDeletionScreen()
-    {
-        // pantalla de confirmacion de eliminar
-        this.confirmationScreen.setVisible(false);
-        this.buttonConfirm.setVisible(false);
-        this.buttonGoBack.setVisible(false);
-    }
-
-    hideChangeScreen()
-    {
-        this.changeScreen.setVisible(false);
-        this.oldPasswordForm.setVisible(false);
-        this.newPasswordForm.setVisible(false);
-        this.buttonCancel.setVisible(false);
-        this.buttonSave.setVisible(false);
-    }
-
-    loadFont(name, url) {
-        var newFont = new FontFace(name, `url(${url})`);
-        newFont.load().then(function (loaded) {
-            document.fonts.add(loaded);
-        }).catch(function (error) {
-            return error;
-        });
     }
 
 }

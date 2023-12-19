@@ -2,9 +2,11 @@
 <html lang="en"> 
 <head> 
     <meta charset="UTF-8" />
+    <link rel="icon" href="favicon.gif" type="image/gif" >
     <title>Duel for the Mage Tower</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
+
     <style type="text/css">
         body
         {
@@ -22,11 +24,10 @@
         }
         .container 
         {
-            height: 50px;
+            margin: 10px;
             position: relative;
             /*border: 3px solid green;*/
         }
-
         .vertical-center 
         {
             margin: 0;
@@ -35,14 +36,26 @@
             -ms-transform: translateY(-50%);
             transform: translateY(-50%);
         }
+        .formCSS
+        {
+            background: #f3d5a9;
+            border: none;
+            border-bottom: 2px solid black;
+            padding-left: 5px;
+            padding-bottom: 5px;
+            text-align: center;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+        }
     </style>
 </head>
 <body>    
 
 <div id = "parent">
     <div class="container">
-        <div class="vertical-center">
+
             <script src="JS/loading.js"></script>
+            <script src="JS/loadFonts.js"></script>
+            <script src="JS/button.js"></script>
             <script src="JS/spell.js"></script>
             <script src="JS/wizard.js"></script>
             <script src="JS/pause.js"></script>
@@ -57,7 +70,7 @@
             <script src="JS/tutorial.js"></script>
             <script src="JS/credits.js"></script>
             <script src="JS/game.js"></script>
-        </div>
+
     </div>
 </div>
 </body>

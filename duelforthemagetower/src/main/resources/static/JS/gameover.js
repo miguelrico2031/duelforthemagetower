@@ -15,6 +15,7 @@ class Gameover extends Phaser.Scene{
     _audioClack;
 
     opponent;
+    chatText;
 
     constructor(){
         super("GameoverScene");
@@ -50,6 +51,8 @@ class Gameover extends Phaser.Scene{
             this.add.image(0, 0, "p2_win").setOrigin(0,0);
         }
         
+        
+
 
         this.audioClick = this.sound.add("click");
         this.audioClack = this.sound.add("clack");
@@ -66,6 +69,9 @@ class Gameover extends Phaser.Scene{
         this.ChatStarted = false;
     }
 
+    update(){
+        this.time.delayedCall(100,()=>this.retrieveChat());
+    }
     
     enterButtonClickState(button) 
     {
@@ -225,6 +231,30 @@ class Gameover extends Phaser.Scene{
                 console.log(textStatus+" "+jqXHR.status);
                 console.log("error al iniciar chat");
             });  
+    }
+
+    retrieveChat(){
+
+        let opponentMessage = "texto";
+        this.chatText = this.add.text(viewport.width / 2 + 310, viewport.height / 2 - 150, opponentMessage, 
+        { 
+            fontFamily: 'GrapeSoda',
+            fontSize: '24px', 
+            fill: 'black' 
+        }).setOrigin(0, 0);
+    
+    
+        $.ajax({
+            url: IP + "/chat/" + user.username
+        })
+        .done((data)=>
+        {
+            this.chatText = data.chat
+        })
+        .fail((error)=>
+        {
+            console.log(error);
+        });
     }
 
     sendMessage(msg){

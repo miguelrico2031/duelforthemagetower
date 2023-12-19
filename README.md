@@ -68,6 +68,7 @@ En la batalla por la Torre de los Magos, dos hechiceros compiten saltando entre 
 
 6. Diagrama de flujo entre pantallas
 
+7. Funciones de red
 
 
 # 1. Introducción
@@ -218,8 +219,9 @@ Esta es la primera pantalla que se muestra nada más iniciar el juego. En ella a
 - **Jugar:** Con este botón se inicia una partida.
 - **Cómo jugar:** Con este botón se abre la pantalla de tutorial, donde se explican brevemente los controles y objetivo del juego.
 - **Créditos:** Con este botón se muestran los créditos de los desarrolladores y de los Assets externos usados.
+- **Usuario:** Con este botón se accede a la pantalla de inicio de sesión.
   
-![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/menu.png)
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/menu.jpeg)
 _Figura 2: Menú principal del juego_
 
 ![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/tutorial.png)
@@ -228,34 +230,51 @@ _Figura 3: Pantalla de tutorial_
 ![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/credits.png)
 _Figura 4: Pantalla de créditos_
 
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/login.jpeg)
+_Figura 5: Pantalla de inicio de sesión_
+
+## 3.2. Interfaz _login_
+
+Al pulsar el botón de usuario, se abrirá una pantalla que permite iniciar sesión con una cuenta existente o crear una nueva cuenta. Una vez iniciada la sesión, permite ver las estadísticas totales del usuario, modificar la contraseña, cerrar la sesión o eliminar la cuenta.
+
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/statsTotales.jpeg)
+_Figura 6: Pantalla de estadísticas y ajustes del usuario_
+
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/modificar.jpeg)
+_Figura 7: Pantalla de cambio de contraseña_
+
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/borrar.jpeg)
+_Figura 8: Pantalla de eliminar cuenta_
   
-## 3.2. Interfaz In-Game o HUD
+## 3.3. Interfaz In-Game o HUD
 
 La interfaz In-Game es bastante sencilla. En esta se muestran las vidas correspondientes a cada jugador en forma de 3 corazones (cada uno representa 2 puntos de vida, al sufrir daño se quita medio corazón), y un icono animado con el personaje de cada jugador. La disposición de estos elementos en la pantalla serán en la esquina superior izquierda, para el jugador 1, y en la esquina superior derecha, para el jugador 2.
 
 ![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/hud1.png)
 
-_Figura 5: Interfaz In-Game del jugador 1_
+_Figura 9: Interfaz In-Game del jugador 1_
 
 ![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/hud2.png)
 
-_Figura 6: Interfaz In-Game del jugador 2_
+_Figura 10: Interfaz In-Game del jugador 2_
 
   
-## 3.3. Menú de Pausa
+## 3.4. Menú de Pausa
 
 En caso de pausar el juego en mitad de una partida, se despliega esta interfaz. Esta contiene 2 botones en el centro de la pantalla y un botón en la esquina superior derecha para silenciar el volumen del juego. Los botones correspondientes son **Continuar**, que permite continuar con la partida, y **Salir** , la cual lleva a los jugadores al menú principal.
 
 ![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/pause.png)
-_Figura 7: Menú de pausa_
+_Figura 11: Menú de pausa_
 
 
-## 3.4. Menú de Game Over
-Este menú aparece cuando uno de los jugadores llega a 0 puntos de vida, haciendo que termine la partida. Aparece a cada lado del menú una ilsutración mostrando a cada mago, si perdió, en el suelo derrotado; y si ganó, de pie. Debajo de cada una hay un texto indicando el mago que perdió y el que ganó. Además, hay 2 botones en la mitad: **Jugar otra vez**, para iniciar una partida nueva, y **Menú**, para volver al menú principal.
+## 3.5. Menú de Game Over
+Este menú aparece cuando uno de los jugadores llega a 0 puntos de vida, haciendo que termine la partida. Aparece a cada lado del menú una ilsutración mostrando a cada mago, si perdió, en el suelo derrotado; y si ganó, de pie. Debajo de cada una hay un texto indicando el mago que perdió y el que ganó. En el centro de la pantalla se encuentra un chat básico que permite al usuario comunicarse con su oponente mediante frases predeterminadas. Además, hay 3 botones en la parte inferior: **Ver estadísticas**, para ver los hechizos lanzados y esquivados durante el juego, **Jugar otra vez**, para iniciar una partida nueva, y **Menú**, para volver al menú principal.
 
-![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/gameover.png)
-_Figura 8: Menú de Game Over_
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/gameover.jpeg)
+_Figura 12: Menú de Game Over_
 
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/statsFin.jpeg)
+_Figura 12: Menú de estadísticas_
 
 # 4. Arte
   

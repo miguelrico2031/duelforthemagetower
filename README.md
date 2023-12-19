@@ -1,6 +1,95 @@
 Repositorio creado para el desarrollo del videojuego de la práctica de Juegos en Red del curso 2023/24.
 
-## Miembros del equipo
+# Guía de instalación (Windows)
+En esta sección se detallarán las instrucciones para la correcta compilación y ejecución del juego en una red local.
+
+## Obtener el código fuente
+Puedes descargar la última versión del código fuente `[CAMBIAR] poner-release-aqui-v1.x`, desde la sección de [_releases_](https://github.com/miguelrico2031/duelforthemagetower/releases).
+
+O bien, puedes clonar el repositorio usando el siguiente comando:
+```
+git clone https://github.com/miguelrico2031/duelforthemagetower.git
+```
+> Puedes usar [Git for Windows](https://gitforwindows.org/) para clonar repositorios en Windows.
+
+## Dependencias
+· [Java 8](https://www.java.com/en/download/help/download_options.html) (o una versión superior)
+
+· [Java JDK 17](https://www.oracle.com/java/technologies/downloads/#java17) (o una versión superior)
+
+> Una vez instalados, puedes verificar la instalación mediante `java -version` en el Símbolo del sistema
+
+## Compilación
+
+A continuación, se va a detallar el proceso para compilar el código en el ordenador que hará de servidor del juego.
+
+1. Extrae el código fuente del `.zip` descargado (o toma los ficheros clonados), y colócalos en una carpeta de fácil acceso, como `C:/DFTMT` o en una carpeta en tu escritorio.
+
+2. Accede a la siguiente ruta para encontrar el archivo `[CAMBIAR] NOMBREARCHIVO.jar` que permite lanzar el servidor de forma local:
+```
+[CAMBIAR] "BASE"/ruta
+```
+> Siendo `"BASE"/` la carpeta en la que has ubicado el código fuente; como `C:/DFTMT`, o el escritorio de tu ordenador.
+> En este ejemplo, la ruta sería `[CAMBIAR] RUTA EJEMPLO`.
+
+3. Una vez localizado el archivo mencionado, copia la ruta donde se encuentra guardado. Puedes hacerlo así:
+
+[path img](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/path.png)
+
+4. Lanza el Símbolo del sistema. Puedes hacerlo pulsando `Windows + R`, escribiendo **cmd**, y pulsando "Aceptar"; o buscándolo en la lista de programas de Windows.
+
+5. En el terminal abierto, escribe `cd`, seguido de la ruta que copiamos anteriormente. Quedaría de una forma similar a esta:
+```
+[CAMBIAR] cd RUTA
+```
+
+6. A continuación, copia el siguiente comando e introducelo en la consola:
+```
+[CAMBIAR] java -jar NOMBREARCHIVO.jar
+```
+
+7. Si se ha realizado todo correctamente, debería de aparecer un mensaje similar al siguiente:
+
+[server img](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/server.png)
+
+## Ejecutar el juego
+
+### Dirección IP
+
+Para poder acceder al juego, es necesario conocer la dirección IP del ordenador que hace de servidor.
+
+1. Desde el servidor, en una nueva ventana del Símbolo del sistema, ejecuta el comando `ipconfig`.
+La cadena de cifras que se muestra tras `Dirección IPv4` es la dirección del servidor.
+
+[ipconfig img](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/ipconfig.png)
+
+> La dirección IP del servidor es el texto resaltado. En el caso de este ejemplo, es `192.168.1.135`
+
+### Ejecución del juego
+
+1. A continuación, en un ordenador conectado a la misma red que el servidor, se debe abrir un navegador web. Recomendamos el uso de uno de los siguientes navegadores:
+
+    · [_Google Chrome_](https://www.google.com/chrome/)
+    
+    · [_Microsoft Edge_](https://www.microsoft.com/es-es/edge/download?form=MA13FJ)
+    
+    · [_Mozilla Firefox_](https://www.mozilla.org/es-ES/firefox/new/)
+
+
+2. En una nueva pestaña, introduce la **dirección IP** del servidor, seguido de `:8080`. Esto es el puerto en el que se establece la conexión.
+
+En este ejemplo, quedaría así:
+```
+[CAMBIAR] IP ejemplo:8080
+```
+
+3. Si se han seguido los pasos correctamente, el juego debería haber arrancado de forma exitosa:
+
+[Juego img](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/gameloaded.png)
+
+
+
+# Miembros del equipo
 · Ezequiel García Díaz - e.garciad.2021@alumnos.urjc.es - [github.com/quiellll](https://github.com/quiellll)
 
 · Gloria Blanca Llorente Pardo - gb.llorente.2021@alumnos.urjc.es - [github.com/gloriabllorente](https://github.com/gloriabllorente)

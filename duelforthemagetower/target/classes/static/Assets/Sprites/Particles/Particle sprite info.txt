@@ -1,0 +1,4 @@
+Projectile 1: 48 x 32 px
+Projectile 2: 64 x 16 px
+Explosion 1: 96 x 16 px
+Explosion 2: 96 x 16 px

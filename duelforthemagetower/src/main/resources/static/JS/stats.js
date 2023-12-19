@@ -25,6 +25,7 @@ class Stats extends Phaser.Scene
     _userJ1;
     _userJ2;
 
+    
 
     //Metodos publicos
     constructor() 
@@ -41,9 +42,13 @@ class Stats extends Phaser.Scene
         
     }
 
+    init(data){
+        this._userJ1 = data.J1stats;
+        this._userJ2 = data.J2stats;
+    }
+
     create()
     {
-        console.log("Se ha creado stats");
         this._buttonPressed = false;
 
         this.add.image(0, 0, "stats_screen").setOrigin(0, 0);
@@ -55,16 +60,17 @@ class Stats extends Phaser.Scene
         this._audioClose = this.sound.add("close");
 
         
-        const userJ1Promise = this._getUser("miguel"); // En el getUser deberia ir el user loggeado
-        const userJ2Promise = this._getUser("julio");  // Y en este el username del user rival
+      //  const userJ1Promise = this._getUser("miguel"); // En el getUser deberia ir el user loggeado
+      //  const userJ2Promise = this._getUser("julio");  // Y en este el username del user rival
     
         // Usamos promise, para esperar a que los valores asincronos se carguen antes de cargar el resto de la UI
-        Promise.all([userJ1Promise, userJ2Promise])
+        /* Promise.all([userJ1Promise, userJ2Promise])
             .then(([userJ1Data, userJ2Data]) => {
                 this._userJ1 = userJ1Data;
                 this._userJ2 = userJ2Data;
 
                 console.log(this._userJ1);
+        */
 
         this._usernameJ1 = this.add.text((viewport.width / 2) - 135, 300, this._userJ1.username, 
         { 
@@ -75,7 +81,7 @@ class Stats extends Phaser.Scene
 
         // Estadísticas
         this._statsJ1 = this.add.text((viewport.width / 2) - 140, 400, 
-        'Hechizos lanzados:\t\t' + this._userJ1.hitsGiven + '\n' +
+        'Golpes asestados:\t\t' + this._userJ1.hitsGiven + '\n' +
         'Golpes recibidos:\t\t' + this._userJ1.hitsTaken + '\n' +
         'Golpes desviados:\t\t' + this._userJ1.hitsDeflected + '\n' +
         'Victorias:\t\t' + this._userJ1.wins + '\n' +
@@ -95,7 +101,7 @@ class Stats extends Phaser.Scene
 
         // Estadísticas
         this._statsJ2 = this.add.text((viewport.width / 2) + 140, 400, 
-        'Hechizos lanzados:\t\t' + this._userJ2.hitsGiven + '\n' +
+        'Golpes asestados:\t\t' + this._userJ2.hitsGiven + '\n' +
         'Golpes recibidos:\t\t' + this._userJ2.hitsTaken + '\n' +
         'Golpes desviados:\t\t' + this._userJ2.hitsDeflected + '\n' +
         'Victorias:\t\t' + this._userJ2.wins + '\n' +
@@ -106,12 +112,12 @@ class Stats extends Phaser.Scene
             fill: '#000' 
         }).setOrigin(0.5, 0.5);
 
-    
-        })
-        .catch((error) => {
-            console.error("Error en la solicitud AJAX:", error);
-        });
-
+        /*
+            })
+            .catch((error) => {
+                console.error("Error en la solicitud AJAX:", error);
+            });
+        */
         
     }
     

@@ -129,10 +129,12 @@ class Wizard
     spellHit(wizard, spell)
     {
         if(this.id === 1){
-            this._scene.playerStats.hitsTaken++;
+            this._scene.playerStatsJ1.hitsTaken++;
+            this._scene.playerStatsJ2.hitsGiven++;
         }
         if(this.id === 2){
-            this._scene.playerStats.hitsGiven++;
+            this._scene.playerStatsJ1.hitsGiven++;
+            this._scene.playerStatsJ2.hitsTaken++;
         }
         this.takeDamage(spell.damage);
         this._scene._audioHit.play();

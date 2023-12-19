@@ -200,11 +200,12 @@ class Gameover extends Phaser.Scene{
     startChat()
     {
         // miguel no me mates porfa lo he hecho en el create
-        /*if (user == null)
+        if (user == null)
         {
             //aqui poner aviso en el juego de "no se pudo iniciar chat, tienes que iniciar sesion"
             return;
-        }*/
+        }
+
 
         $.ajax
             ({

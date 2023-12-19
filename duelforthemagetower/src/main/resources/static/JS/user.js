@@ -95,7 +95,39 @@ class User extends Phaser.Scene
 
         // Estadísticas
 
+        this.retrieveStats();
+
+        // Audios
+        this.audioClick = this.sound.add("click");
+        this.audioClack = this.sound.add("clack");
+        this.audioClose = this.sound.add("close");
+        this.audioWarning = this.sound.add("warning");
         
+        // Botones
+        // Menú usuario
+        this.buttonLogout = new Button(this, 350, 580, 1, true, "logout", () => this.logoutFunc());             // Cerrar sesión
+        this.buttonChangePass = new Button(this, 650, 580, 1, true, "change", () => this.askChangePassword());  // Cambiar contraseña
+        this.buttonDeleteAccount = new Button(this, 950, 580, 1, true, "delete", () => this.askDeleteAccount());// Borrar cuenta
+        // Cambiar contraseña
+        this.buttonSaveNewPass = new Button(this, 500, 475, 1, false, "save", () => this.changePassword());            // Guardar cambios
+        this.buttonAbortChange = new Button(this, 800, 475, 1, false, "cancel", () => this.abortPasswordChange());     // Cancelar cambios
+        // Borrar cuenta
+        this.buttonConfirmDeletion = new Button(this, 500, 475, 1, false, "confirm", () => this.deleteAccount());      // Borrar cuenta
+        this.buttonAbortDeletion = new Button(this, 800, 475, 1, false, "goBack", () => this.abortAccountDeletion());  // Cancelar borrado
+        // Salir del menú
+        this.buttonExit = new Button(this, 1045, 120, 1, true, "exit", () => this.closeUserScreen());           // Salir del perfil
+
+        // Campos de texto cambio de contraseña
+        // Contraseña vieja
+        this.oldPasswordForm = this.add.dom(650, 325).createFromCache("oldpasswordform");
+        this.oldPasswordForm.setPosition(viewport.width / 2, 325).setVisible(false);
+        // Contraseña nueva
+        this.newPasswordForm = this.add.dom(650, 325).createFromCache("newpasswordform");
+        this.newPasswordForm.setPosition(viewport.width / 2, 400).setVisible(false);
+    }
+
+    retrieveStats()
+    {
         this.stats = this.add.text(viewport.width / 2, 350, 
         'Golpes asestados:\t\t' + this.hitsGiven + '\n' +
         'Golpes recibidos:\t\t' + this.hitsTaken + '\n' +
@@ -126,34 +158,6 @@ class User extends Phaser.Scene
         {
             console.log(error);
         });
-
-        // Audios
-        this.audioClick = this.sound.add("click");
-        this.audioClack = this.sound.add("clack");
-        this.audioClose = this.sound.add("close");
-        this.audioWarning = this.sound.add("warning");
-        
-        // Botones
-        // Menú usuario
-        this.buttonLogout = new Button(this, 350, 580, 1, true, "logout", () => this.logoutFunc());             // Cerrar sesión
-        this.buttonChangePass = new Button(this, 650, 580, 1, true, "change", () => this.askChangePassword());  // Cambiar contraseña
-        this.buttonDeleteAccount = new Button(this, 950, 580, 1, true, "delete", () => this.askDeleteAccount());// Borrar cuenta
-        // Cambiar contraseña
-        this.buttonSaveNewPass = new Button(this, 500, 475, 1, false, "save", () => this.changePassword());            // Guardar cambios
-        this.buttonAbortChange = new Button(this, 800, 475, 1, false, "cancel", () => this.abortPasswordChange());     // Cancelar cambios
-        // Borrar cuenta
-        this.buttonConfirmDeletion = new Button(this, 500, 475, 1, false, "confirm", () => this.deleteAccount());      // Borrar cuenta
-        this.buttonAbortDeletion = new Button(this, 800, 475, 1, false, "goBack", () => this.abortAccountDeletion());  // Cancelar borrado
-        // Salir del menú
-        this.buttonExit = new Button(this, 1045, 120, 1, true, "exit", () => this.closeUserScreen());           // Salir del perfil
-
-        // Campos de texto cambio de contraseña
-        // Contraseña vieja
-        this.oldPasswordForm = this.add.dom(650, 325).createFromCache("oldpasswordform");
-        this.oldPasswordForm.setPosition(viewport.width / 2, 325).setVisible(false);
-        // Contraseña nueva
-        this.newPasswordForm = this.add.dom(650, 325).createFromCache("newpasswordform");
-        this.newPasswordForm.setPosition(viewport.width / 2, 400).setVisible(false);
     }
 
     // Función cierre de sesión

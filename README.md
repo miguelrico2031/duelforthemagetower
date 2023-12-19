@@ -25,12 +25,12 @@ A continuación, se va a detallar el proceso para compilar el código en el orde
 
 1. Extrae el código fuente del `.zip` descargado (o toma los ficheros clonados), y colócalos en una carpeta de fácil acceso, como `C:/DFTMT` o en una carpeta en tu escritorio.
 
-2. Accede a la siguiente ruta para encontrar el archivo `[CAMBIAR] NOMBREARCHIVO.jar` que permite lanzar el servidor de forma local:
+2. Accede a la siguiente ruta para encontrar el archivo `duelforthemagetower-0.0.1-SNAPSHOT.jar` que permite lanzar el servidor de forma local:
 ```
-[CAMBIAR] "BASE"/ruta
+"BASE"/duelforthemagetower/target
 ```
 > Siendo `"BASE"/` la carpeta en la que has ubicado el código fuente; como `C:/DFTMT`, o el escritorio de tu ordenador.
-> En este ejemplo, la ruta sería `[CAMBIAR] RUTA EJEMPLO`.
+> En este ejemplo, la ruta sería `D:/ezequ/Desktop/dftmt/duelforthemagetower/target`.
 
 3. Una vez localizado el archivo mencionado, copia la ruta donde se encuentra guardado. Puedes hacerlo así:
 
@@ -40,12 +40,12 @@ A continuación, se va a detallar el proceso para compilar el código en el orde
 
 5. En el terminal abierto, escribe `cd`, seguido de la ruta que copiamos anteriormente. Quedaría de una forma similar a esta:
 ```
-[CAMBIAR] cd RUTA
+cd D:/ezequ/Desktop/dftmt/duelforthemagetower/target
 ```
 
 6. A continuación, copia el siguiente comando e introducelo en la consola:
 ```
-[CAMBIAR] java -jar NOMBREARCHIVO.jar
+java -jar duelforthemagetower-0.0.1-SNAPSHOT.jar
 ```
 
 7. Si se ha realizado todo correctamente, debería de aparecer un mensaje similar al siguiente:
@@ -69,18 +69,18 @@ La cadena de cifras que se muestra tras `Dirección IPv4` es la dirección del s
 
 1. A continuación, en un ordenador conectado a la misma red que el servidor, se debe abrir un navegador web. Recomendamos el uso de uno de los siguientes navegadores:
 
-    · [_Google Chrome_](https://www.google.com/chrome/)
-    
     · [_Microsoft Edge_](https://www.microsoft.com/es-es/edge/download?form=MA13FJ)
     
     · [_Mozilla Firefox_](https://www.mozilla.org/es-ES/firefox/new/)
+    
+    · [_Google Chrome_](https://www.google.com/chrome/)
 
 
 2. En una nueva pestaña, introduce la **dirección IP** del servidor, seguido de `:8080`. Esto es el puerto en el que se establece la conexión.
 
 En este ejemplo, quedaría así:
 ```
-[CAMBIAR] IP ejemplo:8080
+192.168.1.135:8080
 ```
 
 3. Si se han seguido los pasos correctamente, el juego debería haber arrancado de forma exitosa:

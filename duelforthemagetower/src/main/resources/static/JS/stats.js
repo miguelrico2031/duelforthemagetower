@@ -41,6 +41,12 @@ class Stats extends Phaser.Scene
         
     }
 
+    init(data){
+        this._userJ1 = data.J1stats;
+        this._userJ2 = data.J2stats;
+    }
+
+
     create()
     {
         console.log("Se ha creado stats");
@@ -54,7 +60,7 @@ class Stats extends Phaser.Scene
         this._buttonClose = this._initCloseButton();
         this._audioClose = this.sound.add("close");
 
-        
+        /* 
         const userJ1Promise = this._getUser("miguel"); // En el getUser deberia ir el user loggeado
         const userJ2Promise = this._getUser("julio");  // Y en este el username del user rival
     
@@ -65,7 +71,7 @@ class Stats extends Phaser.Scene
                 this._userJ2 = userJ2Data;
 
                 console.log(this._userJ1);
-
+                */
         this._usernameJ1 = this.add.text((viewport.width / 2) - 135, 300, this._userJ1.username, 
         { 
             fontFamily: 'GrapeSoda',
@@ -75,7 +81,7 @@ class Stats extends Phaser.Scene
 
         // Estadísticas
         this._statsJ1 = this.add.text((viewport.width / 2) - 140, 400, 
-        'Hechizos lanzados:\t\t' + this._userJ1.hitsGiven + '\n' +
+        'Golpes asestados:\t\t' + this._userJ1.hitsGiven + '\n' +
         'Golpes recibidos:\t\t' + this._userJ1.hitsTaken + '\n' +
         'Golpes desviados:\t\t' + this._userJ1.hitsDeflected + '\n' +
         'Victorias:\t\t' + this._userJ1.wins + '\n' +
@@ -95,7 +101,7 @@ class Stats extends Phaser.Scene
 
         // Estadísticas
         this._statsJ2 = this.add.text((viewport.width / 2) + 140, 400, 
-        'Hechizos lanzados:\t\t' + this._userJ2.hitsGiven + '\n' +
+        'Golpes asestados:\t\t' + this._userJ2.hitsGiven + '\n' +
         'Golpes recibidos:\t\t' + this._userJ2.hitsTaken + '\n' +
         'Golpes desviados:\t\t' + this._userJ2.hitsDeflected + '\n' +
         'Victorias:\t\t' + this._userJ2.wins + '\n' +
@@ -106,13 +112,13 @@ class Stats extends Phaser.Scene
             fill: '#000' 
         }).setOrigin(0.5, 0.5);
 
-    
+    /*
         })
         .catch((error) => {
             console.error("Error en la solicitud AJAX:", error);
         });
 
-        
+         */
     }
     
 

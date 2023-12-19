@@ -1,6 +1,5 @@
 class Gameover extends Phaser.Scene{
 
-
     //private 
     _buttonPressed;
     _winnerPlayer;
@@ -52,9 +51,6 @@ class Gameover extends Phaser.Scene{
             this.add.image(0, 0, "p2_win").setOrigin(0,0);
         }
         
-        
-
-
         this.audioClick = this.sound.add("click");
         this.audioClack = this.sound.add("clack");
         
@@ -62,10 +58,10 @@ class Gameover extends Phaser.Scene{
         this._buttonStats = new Button(this, viewport.width/2 - 150, 230 + viewport.height/2, 0.7, true, "btn_stats", ()=>this.seeStats());
         this._buttonPlayAgain = new Button(this, viewport.width/2, 230 + viewport.height/2, 0.7, true, "btn_replay", ()=>this.restartGame());
 
-        this.buttonGg = this.initGgButton();
-        this.buttonCongrats = this.initCongratsButton();
-        this.buttonOther = this.initOtherButton();
-        this.buttonBye = this.initByeButton();
+        this.buttonGg = new Button(this, 635, 300, 1, true, "gg", ()=>this.chatButtonFunction("¡Bien jugado!"));
+        this.buttonCongrats = new Button(this, 635, 420, 1, true, "congrats", ()=>this.chatButtonFunction("¡Enhorabuena!"));
+        this.buttonOther = new Button(this, 635, 360, 1, true, "other", ()=>this.chatButtonFunction("¿Jugamos otra?"));
+        this.buttonBye = new Button(this, 635, 480, 1, true, "bye", ()=>this.chatButtonFunction("Adiós"));
 
         this.ChatStarted = false;
         this.startChatFunction(); //los if de luego por si esto no va
@@ -113,83 +109,6 @@ class Gameover extends Phaser.Scene{
         
     }
 
-    initGgButton()
-    {
-        
-        let button = this.add.sprite(635, 300, "gg")
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonGg) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this.buttonGg);
-                this.chatButtonFunction("¡Bien jugado!"); 
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonGg) 
-        );
-
-        return button;
-    }
-
-    initCongratsButton()
-    {
-        
-        let button = this.add.sprite(635, 420, "congrats")
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonCongrats) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this.buttonCongrats);
-                this.chatButtonFunction("¡Enhorabuena!"); 
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonCongrats) 
-        );
-
-        return button;
-    }
-
-    initOtherButton()
-    {
-        
-        let button = this.add.sprite(635, 360, "other")
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonOther) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this.buttonOther);
-                this.chatButtonFunction("¿Jugamos otra?"); 
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonOther) 
-        );
-
-        return button;
-    }
-
-    initByeButton()
-    {
-        
-        let button = this.add.sprite(635, 480, "bye")
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonBye) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this.buttonBye);
-                this.chatButtonFunction("Adiós"); 
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonBye) 
-        );
-
-        return button;
-    }
-
-    
     chatButtonFunction(text){
         console.log("okkk");
         if (this.ChatStarted == false) this.startChatFunction();
@@ -245,8 +164,7 @@ class Gameover extends Phaser.Scene{
     }
 
     retrieveChat(){
-
-        
+   
         if(!this.ChatStarted) return; //no tiene mucho sentido tener que iniciar tú el chat primero?¡??
         let opponentMessage = "texto";
         this.chatText = this.add.text(viewport.width / 2 + 310, viewport.height / 2 - 150, opponentMessage, 
@@ -255,7 +173,6 @@ class Gameover extends Phaser.Scene{
             fontSize: '24px', 
             fill: 'black' 
         }).setOrigin(0, 0);
-    
     
         $.ajax({
             url: IP + "/chat/" + user.username
@@ -300,8 +217,6 @@ class Gameover extends Phaser.Scene{
                 console.log(textStatus+" "+jqXHR.status);
                 console.log("error al enviar mensaje");
             }); 
-
     }
-
 
 }

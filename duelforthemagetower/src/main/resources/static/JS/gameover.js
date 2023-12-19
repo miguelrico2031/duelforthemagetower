@@ -1,5 +1,6 @@
 class Gameover extends Phaser.Scene{
 
+
     //private 
     _buttonPressed;
     _winnerPlayer;
@@ -8,18 +9,20 @@ class Gameover extends Phaser.Scene{
     _buttonPlayAgain;
     _buttonStats;
 
-    buttonGg;
-
     audioClick;
     audioClack;
 
-    opponent;
-    chatText;
-
+    
     _J1Stats;
     _J2Stats;
+    
+    chatText; //texto en pantalla del ultimo chat recibido
+    otherUsername; //username del otro usuario del chat
+    lastReceivedChat; //ultimo objeto GameChat reibido
+    retrieveChatInterval; //interval que llama a retrieveChat
 
-    constructor(){
+    constructor()
+    {
         super("GameoverScene");
     }
 
@@ -40,13 +43,15 @@ class Gameover extends Phaser.Scene{
         this.load.audio("clack", "../Assets/UI/Sounds/Minimalist7.wav");
     }
 
-    init(data){
+    init(data)
+    {
         this._winnerPlayer = data.winner;
         this._J1Stats = data.J1stats;
         this._J2Stats = data.J2stats;
     }
 
-    create(){
+    create()
+    {
         this._buttonPressed = false;
 
 
@@ -55,7 +60,8 @@ class Gameover extends Phaser.Scene{
         } else {
             this.add.image(0, 0, "p2_win").setOrigin(0,0);
         }
-        
+
+
         this.audioClick = this.sound.add("click");
         this.audioClack = this.sound.add("clack");
         
@@ -63,17 +69,8 @@ class Gameover extends Phaser.Scene{
         this._buttonStats = new Button(this, viewport.width/2 - 150, 230 + viewport.height/2, 0.7, true, "btn_stats", ()=>this.seeStats());
         this._buttonPlayAgain = new Button(this, viewport.width/2, 230 + viewport.height/2, 0.7, true, "btn_replay", ()=>this.restartGame());
 
-        this.buttonGg = new Button(this, 635, 300, 1, true, "gg", ()=>this.chatButtonFunction("¡Bien jugado!"));
-        this.buttonCongrats = new Button(this, 635, 420, 1, true, "congrats", ()=>this.chatButtonFunction("¡Enhorabuena!"));
-        this.buttonOther = new Button(this, 635, 360, 1, true, "other", ()=>this.chatButtonFunction("¿Jugamos otra?"));
-        this.buttonBye = new Button(this, 635, 480, 1, true, "bye", ()=>this.chatButtonFunction("Adiós"));
 
-        this.ChatStarted = false;
-        this.startChatFunction(); //los if de luego por si esto no va
-    }
-
-    update(){
-        this.time.delayedCall(100,()=>this.retrieveChat());
+        this.startChat(); //funcion que inicializa el chat si es posible
     }
     
     enterButtonClickState(button) 
@@ -92,6 +89,7 @@ class Gameover extends Phaser.Scene{
 
     restartGame()
     {
+        if(this.retrieveChatInterval !== null) clearInterval(this.retrieveChatInterval);
         this.game.sound.stopAll();
         this.scene.restart("GameplayScene"); // reinicia la escena del juego
         this.scene.start("GameplayScene"); 
@@ -99,6 +97,7 @@ class Gameover extends Phaser.Scene{
 
     exitMenu()
     {   
+        if(this.retrieveChatInterval !== null) clearInterval(this.retrieveChatInterval);
         console.log("Salir al menú");
         this.game.sound.stopAll();
         this.scene.launch("MenuScene", { isPlaying: false });
@@ -108,42 +107,99 @@ class Gameover extends Phaser.Scene{
     }
 
     seeStats(){
+        if(this.retrieveChatInterval !== null) clearInterval(this.retrieveChatInterval);
         this.scene.sleep("GameoverScene");
         
         this.scene.start("StatsScene", { J1stats: this._J1Stats, J2stats: this._J2Stats  }); 
         
     }
 
-    chatButtonFunction(text){
-        console.log("okkk");
-        if (this.ChatStarted == false) this.startChatFunction();
-        if (this.ChatStarted) this.sendMessage(text);
+    initChatButtonsAndText()
+    {
+        this.buttonGg = this.add.sprite(635, 300, "gg")
+            .setInteractive({ useHandCursor: true })
+            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
+            .on('pointerdown', () => { this.enterButtonClickState(this.buttonGg) })
+            .on('pointerup', () => 
+            { 
+                this.enterButtonRestState(this.buttonGg);
+                this.sendMessage("¡Bien jugado!"); 
+            })
+            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
+            .on('pointerout', () => this.enterButtonRestState(this.buttonGg));
+
+
+        this.buttonCongrats = this.add.sprite(635, 420, "congrats")
+            .setInteractive({ useHandCursor: true })
+            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
+            .on('pointerdown', () => { this.enterButtonClickState(this.buttonCongrats) })
+            .on('pointerup', () => 
+            { 
+                this.enterButtonRestState(this.buttonCongrats);
+                this.sendMessage("¡Enhorabuena!"); 
+            })
+            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
+            .on('pointerout', () => this.enterButtonRestState(this.buttonCongrats));
+
+
+        this.buttonOther = this.add.sprite(635, 360, "other")
+            .setInteractive({ useHandCursor: true })
+            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
+            .on('pointerdown', () => { this.enterButtonClickState(this.buttonOther) })
+            .on('pointerup', () => 
+            { 
+                this.enterButtonRestState(this.buttonOther);
+                this.sendMessage("¿Jugamos otra?"); 
+            })
+            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
+            .on('pointerout', () => this.enterButtonRestState(this.buttonOther));
+            
+            
+            this.buttonBye = this.add.sprite(635, 480, "bye")
+                .setInteractive({ useHandCursor: true })
+                // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
+                .on('pointerdown', () => { this.enterButtonClickState(this.buttonBye) })
+                .on('pointerup', () => 
+                { 
+                    this.enterButtonRestState(this.buttonBye);
+                    this.sendMessage("Adiós"); 
+                })
+                // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
+                .on('pointerout', () => this.enterButtonRestState(this.buttonBye));
+            
+
+            this.chatText = this.add.text(viewport.width / 2 + 310, viewport.height / 2 - 150, "", 
+                { 
+                    fontFamily: 'GrapeSoda',
+                    fontSize: '24px', 
+                    fill: 'black' 
+                }).setOrigin(0, 0);
+    }
+
+    disableChatButtonsAndText()
+    {
+        this.buttonGg.setActive(false);
+        this.buttonCongrats.setActive(false);
+        this.buttonOther.setActive(false);
+        this.buttonBye.setActive(false);
+        this.chatText.setActive(false);
     }
 
     //ajax
-    startChatFunction() {
+    startChat()
+    {
 
-        if (user == null){
-            if (!this.loginError) 
-            {
-                console.log("iniciar sesión") 
-                this.loginError = true;
-            }
+        if (user == null)
+        {
+            //aqui poner aviso en el juego de "no se pudo iniciar chat, tienes que iniciar sesion"
             return;
         }
 
-        const gameUser = 
-        {
-            username: user.username,
-            password: user.password
-        };
-
-        if (user == null) return;
         $.ajax
             ({
                 method: "POST",
                 url: IP + "/chat/start",
-                data: JSON.stringify(gameUser),
+                data: JSON.stringify({ username: user.username }),
                 headers: 
                 {
                     "Content-type":"application/json"
@@ -153,49 +209,65 @@ class Gameover extends Phaser.Scene{
             .done((data, textStatus, jqXHR) => 
             {
                 // DEBUG estado servidor
+                console.log("chat iniciado");
                 console.log(textStatus+" "+ jqXHR.status);
                 console.log(data);
                 console.log(jqXHR.statusCode())  
-                console.log("chat iniciado");
-                this.ChatStarted = true; 
-                this.opponent = data.otherUsername;    
+
+                this.otherUsername = data.otherUsername;  
+                
+                //SOLO si hemos cosneguido iniciar el chat inicializamos los botones
+                this.initChatButtonsAndText();
+
+                //y el mensaje de chat
+
+                this.lastReceivedChat = null;
+
+                this.retrieveChatInterval = setInterval(() => this.retrieveChat(), 0.5 * 1000)
+
             })
+
             .fail((data, textStatus, jqXHR) => 
             {
                 // Texto de error
+                console.log("error al iniciar chat, no hay usuarios disponibles");
                 console.log(textStatus+" "+jqXHR.status);
-                console.log("error al iniciar chat");
+                //Aqui aviso en el juego de "no hay usuarios disponibles para chatear"
+                this.retrieveChatInterval = null;
             });  
     }
 
     retrieveChat(){
-   
-        if(!this.ChatStarted) return; //no tiene mucho sentido tener que iniciar tú el chat primero?¡??
-        let opponentMessage = "texto";
-        this.chatText = this.add.text(viewport.width / 2 + 310, viewport.height / 2 - 150, opponentMessage, 
-        { 
-            fontFamily: 'GrapeSoda',
-            fontSize: '24px', 
-            fill: 'black' 
-        }).setOrigin(0, 0);
-    
-        $.ajax({
+        
+        console.log("retrieveando");
+        $.ajax
+        ({
             url: IP + "/chat/" + user.username
         })
         .done((data)=>
         {
-            this.chatText = data.chat
+
+            if(this.lastReceivedChat === null || this.lastReceivedChat.id !== data.id)
+            {
+                this.lastReceivedMessage = data;
+                this.chatText.text = data.text;
+            }
+
         })
         .fail((error)=>
         {
+            console.log("error al recibir mensaje, el otro user se desconecto");
             console.log(error);
+            //Aqui mostrar mensaje de "Chat terminado. el otro usuario se desconectó"
+            this.disableChatButtonsAndText();
+            clearInterval(this.retrieveChatInterval); //para la ejecucion de este metodo
         });
     }
 
     sendMessage(msg){
         const message = {
             username: user.username,
-            otherUsername: this.opponent,
+            otherUsername: this.otherUsername,
             text: msg
         }
         $.ajax
@@ -209,19 +281,21 @@ class Gameover extends Phaser.Scene{
             }
         })
         .done((data, textStatus, jqXHR) => 
-            {
-                // DEBUG estado servidor
-                console.log(textStatus+" "+ jqXHR.status);
-                console.log(data);
-                console.log(jqXHR.statusCode())  
-                console.log("mensaje enviado");            
-            })
-            .fail((data, textStatus, jqXHR) => 
-            {
-                // Texto de error
-                console.log(textStatus+" "+jqXHR.status);
-                console.log("error al enviar mensaje");
-            }); 
+        {
+            // DEBUG estado servidor
+            console.log("mensaje enviado");            
+            console.log(textStatus+" "+ jqXHR.status);
+            console.log(data);
+        })
+        .fail((data, textStatus, jqXHR) => 
+        {
+            // Texto de error
+            console.log("error al enviar mensaje");
+            console.log(textStatus+" "+jqXHR.status);
+            //Mostrar en el juego mensaje de: "no se pudo enviar el mensaje"
+        }); 
+
     }
+
 
 }

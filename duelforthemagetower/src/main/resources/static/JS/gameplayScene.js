@@ -117,7 +117,7 @@ class GameplayScene extends Phaser.Scene
 
         if(user != null){
             this.playerStatsJ1 = {username : user.username, hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
-            this.playerStatsJ2 = {username : user.username, hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
+            this.playerStatsJ2 = {username : "Jugador 2", hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
         } else {
             this.playerStatsJ1 = {username : "Jugador 1", hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
             this.playerStatsJ2 = {username : "Jugador 2", hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};

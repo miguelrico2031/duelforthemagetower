@@ -70,7 +70,16 @@ class Gameover extends Phaser.Scene{
         this._buttonStats = new Button(this, viewport.width/2 - 150, 230 + viewport.height/2, 0.7, true, "btn_stats", ()=>this.seeStats());
         this._buttonPlayAgain = new Button(this, viewport.width/2, 230 + viewport.height/2, 0.7, true, "btn_replay", ()=>this.restartGame());
 
-
+        //aviso al jugador
+        if (user==null) {
+            this.errorText = this.add.text(viewport.width / 2 - 100, viewport.height / 2, 'Necesitas iniciar sesión\npara poder usar el chat', 
+            { 
+                fontFamily: 'GrapeSoda',
+                fontSize: '20px', 
+                fill: 'red' 
+            }).setOrigin(0, 0);
+        }
+        
         this.startChat(); //funcion que inicializa el chat si es posible
     }
     
@@ -117,6 +126,7 @@ class Gameover extends Phaser.Scene{
 
     initChatButtonsAndText()
     {
+        
         this.buttonGg = this.add.sprite(635, 300, "gg")
             .setInteractive({ useHandCursor: true })
             // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
@@ -179,22 +189,23 @@ class Gameover extends Phaser.Scene{
 
     disableChatButtonsAndText()
     {
-        this.buttonGg.setActive(false);
-        this.buttonCongrats.setActive(false);
-        this.buttonOther.setActive(false);
-        this.buttonBye.setActive(false);
-        this.chatText.setActive(false);
+        this.buttonGg.setActive(false).setVisible(false);
+        this.buttonCongrats.setActive(false).setVisible(false);
+        this.buttonOther.setActive(false).setVisible(false);
+        this.buttonBye.setActive(false).setVisible(false);
+        this.chatText.setActive(false).setVisible(false);
     }
 
     //ajax
     startChat()
     {
-
+        // miguel no me mates porfa lo he hecho en el create
         if (user == null)
         {
             //aqui poner aviso en el juego de "no se pudo iniciar chat, tienes que iniciar sesion"
             return;
         }
+
 
         $.ajax
             ({
@@ -234,6 +245,12 @@ class Gameover extends Phaser.Scene{
                 console.log("error al iniciar chat, no hay usuarios disponibles");
                 console.log(textStatus+" "+jqXHR.status);
                 //Aqui aviso en el juego de "no hay usuarios disponibles para chatear"
+                this.errorText = this.add.text(viewport.width / 2 - 170, viewport.height / 2, 'No hay usuarios disponibles para chatear', 
+                { 
+                    fontFamily: 'GrapeSoda',
+                    fontSize: '20px', 
+                    fill: 'red' 
+                }).setOrigin(0, 0);
                 this.retrieveChatInterval = null;
             });  
     }
@@ -260,12 +277,12 @@ class Gameover extends Phaser.Scene{
             console.log("error al recibir mensaje, el otro user se desconecto");
             console.log(error);
 
-            /*this.errorText = this.add.text(viewport.width / 2 - 180, viewport.height / 2, 'Chat terminado.\nel otro usuario\n se desconectó', 
-            { 
-                fontFamily: 'GrapeSoda',
-                fontSize: '16px', 
-                fill: 'red' 
-            }).setOrigin(0.5, 0.5).setVisible(false);*/
+            this.errorText = this.add.text(viewport.width / 2, viewport.height / 2, 'Chat terminado. El otro usuario se desconectó', 
+                { 
+                    fontFamily: 'GrapeSoda',
+                    fontSize: '20px', 
+                    fill: 'red' 
+                }).setOrigin(0.5, 0.5);
 
             this.disableChatButtonsAndText();
             clearInterval(this.retrieveChatInterval); //para la ejecucion de este metodo
@@ -273,7 +290,6 @@ class Gameover extends Phaser.Scene{
     }
 
     
-
     sendMessage(msg){
         const message = {
             username: user.username,
@@ -303,6 +319,12 @@ class Gameover extends Phaser.Scene{
             console.log("error al enviar mensaje");
             console.log(textStatus+" "+jqXHR.status);
             //Mostrar en el juego mensaje de: "no se pudo enviar el mensaje"
+            this.errorText = this.add.text(viewport.width / 2 - 100, viewport.height / 2, 'No se pudo enviar el mensaje', 
+            { 
+                fontFamily: 'GrapeSoda',
+                fontSize: '20px', 
+                fill: 'red' 
+            }).setOrigin(0, 0);
         }); 
 
     }

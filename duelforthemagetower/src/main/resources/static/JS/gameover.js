@@ -11,8 +11,8 @@ class Gameover extends Phaser.Scene{
 
     buttonGg;
 
-    _audioClick;
-    _audioClack;
+    audioClick;
+    audioClack;
 
     opponent;
     chatText;
@@ -45,6 +45,7 @@ class Gameover extends Phaser.Scene{
     create(){
         this._buttonPressed = false;
 
+
         if(this._winnerPlayer === 1){
             this.add.image(0, 0, "p1_win").setOrigin(0,0);
         } else {
@@ -67,6 +68,7 @@ class Gameover extends Phaser.Scene{
         this.buttonBye = this.initByeButton();
 
         this.ChatStarted = false;
+        this.startChatFunction(); //los if de luego por si esto no va
     }
 
     update(){
@@ -75,14 +77,14 @@ class Gameover extends Phaser.Scene{
     
     enterButtonClickState(button) 
     {
-        this._audioClick.play(); 
+        this.audioClick.play(); 
         button.setFrame(1);
         this._buttonPressed = true;
     }
 
     enterButtonRestState(button)
     {
-        if(this._buttonPressed) this._audioClack.play();
+        if(this._buttonPressed) this.audioClack.play();
         button.setFrame(0);
         this._buttonPressed = false;
     }
@@ -235,6 +237,7 @@ class Gameover extends Phaser.Scene{
 
     retrieveChat(){
 
+        if(!this.ChatStarted) return; //no tiene mucho sentido tener que iniciar tú el chat primero?¡??
         let opponentMessage = "texto";
         this.chatText = this.add.text(viewport.width / 2 + 310, viewport.height / 2 - 150, opponentMessage, 
         { 

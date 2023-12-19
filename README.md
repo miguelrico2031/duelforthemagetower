@@ -4,7 +4,7 @@ Repositorio creado para el desarrollo del videojuego de la práctica de Juegos e
 En esta sección se detallarán las instrucciones para la correcta compilación y ejecución del juego en una red local.
 
 ## Obtener el código fuente
-Puedes descargar la última versión del código fuente `[CAMBIAR] poner-release-aqui-v1.x`, desde la sección de [_releases_](https://github.com/miguelrico2031/duelforthemagetower/releases).
+Puedes descargar la última versión del código fuente: `duelforthemagetower-fase3.zip`, desde la sección de [_releases_](https://github.com/miguelrico2031/duelforthemagetower/releases).
 
 O bien, puedes clonar el repositorio usando el siguiente comando:
 ```

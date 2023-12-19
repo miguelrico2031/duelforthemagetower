@@ -193,11 +193,20 @@ class Gameover extends Phaser.Scene{
     chatButtonFunction(text){
         console.log("okkk");
         if (this.ChatStarted == false) this.startChatFunction();
-        this.sendMessage(text);
+        if (this.ChatStarted) this.sendMessage(text);
     }
 
     //ajax
     startChatFunction() {
+
+        if (user == null){
+            if (!this.loginError) 
+            {
+                console.log("iniciar sesión") 
+                this.loginError = true;
+            }
+            return;
+        }
 
         const gameUser = 
         {
@@ -237,16 +246,7 @@ class Gameover extends Phaser.Scene{
 
     retrieveChat(){
 
-        if (user == null){
-            if (!loginError) 
-            {
-                console.log("iniciar sesión") 
-                this.loginError = true;
-            }
-            return;
-        }
-
-
+        
         if(!this.ChatStarted) return; //no tiene mucho sentido tener que iniciar tú el chat primero?¡??
         let opponentMessage = "texto";
         this.chatText = this.add.text(viewport.width / 2 + 310, viewport.height / 2 - 150, opponentMessage, 

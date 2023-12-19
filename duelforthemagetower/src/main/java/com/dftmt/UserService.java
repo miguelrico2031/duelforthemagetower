@@ -1,11 +1,16 @@
 package com.dftmt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.type.TypeReference;  
+import com.fasterxml.jackson.core.type.TypeReference;
+
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +21,7 @@ public class UserService
 	private List<GameUser> loggedUsers = new ArrayList<>();
 	
 	private final String filePath = System.getProperty("user.dir") + "/src/main/resources/data/users.txt";
-
+	
 	public GameUser signUp(GameUser user)
 	{	
 		if(users == null) loadUsers();
@@ -134,6 +139,8 @@ public class UserService
 	    }
     }
 	
+
+	
 	private void loadUsers()
 	{
         ObjectMapper objectMapper = new ObjectMapper();
@@ -155,5 +162,6 @@ public class UserService
             users =  new HashMap<>();
         }
     }
+	
 
 }

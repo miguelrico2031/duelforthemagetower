@@ -76,12 +76,12 @@ class Menu extends Phaser.Scene
             this.menuSong.setLoop(true);
         }
 
-        this.buttonPlay = this.initPlayButton();
-        this.buttonHelp = this.initHelpButton();
-        this.buttonCredits = this.initCreditsButton();
-        this.buttonUser = this.initUserButton();
-        this.buttonMute = this.initMuteButton();
-        this.buttonSound = this.initSoundButton();
+        this.buttonPlay = new Button(this, 450, 500, 1, true, "play", () => this.startGame());
+        this.buttonHelp = new Button(this, 865, 230, 0.8, true, "help", () => this.showHelp()); 
+        this.buttonCredits = new Button(this, 865, 380, 0.8, true, "credits", () => this.showCredits());
+        this.buttonUser = new Button(this, 865, 530, 1, true, "user", () => this.showLoginScreen());
+        this.buttonMute = new Button(this, 1045, 120, 1, true, "mute", () => this.toggleSound());
+        this.buttonSound = new Button(this, 1045, 120, 1, true, "sonido", () => this.toggleSound());
 
         if (!this.game.sound.mute) 
         {
@@ -93,134 +93,6 @@ class Menu extends Phaser.Scene
             this.buttonSound.setVisible(false);
             this.buttonMute.setVisible(true);
         }
-    }
-    
-
-    enterButtonClickState(button) 
-    {
-        this.audioClick.play(); 
-        button.setFrame(1);
-        this.buttonPressed = true;
-    }
-
-    enterButtonRestState(button)
-    {
-        // pongo el frame de la animacion sin pulsar pq si no se ve como si se quedase pillado y no queremos eso
-        if(this.buttonPressed) this.audioClack.play();
-        button.setFrame(0);
-        this.buttonPressed = false;
-    }
-
-    initPlayButton()
-    {
-        
-        let button = this.add.sprite(game.config.width / 2.833, game.config.height / 1.44, "play")
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonPlay) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this.buttonPlay);
-                this.startGame(); 
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonPlay) 
-        );
-
-        return button;
-    }
-
-    initHelpButton()
-    {
-        
-        let button = this.add.sprite(865, 200, "help")
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonHelp) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this.buttonHelp);
-                this.showHelp(); 
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonHelp) 
-        );
-
-        return button;
-    }
-
-    initCreditsButton()
-    {
-        
-        let button = this.add.sprite(865, 400, "credits")
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonCredits) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this.buttonCredits);
-                this.showCredits(); 
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonCredits) 
-        );
-
-        return button;
-    }
-
-    initUserButton()
-    {
-        
-        let button = this.add.sprite(865, 550, "user")
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonUser) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this.buttonUser);
-                this.loginScreen(); 
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonUser) 
-        );
-
-        return button;
-    }
-
-    initMuteButton()
-    {
-        
-        let button = this.add.sprite((game.config.width / 3.8) * 3.1, (game.config.height / 9.8) * 1.6, "mute")
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonMute) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this.buttonMute);
-                this.toggleSound(); 
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonMute) 
-        );
-        return button;
-    }
-
-    initSoundButton()
-    {
-        
-        let button = this.add.sprite((game.config.width / 3.8) * 3.1, (game.config.height / 9.8) * 1.6, "sonido")
-            .setInteractive({ useHandCursor: true })
-            // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
-            .on('pointerdown', () => { this.enterButtonClickState(this.buttonSound) })
-            .on('pointerup', () => 
-            { 
-                this.enterButtonRestState(this.buttonSound);
-                this.toggleSound(); 
-            })
-            // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
-            .on('pointerout', () => this.enterButtonRestState(this.buttonSound) 
-        );
-        return button;
     }
 
     startGame() 
@@ -242,18 +114,16 @@ class Menu extends Phaser.Scene
         this.scene.start("CreditsScene");
     }
 
-    loginScreen()
+    showLoginScreen()
     {
-        
-
         if (user === null)
         {
             this.scene.start("LoginScene");
             this.audioOpen.play();
         }
-        else
+        else // Si ya inició sesión
         {
-            this.loginFunction();
+            this.showUserScreen();
         }
     }
 
@@ -274,7 +144,7 @@ class Menu extends Phaser.Scene
 
     }
 
-    loginFunction()
+    showUserScreen()
     {
         const loginUser = 
         {

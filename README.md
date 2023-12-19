@@ -450,4 +450,18 @@ Si los jugadores lo desean pueden desactivar el sonido del juego tanto en el men
 _Figura 16: Diagrama de flujo entre las diferentes pantallas del juego_
 
 
+# 7. Funciones de red
+
+Existen diferentes ejemplos de comunicación en red en el juego:
+- Crear usuario (cuando se intenta crear un usuario con un nombre que ya está en uso, el juego lo notifica)
+- Iniciar sesión (existe un aviso cuando se introduce una contraseña incorrecta)
+- Modificar contraseña
+- Cerrar sesión
+- Eliminar cuenta
+- Ver estadísticas del usuario tras una partida (hechizos lanzados, golpes recibidos y desviados, victorias y derrotas)
+- Ver estadísticas totales del usuario (se mantienen guardadas tras el cierre de sesión y se actualizan cuando el usuario está activo)
+- Chat con el oponente tras terminar una partida. Ambos jugadores se comunicarán mediante frases predeterminadas, siempre y cuando hayan iniciado sesión previamente.
+
+
+
 

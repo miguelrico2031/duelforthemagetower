@@ -17,6 +17,7 @@ class Gameover extends Phaser.Scene{
     _J2Stats;
     
     chatText; //texto en pantalla del ultimo chat recibido
+    //errorText;
     otherUsername; //username del otro usuario del chat
     lastReceivedChat; //ultimo objeto GameChat reibido
     retrieveChatInterval; //interval que llama a retrieveChat
@@ -258,11 +259,20 @@ class Gameover extends Phaser.Scene{
         {
             console.log("error al recibir mensaje, el otro user se desconecto");
             console.log(error);
-            //Aqui mostrar mensaje de "Chat terminado. el otro usuario se desconectó"
+
+            /*this.errorText = this.add.text(viewport.width / 2 - 180, viewport.height / 2, 'Chat terminado.\nel otro usuario\n se desconectó', 
+            { 
+                fontFamily: 'GrapeSoda',
+                fontSize: '16px', 
+                fill: 'red' 
+            }).setOrigin(0.5, 0.5).setVisible(false);*/
+
             this.disableChatButtonsAndText();
             clearInterval(this.retrieveChatInterval); //para la ejecucion de este metodo
         });
     }
+
+    
 
     sendMessage(msg){
         const message = {

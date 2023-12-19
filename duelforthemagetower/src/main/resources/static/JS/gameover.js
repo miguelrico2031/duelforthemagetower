@@ -237,6 +237,16 @@ class Gameover extends Phaser.Scene{
 
     retrieveChat(){
 
+        if (user == null){
+            if (!loginError) 
+            {
+                console.log("iniciar sesión") 
+                this.loginError = true;
+            }
+            return;
+        }
+
+
         if(!this.ChatStarted) return; //no tiene mucho sentido tener que iniciar tú el chat primero?¡??
         let opponentMessage = "texto";
         this.chatText = this.add.text(viewport.width / 2 + 310, viewport.height / 2 - 150, opponentMessage, 

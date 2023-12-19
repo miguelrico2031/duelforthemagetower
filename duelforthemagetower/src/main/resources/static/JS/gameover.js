@@ -189,11 +189,11 @@ class Gameover extends Phaser.Scene{
 
     disableChatButtonsAndText()
     {
-        this.buttonGg.setActive(false);
-        this.buttonCongrats.setActive(false);
-        this.buttonOther.setActive(false);
-        this.buttonBye.setActive(false);
-        this.chatText.setActive(false);
+        this.buttonGg.setActive(false).setVisible(false);
+        this.buttonCongrats.setActive(false).setVisible(false);
+        this.buttonOther.setActive(false).setVisible(false);
+        this.buttonBye.setActive(false).setVisible(false);
+        this.chatText.setActive(false).setVisible(false);
     }
 
     //ajax
@@ -277,12 +277,12 @@ class Gameover extends Phaser.Scene{
             console.log("error al recibir mensaje, el otro user se desconecto");
             console.log(error);
 
-            this.errorText = this.add.text(viewport.width / 2 - 130, viewport.height / 2, 'Chat terminado. El otro usuario se desconectó', 
+            this.errorText = this.add.text(viewport.width / 2, viewport.height / 2, 'Chat terminado. El otro usuario se desconectó', 
                 { 
                     fontFamily: 'GrapeSoda',
                     fontSize: '20px', 
                     fill: 'red' 
-                }).setOrigin(0, 0);
+                }).setOrigin(0.5, 0.5);
 
             this.disableChatButtonsAndText();
             clearInterval(this.retrieveChatInterval); //para la ejecucion de este metodo

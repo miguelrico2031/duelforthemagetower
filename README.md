@@ -34,7 +34,7 @@ A continuación, se va a detallar el proceso para compilar el código en el orde
 
 3. Una vez localizado el archivo mencionado, copia la ruta donde se encuentra guardado. Puedes hacerlo así:
 
-[path img](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/path.png)
+![path img](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/path.png)
 
 4. Lanza el Símbolo del sistema. Puedes hacerlo pulsando `Windows + R`, escribiendo **cmd**, y pulsando "Aceptar"; o buscándolo en la lista de programas de Windows.
 
@@ -50,9 +50,9 @@ A continuación, se va a detallar el proceso para compilar el código en el orde
 
 7. Si se ha realizado todo correctamente, debería de aparecer un mensaje similar al siguiente:
 
-[server img](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/server.png)
+![server img](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/server.png)
 
-## Ejecutar el juego
+## Ejecución
 
 ### Dirección IP
 
@@ -61,11 +61,11 @@ Para poder acceder al juego, es necesario conocer la dirección IP del ordenador
 1. Desde el servidor, en una nueva ventana del Símbolo del sistema, ejecuta el comando `ipconfig`.
 La cadena de cifras que se muestra tras `Dirección IPv4` es la dirección del servidor.
 
-[ipconfig img](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/ipconfig.png)
+![ipconfig img](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/ipconfig.png)
 
 > La dirección IP del servidor es el texto resaltado. En el caso de este ejemplo, es `192.168.1.135`
 
-### Ejecución del juego
+### Ejecutar el juego
 
 1. A continuación, en un ordenador conectado a la misma red que el servidor, se debe abrir un navegador web. Recomendamos el uso de uno de los siguientes navegadores:
 
@@ -85,7 +85,7 @@ En este ejemplo, quedaría así:
 
 3. Si se han seguido los pasos correctamente, el juego debería haber arrancado de forma exitosa:
 
-[Juego img](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/gameloaded.png)
+![Juego img](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/gameloaded.png)
 
 
 

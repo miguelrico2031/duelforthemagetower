@@ -12,6 +12,9 @@ class Gameover extends Phaser.Scene{
     _audioClick;
     _audioClack;
 
+    _J1Stats;
+    _J2Stats;
+
     constructor(){
         super("GameoverScene");
     }
@@ -29,6 +32,8 @@ class Gameover extends Phaser.Scene{
 
     init(data){
         this._winnerPlayer = data.winner;
+        this._J1Stats = data.J1stats;
+        this._J2Stats = data.J2stats;
     }
 
     create(){
@@ -134,7 +139,7 @@ class Gameover extends Phaser.Scene{
     seeStats(){
         this.scene.sleep("GameoverScene");
         
-        this.scene.start("StatsScene"); 
+        this.scene.start("StatsScene", { J1stats: this._J1Stats, J2stats: this._J2Stats  }); 
         
     }
 

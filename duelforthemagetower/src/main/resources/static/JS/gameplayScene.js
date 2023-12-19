@@ -28,7 +28,8 @@ class GameplayScene extends Phaser.Scene
     healthbar1;
     healthbar2;
 
-    playerStats; 
+    playerStatsJ1; 
+    playerStatsJ2; 
 
 
     pauseKeyIsPressed;
@@ -113,7 +114,14 @@ class GameplayScene extends Phaser.Scene
     create()
     {   
         // Aqui en el username deberia ir el usuario loggeado
-        this.playerStats = {username : "miguel", hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
+
+        if(user != null){
+            this.playerStatsJ1 = {username : user.username, hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
+            this.playerStatsJ2 = {username : user.username, hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
+        } else {
+            this.playerStatsJ1 = {username : "Jugador 1", hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
+            this.playerStatsJ2 = {username : "Jugador 2", hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
+        }
 
         this._audioBlast = this.sound.add("blastAudio");
         this._audioShield = this.sound.add("shieldAudio");
@@ -240,7 +248,10 @@ class GameplayScene extends Phaser.Scene
 
     onShieldCollision(spell, other){
         if(other.id === 1){
-            this.playerStats.hitsDeflected++;
+            this.playerStatsJ1.hitsDeflected++;
+        } 
+        if (other.id === 2){
+            this.playerStatsJ2.hitsDeflected++;
         }
         this._audioDeflect.play();
     }
@@ -289,12 +300,14 @@ class GameplayScene extends Phaser.Scene
 
     processDeath(){
         if(!this.player1._isAlive){
-            this.playerStats.losses++;
+            this.playerStatsJ1.losses++;
+            this.playerStatsJ2.wins++;
             this.launchGameOverScene(2);
         }
 
         if(!this.player2._isAlive){
-            this.playerStats.wins++;
+            this.playerStatsJ1.wins++;
+            this.playerStatsJ2.losses++;
             this.launchGameOverScene(1);
         }
     }
@@ -545,7 +558,8 @@ class GameplayScene extends Phaser.Scene
 
     launchGameOverScene(winnerId){
 
-        this.updatePlayerStats();
+        this.updatePlayerStats(this.playerStatsJ1);
+        //this.updatePlayerStats(this.playerStatsJ2);
 
         // Pausa la música
         this._musicIngame.pause();
@@ -553,24 +567,24 @@ class GameplayScene extends Phaser.Scene
         this.gameoverSound.play()
         // Finaliza el juego
         this.scene.pause("GameplayScene");
-        if(!this.scene.get('GameoverScene', { winner: winnerId }).loaded)
+        if(!this.scene.get('GameoverScene', { winner: winnerId, J1stats: this.playerStatsJ1, J2stats: this.playerStatsJ2 }).loaded)
         {
-            this.scene.get('GameoverScene', { winner: winnerId }).loaded = true;
-            this.scene.launch('GameoverScene', { winner: winnerId }); // pone el menu de pausa por encima
+            this.scene.get('GameoverScene', { winner: winnerId, J1stats: this.playerStatsJ1, J2stats: this.playerStatsJ2  }).loaded = true;
+            this.scene.launch('GameoverScene', { winner: winnerId, J1stats: this.playerStatsJ1, J2stats: this.playerStatsJ2  }); // pone el menu de pausa por encima
         }
         else
         {
-            this.scene.wake('GameoverScene', { winner: winnerId }); // reactiva el menú de pausa (que ya estaba por encima)
+            this.scene.wake('GameoverScene', { winner: winnerId, J1stats: this.playerStatsJ1, J2stats: this.playerStatsJ2  }); // reactiva el menú de pausa (que ya estaba por encima)
         }
-        this.scene.run('GameoverScene', { winner: winnerId });
+        this.scene.run('GameoverScene', { winner: winnerId, J1stats: this.playerStatsJ1, J2stats: this.playerStatsJ2  });
     }
 
-    updatePlayerStats(){
+    updatePlayerStats(playerStats){
         $.ajax({
             type: 'PUT',
             url: IP + "/stats/increase",
             contentType: 'application/json',
-            data: JSON.stringify(this.playerStats)
+            data: JSON.stringify(playerStats)
         }).done(function (data) {
             console.log('SUCCESS');
         }).fail(function (error) {

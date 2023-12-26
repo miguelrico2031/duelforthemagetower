@@ -19,8 +19,8 @@ class Loading extends Phaser.Scene
     create()
     {
         this.add.image(0, 0, "loadingScreen").setOrigin(0, 0);
+        // esto habria que volver a cambiarlo a la hora de subir el juego, que no se nos olvide otra vez!
         setTimeout(() => {this.minTimeOver = true; this.complete()}, 0 /*1000 * 3*/)
-
     }
 
 	complete() 

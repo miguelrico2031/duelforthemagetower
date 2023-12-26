@@ -69,10 +69,14 @@ class Login extends Phaser.Scene
         this.audioClose = this.sound.add("close");
 
         // Botones
-        this.buttonClose = new Button(this, 900, 200, 0.6, true, "cerrar", () => this.closeLogin());
+        this.buttonClose = new Button(this, 900, 200, 0.6, true, "cerrar", () => this.closeLoginScreen());
         this.buttonLogin = new Button(this, 500, 480, 1, true, "login", () => this.loginFunc());
         this.buttonSignup = new Button(this, 800, 480, 1, true, "signup", () => this.signupFunc());
-        this.buttonBack = new Button(this, 650, 480, 1, false, "okback", () => this.userAlreadyExists(false));
+        this.buttonBack = new Button(this, 650, 480, 1, false, "okback", () => this.userAlreadyExistsScreenVisibility(false));
+
+        // Para permitir que se pulse enter para iniciar sesión NO FUNCIONA PERO NO TENGO INTERNET NO PUEDO MIRAR NADA
+        //this.keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).on('keydown', () => this.loginFunc());
+        this.keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
 
         // Campo de texto usuario
         this.usernameForm = this.add.dom(650, 325).createFromCache("textform")
@@ -81,6 +85,11 @@ class Login extends Phaser.Scene
         // Campo de texto contraseña
         this.passwordForm = this.add.dom(650, 325).createFromCache("passwordform");
         this.passwordForm.setPosition(viewport.width / 2, 400);
+    }
+
+    update()
+    {
+        if(this.keyEnter.isDown) this.loginFunc();
     }
 
     // Función a ejecutar al pulsar el botón de inicio de sesión
@@ -137,7 +146,7 @@ class Login extends Phaser.Scene
                 console.log(textStatus+" "+jqXHR.status);
 
                 // Función notificando el error al usuario
-                this.wrongCredentials();
+                this.showWrongCredentialsErrorText();
             });            
         }
 
@@ -196,47 +205,41 @@ class Login extends Phaser.Scene
             {
                 // Información del error al usuario
                 console.log(textStatus+" "+jqXHR.status);
-                this.userAlreadyExists(true);
+                this.userAlreadyExistsScreenVisibility(true);
             });
 
         }
     }
 
     // Función para cerrar la pantalla de login y volver al menú principal
-    closeLogin() 
+    closeLoginScreen() 
     {
         this.audioClose.play();
         this.scene.start("MenuScene", { isPlaying: true });
     }
 
     // Función para mostrar al usuario un mensaje de error si introduce datos erróneos
-    wrongCredentials()
+    showWrongCredentialsErrorText()
     {
         this.errorText.setVisible(true);
-        this.time.delayedCall(3000, () => this.hideText()); 
-    }
-
-    // Función para ocultar el texto de error
-    hideText()
-    {
-        this.errorText.setVisible(false);
+        this.time.delayedCall(3000, () => this.errorText.setVisible(false)); 
     }
 
     // se que todo esto es super optimizable pero bueno
     // Función para mostrar al usuario la pantalla que indica que el usuario ya existe
     // y no se puede crear uno nuevo.
-    userAlreadyExists(showScreen)
+    userAlreadyExistsScreenVisibility(visibility)
     {
         // Elementos de la pantalla de aviso
-        this.userExistsScreen.setVisible(showScreen);
-        this.buttonBack.setVisible(showScreen);
+        this.userExistsScreen.setVisible(visibility);
+        this.buttonBack.setVisible(visibility);
 
         // Elementos de la pantalla de login
-        this.buttonClose.setVisible(!showScreen);
-        this.buttonLogin.setVisible(!showScreen);
-        this.buttonSignup.setVisible(!showScreen);
-        this.usernameForm.setVisible(!showScreen);
-        this.passwordForm.setVisible(!showScreen);
+        this.buttonClose.setVisible(!visibility);
+        this.buttonLogin.setVisible(!visibility);
+        this.buttonSignup.setVisible(!visibility);
+        this.usernameForm.setVisible(!visibility);
+        this.passwordForm.setVisible(!visibility);
 
         // La oculto pase lo que pase
         this.errorText.setVisible(false);

@@ -16,25 +16,27 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 public class DuelforthemagetowerApplication implements WebSocketConfigurer
 {
 
-	
+	//metodo para asignar el handler al registro
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry)
 	{
 		registry.addHandler(matchHandler(), "/match").setAllowedOrigins("*");
 	}
 	
+	//metodo para crear el handler y usarlo
 	@Bean
 	public WebSocketMatchHandler matchHandler()
 	{
 		return new WebSocketMatchHandler();
 	}
-
-   @Bean
-    public ScheduledExecutorService sessionTimeoutChecker()
-   {
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(() -> matchHandler().updateSessions(), 0, 1, TimeUnit.SECONDS);
-        return executorService;
+	
+	//metodo para llamar a updateSessions() del handler, una vez cada segundo
+	@Bean
+	public ScheduledExecutorService sessionTimeoutChecker()
+	{
+		ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    	executorService.scheduleAtFixedRate(() -> matchHandler().updateSessions(), 0, 1, TimeUnit.SECONDS);
+    	return executorService;
     }
 
 	public static void main(String[] args)

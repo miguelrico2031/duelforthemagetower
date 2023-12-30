@@ -1,6 +1,5 @@
 package com.dftmt;
 
-import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -11,8 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-import org.springframework.web.socket.WebSocketSession;
-
 
 @SpringBootApplication
 @EnableWebSocket
@@ -23,7 +20,7 @@ public class DuelforthemagetowerApplication implements WebSocketConfigurer
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry)
 	{
-		registry.addHandler(matchHandler(), "").setAllowedOrigins("*");
+		registry.addHandler(matchHandler(), "/match").setAllowedOrigins("*");
 	}
 	
 	@Bean
@@ -36,7 +33,7 @@ public class DuelforthemagetowerApplication implements WebSocketConfigurer
     public ScheduledExecutorService sessionTimeoutChecker()
    {
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(() -> matchHandler().checkSessions(), 0, 1, TimeUnit.SECONDS); // Verifica cada segundo
+        executorService.scheduleAtFixedRate(() -> matchHandler().updateSessions(), 0, 1, TimeUnit.SECONDS);
         return executorService;
     }
 

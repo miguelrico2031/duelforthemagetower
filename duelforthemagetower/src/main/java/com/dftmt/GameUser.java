@@ -1,6 +1,8 @@
 package com.dftmt;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class GameUser
 {
@@ -13,6 +15,12 @@ public class GameUser
 		this.username = username;
 		this.password = password;
 		this.logged = true;
+	}
+	
+	public GameUser()
+	{
+		this.username = null;
+		this.password = null;
 	}
 	
 	public String getPassword() { return password; }
@@ -31,6 +39,37 @@ public class GameUser
 		if(l == logged) return false;
 		logged = l;
 		return true;
+	}
+	
+	public String toJSON()
+	{
+        ObjectMapper objectMapper = new ObjectMapper();
+        try
+        {
+			String json = objectMapper.writeValueAsString(this);
+			return json;
+		}
+        catch (Exception e)
+        {
+            System.out.println("Error al serializar: " + e.getMessage());
+			return null;
+		}
+	}
+	
+	public static GameUser fromJSON(String json)
+	{
+		try
+		{
+            ObjectMapper objectMapper = new ObjectMapper();
+            GameUser user = objectMapper.readValue(json, GameUser.class);
+            return user;
+            
+        }
+		catch (Exception e)
+		{
+            System.out.println("Error al deserializar: " + e.getMessage());
+            return null;
+        }
 	}
 	
 }

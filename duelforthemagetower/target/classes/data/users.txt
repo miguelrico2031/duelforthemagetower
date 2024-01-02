@@ -1,1 +1,0 @@
-{"miguel":{"username":"miguel","password":"12345","logged":true},"juan":{"username":"juan","password":"hola123","logged":true}}

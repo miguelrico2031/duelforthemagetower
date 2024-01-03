@@ -13,7 +13,8 @@ class Menu extends Phaser.Scene
     menuScreen;
     menuKey;
 
-    buttonPlay;
+    buttonPlayLocal;
+    buttonPlayOnline;
     buttonHelp;
     buttonCredits;
     buttonUser;
@@ -34,7 +35,8 @@ class Menu extends Phaser.Scene
 
     preload()
     {
-        this.load.spritesheet("play", "../Assets/UI/Screens/MainMenu/PlayButton.png", { frameWidth: 267, frameHeight: 168 });
+        this.load.spritesheet("online", "../Assets/UI/Screens/MainMenu/PlayOnline.png", { frameWidth: 266, frameHeight: 180 });
+        this.load.spritesheet("local", "../Assets/UI/Screens/MainMenu/PlayLocal.png", { frameWidth: 266, frameHeight: 180 });
         this.load.spritesheet("credits", "../Assets/UI/Screens/MainMenu/CreditsButton.png", { frameWidth: 214, frameHeight: 135 });
         this.load.spritesheet("help", "../Assets/UI/Screens/MainMenu/HelpButton.png", { frameWidth: 214, frameHeight: 135 });
         this.load.spritesheet("user", "../Assets/UI/Screens/MainMenu/UserButton.png", { frameWidth: 167, frameHeight: 106 });
@@ -65,7 +67,7 @@ class Menu extends Phaser.Scene
         this.audioClack = this.sound.add("clack");
         this.audioOpen = this.sound.add("open");
 
-        this.Logo = this.add.image(game.config.width / 2.833, game.config.height / 3, "logo");
+        //this.Logo = this.add.image(game.config.width / 2.833, game.config.height / 3, "logo");
 
         
         this.menuSong = this.sound.add("menuSong", {volume: 0.35});
@@ -76,7 +78,8 @@ class Menu extends Phaser.Scene
             this.menuSong.setLoop(true);
         }
 
-        this.buttonPlay = new Button(this, 450, 500, 1, true, "play", () => this.startGame());
+        this.buttonPlayOnline = new Button(this, 450, 300, 1, true, "online", () => this.startOnlineGame());
+        this.buttonPlayLocal = new Button(this, 450, 500, 1, true, "local", () => this.startLocalGame());
         this.buttonHelp = new Button(this, 865, 230, 0.8, true, "help", () => this.showHelp()); 
         this.buttonCredits = new Button(this, 865, 380, 0.8, true, "credits", () => this.showCredits());
         this.buttonUser = new Button(this, 865, 530, 1, true, "user", () => this.showLoginScreen());
@@ -95,13 +98,18 @@ class Menu extends Phaser.Scene
         }
     }
 
-    startGame() 
+    startOnlineGame()
+    {
+        // Si no ha iniciado sesión, se lleva a la pantalla para hacerlo
+        if (user === null) this.showLoginScreen();
+        // Si la sesión está iniciada, se procede al matchmaking
+        else this.scene.start("ConnectingScene");
+    }
+
+    startLocalGame() 
     {
         this.game.sound.stopAll();
-        
-        if (user === null) this.scene.start("GameplayScene");
-        else this.scene.start("ConnectingScene");
-
+        this.scene.start("GameplayScene");
     }
 
     showHelp() 

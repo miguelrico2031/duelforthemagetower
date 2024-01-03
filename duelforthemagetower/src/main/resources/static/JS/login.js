@@ -74,6 +74,7 @@ class Login extends Phaser.Scene
         this.buttonSignup = new Button(this, 800, 480, 1, true, "signup", () => this.signupFunc());
         this.buttonBack = new Button(this, 650, 480, 1, false, "okback", () => this.userAlreadyExistsScreenVisibility(false));
 
+        //this.input.keyboard.enableGlobalCapture();
         // Para permitir que se pulse enter para iniciar sesión NO FUNCIONA PERO NO TENGO INTERNET NO PUEDO MIRAR NADA
         //this.keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).on('keydown', () => this.loginFunc());
         this.keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);

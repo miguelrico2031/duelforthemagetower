@@ -14,6 +14,7 @@ class Menu extends Phaser.Scene
     menuKey;
 
     buttonPlayLocal;
+    buttonPlayOnline;
     buttonHelp;
     buttonCredits;
     buttonUser;
@@ -77,8 +78,8 @@ class Menu extends Phaser.Scene
             this.menuSong.setLoop(true);
         }
 
-        this.buttonPlayOnline = new Button(this, 450, 300, 1, true, "online");
-        this.buttonPlayLocal = new Button(this, 450, 500, 1, true, "local", () => this.startGame());
+        this.buttonPlayOnline = new Button(this, 450, 300, 1, true, "online", () => this.startOnlineGame());
+        this.buttonPlayLocal = new Button(this, 450, 500, 1, true, "local", () => this.startLocalGame());
         this.buttonHelp = new Button(this, 865, 230, 0.8, true, "help", () => this.showHelp()); 
         this.buttonCredits = new Button(this, 865, 380, 0.8, true, "credits", () => this.showCredits());
         this.buttonUser = new Button(this, 865, 530, 1, true, "user", () => this.showLoginScreen());
@@ -97,13 +98,18 @@ class Menu extends Phaser.Scene
         }
     }
 
-    startGame() 
+    startOnlineGame()
+    {
+        // Si no ha iniciado sesión, se lleva a la pantalla para hacerlo
+        if (user === null) this.showLoginScreen();
+        // Si la sesión está iniciada, se procede al matchmaking
+        else this.scene.start("ConnectingScene");
+    }
+
+    startLocalGame() 
     {
         this.game.sound.stopAll();
-        
-        if (user === null) this.scene.start("GameplayScene");
-        else this.scene.start("ConnectingScene");
-
+        this.scene.start("GameplayScene");
     }
 
     showHelp() 

@@ -113,6 +113,9 @@ class Pause extends Phaser.Scene
         this.game.sound.stopAll();
         this.audioUnpause.play();
 
+        // ESTO COMPROBAR QUE FUNCIONE [NO FUNCIONA]
+        //this.input.keyboard.disableGlobalCapture() 
+
         this.scene.launch("MenuScene", { isPlaying: false });
         this.scene.get("GameplayScene").enableInput(false);
         this.scene.stop("GameplayScene");

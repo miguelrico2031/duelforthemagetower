@@ -29,7 +29,7 @@ const config =
             debug: false
         }
     },
-    scene: [Loading, Menu, Login, User, Connecting, GameplayScene, OnlineGameplay, Pause, Gameover, Stats, Credits, Tutorial],
+    scene: [Loading, Menu, Login, UserData, Connecting, GameplayScene, OnlineGameplay, Pause, Gameover, Stats, Credits, Tutorial],
     dom: 
     {
         createContainer: true

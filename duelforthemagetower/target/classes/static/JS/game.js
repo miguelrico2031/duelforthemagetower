@@ -8,7 +8,9 @@ let user = null;
 
 let gameplayResourcesLoaded = false;
 
-let IP = ""
+let IP = "";
+
+let connection = null;
 
 const config =
 {
@@ -27,7 +29,7 @@ const config =
             debug: false
         }
     },
-    scene: [Loading, Menu, Login, User, GameplayScene, Pause, Gameover, Stats, Credits, Tutorial],
+    scene: [Loading, Menu, Login, User, Connecting, GameplayScene, OnlineGameplay, Pause, Gameover, Stats, Credits, Tutorial],
     dom: 
     {
         createContainer: true

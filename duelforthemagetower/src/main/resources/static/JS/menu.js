@@ -98,7 +98,9 @@ class Menu extends Phaser.Scene
     startGame() 
     {
         this.game.sound.stopAll();
-        this.scene.start("GameplayScene");
+        
+        if (user === null) this.scene.start("GameplayScene");
+        else this.scene.start("ConnectingScene");
 
     }
 

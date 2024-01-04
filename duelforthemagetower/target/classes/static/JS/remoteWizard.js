@@ -1,4 +1,4 @@
-class LocalWizard
+class RemoteWizard
 {
     //propiedades publicas
     gameObject; //referencia al objeto/sprite
@@ -120,10 +120,7 @@ class LocalWizard
         this.shieldCastInput = 0;
     }
 
-    startAnimations()
-    {
-        this.gameObject.anims.play(this._animationKeys.idle, true); //inicializa la anim. a idle
-    }
+    startAnimations = () => this.gameObject.anims.play(this._animationKeys.idle, true); //inicializa la anim. a idle
 
     //metodos para añadir callbacks cuando el jugador recibe daño y muere
     addHitListener = (callback) => this._onHitCallbacks.push(callback);
@@ -139,7 +136,6 @@ class LocalWizard
             this._scene.playerStatsJ1.hitsGiven++;
             this._scene.playerStatsJ2.hitsTaken++;
         }
-
         this.takeDamage(spell.damage);
         this._scene._audioHit.play();
         spell.explode();
@@ -158,8 +154,6 @@ class LocalWizard
             this._setAnimation(this._animationKeys.hit);
             this._updateAnims = false;
         }
-
-        // enviar mensaje de daño recibido
     }
 
     onAnimationEnd() //llamado al terminar cualquier animacion que no se loopea
@@ -173,6 +167,7 @@ class LocalWizard
                 break;
 
             case this._animationKeys.die:
+                //console.log("MUELTO"); //xd
                 break;
 
             case this._animationKeys.attack:
@@ -196,9 +191,6 @@ class LocalWizard
 
         //direccion (para disparar)
         this.direction.y = this.yInput;
-
-        // enviar input al oponente
-        if(this.xInput !== 0) connection.send(JSON.stringify({xInput: this.xInput}));
     }
 
     _jump(delta)
@@ -219,8 +211,6 @@ class LocalWizard
             if(this._jumpTimer >= 50/*numero hardcodeado a cambiar en release*/ && this.body.touching.down)
                 this._isJumping = false;
         }
-
-        // enviar input de salto al oponente
     }
 
     _cast(delta)
@@ -245,8 +235,6 @@ class LocalWizard
             this._cooldownTimer += delta;
             if(this._cooldownTimer >= this._castCooldown) this._isOnCooldown = false;
         }
-
-        // enviar input de disparo al oponente
     }
 
     _castShield(delta){
@@ -270,8 +258,6 @@ class LocalWizard
             this._shieldCooldownTimer += delta;
             if(this._shieldCooldownTimer >= this._shieldCastCooldown) this._isShieldOnCooldown = false;
         }
-
-        // enviar input de escudo al oponente
     }
 
     _shieldTimer(delta){
@@ -301,8 +287,6 @@ class LocalWizard
         }
 
         this.gameObject.anims.play(this._currentAnimationKey, true);
-
-        // enviar animacion al oponente
         
     }
 
@@ -320,7 +304,6 @@ class LocalWizard
         this._setAnimation(this._animationKeys.die);
         this._updateAnims = false;
         
-        // enviar mensaje de muerte al oponente
     }
 
 

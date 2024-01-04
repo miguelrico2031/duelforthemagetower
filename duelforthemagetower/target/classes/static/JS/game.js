@@ -12,6 +12,8 @@ let IP = "";
 
 let connection = null;
 
+let matchData = null;
+
 const config =
 {
     parent: "parent",

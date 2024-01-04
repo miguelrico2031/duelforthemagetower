@@ -6,23 +6,25 @@ class OnlineGameplay extends Phaser.Scene
         super("OnlineGameplayScene")
     }
 
-    playersInput = //objeto que guarda todos los inputs necesarios de los jugadores
+    playerInput = //objeto que guarda todos los inputs necesarios del jugador
     {
         wasdKeys: 0,
-        arrowKeys: 0,
-        jumpKey1: 0,
-        jumpKey2: 0,
-        castKey1: 0,
-        castKey2: 0,
-        shieldCastKey1: 0,
-        shieldCastKey2: 0,
+        jumpKey: 0,
+        castKey: 0,
+        shieldCastKey: 0,
         pauseKey: 0
     }
+
+    remotePlayerInput;
 
     ground;
     barrera;
     player1;
     player2;
+
+    localPlayer;
+    remotePlayer;
+
     spells;
     shields;
     healthbar1;
@@ -114,14 +116,10 @@ class OnlineGameplay extends Phaser.Scene
     create()
     {   
         // Aqui en el username deberia ir el usuario loggeado
-
-        if(user != null){
-            this.playerStatsJ1 = {username : user.username, hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
-            this.playerStatsJ2 = {username : "Jugador 2", hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
-        } else {
-            this.playerStatsJ1 = {username : "Jugador 1", hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
-            this.playerStatsJ2 = {username : "Jugador 2", hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
-        }
+        const localStats = {username : user.username, hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
+        const remoteStats = {username : matchData.otherUsername, hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
+        this.playerStatsJ1 = matchData.isPlayer1 ? localStats : remoteStats;
+        this.playerStatsJ2 = !matchData.isPlayer1 ? localStats : remoteStats;
 
         this._audioBlast = this.sound.add("blastAudio");
         this._audioShield = this.sound.add("shieldAudio");
@@ -133,18 +131,12 @@ class OnlineGameplay extends Phaser.Scene
         this.pauseSound = this.sound.add("pauseSound");
         this.gameoverSound = this.sound.add("gameoverSound");
 
-        this.playersInput.wasdKeys = this.input.keyboard.addKeys("W,A,S,D");
-        this.playersInput.jumpKey1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        this.playersInput.castKey1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
-        this.playersInput.shieldCastKey1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+        this.playerInput.wasdKeys = this.input.keyboard.addKeys("W,A,S,D");
+        this.playerInput.jumpKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.playerInput.castKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+        this.playerInput.shieldCastKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
         
-        // quito esto porque es del j2
-        // this.playersInput.arrowKeys = this.input.keyboard.createCursorKeys();
-        // this.playersInput.jumpKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
-        // this.playersInput.castKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-        // this.playersInput.shieldCastKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
-        
-        this.playersInput.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+        this.playerInput.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
 
 
@@ -199,6 +191,9 @@ class OnlineGameplay extends Phaser.Scene
         // Asignar una barra de vida / HUD al jugador 2
         this.healthbar2 = new HUD(this, this.player2, "PlayerIcon2");
 
+        this.localPlayer = matchData.isPlayer1 ? this.player1 : this.player2;
+        this.remotePlayer = !matchData.isPlayer1 ? this.player1 : this.player2;
+
         this.initSpells();
 
 
@@ -233,6 +228,9 @@ class OnlineGameplay extends Phaser.Scene
         this._musicIngame.setLoop(true);
 
 
+
+        connection.onmessage = (msg) => this.processWSMessage(msg.data);
+        connection.onclose = (msg) => this.closeWS(msg);
     }
 
     update(time, delta)
@@ -263,26 +261,59 @@ class OnlineGameplay extends Phaser.Scene
 
     processInput()
     {
-        //player 1
-        if(this.playersInput.wasdKeys.A.isDown) this.player1.xInput = -1;
-        if(this.playersInput.wasdKeys.D.isDown) this.player1.xInput = 1;
-        if(this.playersInput.wasdKeys.W.isDown) this.player1.yInput = -1;
-        if(this.playersInput.wasdKeys.S.isDown) this.player1.yInput = 1;
+        if(this.playerInput.wasdKeys.A.isDown)
+        {
+            this.localPlayer.xInput = -1;
+        }
+            
+        if(this.playerInput.wasdKeys.D.isDown)
+        {
+            this.localPlayer.xInput = 1;
+        }
+            
+        if(this.playerInput.wasdKeys.W.isDown)
+        {
+            this.localPlayer.yInput = -1;
+        }
+            
+        if(this.playerInput.wasdKeys.S.isDown)
+        {
+            this.localPlayer.yInput = 1;
+        }
+        
 
-        if(this.playersInput.jumpKey1.isDown){
-            this.player1.jumpInput = 1;
+        if(this.playerInput.jumpKey.isDown)
+        {
+            this.localPlayer.jumpInput = 1;
         } 
-        if(this.playersInput.castKey1.isDown) {
-            this.player1.castInput = 1;
+        if(this.playerInput.castKey.isDown)
+        {
+            this.localPlayer.castInput = 1;
         } 
-        if(this.playersInput.shieldCastKey1.isDown) {
-            this.player1.shieldCastInput = 1;
-        } 
+        if(this.playerInput.shieldCastKey.isDown)
+        {
+            this.localPlayer.shieldCastInput = 1;
+        }
+
+        // ENVIAR EL INPUT AL OTRO JUGADOR
+
+        //if(this.localPlayer.xInput !== 0 || this.localPlayer.yInput !== 0 || this.localPlayer.jumpInput !== 0 || 
+        //    this.localPlayer.castInput !== 0 || this.localPlayer.shieldCastInput !== 0)
+        //{
+        this.sendMessageToOpponent
+        ({
+            isInput: true,
+            xInput: this.localPlayer.xInput,
+            yInput: this.localPlayer.yInput,
+            jumpInput: this.localPlayer.jumpInput,
+            castInput: this.localPlayer.castInput,
+            shieldCastInput: this.localPlayer.shieldCastInput
+        });
+        //}
         
         //pausa
         this.checkPauseKeyPressed();
 
-        // ENVIAR EL INPUT AL OTRO JUGADOR
 
         
 
@@ -304,6 +335,17 @@ class OnlineGameplay extends Phaser.Scene
     {
 
         // RECIBIR INPUT DEL OTRO JUGADOR
+        if(!this.remotePlayerInput) return;
+
+        this.remotePlayer.xInput = this.remotePlayerInput.xInput;
+        this.remotePlayer.yInput = this.remotePlayerInput.yInput;
+        this.remotePlayer.jumpInput = this.remotePlayerInput.jumpInput;
+        this.remotePlayer.castInput = this.remotePlayerInput.castInput;
+        this.remotePlayer.shieldCastInput = this.remotePlayerInput.shieldCastInput;
+
+        this.remotePlayerInput = null;
+
+        //falta pausa tal
     }
 
     processDeath(){
@@ -530,19 +572,19 @@ class OnlineGameplay extends Phaser.Scene
     checkPauseKeyPressed() 
     {
         // Comprueba que se ha presionado el escape
-        if (this.playersInput.pauseKey.isDown && !this.pauseKeyIsPressed) {
+        if (this.playerInput.pauseKey.isDown && !this.pauseKeyIsPressed) {
             this.pauseKeyIsPressed = true;
         }
 
         // Cuando se ha soltado, llama al launchPauseMenu
-        else if (this.playersInput.pauseKey.isUp && this.pauseKeyIsPressed) {
+        else if (this.playerInput.pauseKey.isUp && this.pauseKeyIsPressed) {
             this.pauseKeyIsPressed = false;
-            this.launchPauseMenu();
+            this.launchPauseMenu(true);
         }
     }
 
     // Detiene el juego y lanza el menú de pausa
-    launchPauseMenu() 
+    launchPauseMenu(pausedByLocal) 
     {
         this.pauseKeyIsPressed = false;
         // Pausa la música del juego
@@ -606,5 +648,41 @@ class OnlineGameplay extends Phaser.Scene
     {
         if(enable) this.input.keyboard.enableGlobalCapture() 
         else this.input.keyboard.disableGlobalCapture() 
+    }
+
+
+    sendMessageToOpponent(msg)
+    {
+        if(connection == null)
+        {
+            //error web socket cerrado tal
+            return;
+        }
+
+        connection.send(JSON.stringify(msg));
+    }
+
+    processWSMessage(msg)
+    {
+        msg = JSON.parse(msg);
+
+        if(msg.fromPlayer)
+        {
+            if(msg.isInput) this.remotePlayerInput = msg; //si es un mensaje de input
+
+            return;
+        }
+
+        if(msg.onMatch)
+        {
+            if(msg.error) console.log(msg.error);
+        }
+    }
+
+    closeWS(msg)
+    {
+        connection = null;
+        console.log(msg);
+        //cambiar de escena a una que muestre el mensaje de conexion perdida, y luego volver al menu principal
     }
 }

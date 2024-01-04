@@ -35,7 +35,18 @@ public class DuelforthemagetowerApplication implements WebSocketConfigurer
 	public ScheduledExecutorService sessionTimeoutChecker()
 	{
 		ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-    	executorService.scheduleAtFixedRate(() -> matchHandler().updateSessions(), 0, 1, TimeUnit.SECONDS);
+    	//executorService.scheduleAtFixedRate(() -> matchHandler().updateSessions(), 0, 1, TimeUnit.SECONDS);
+		
+		executorService.scheduleAtFixedRate(() -> {
+		    try {
+		        matchHandler().updateSessions();
+		    } catch (Exception e) {
+		        // Manejar la excepción según tus necesidades
+		        System.out.println("Error del sheduled executor: " + e.getMessage());
+		        e.printStackTrace();
+		    }
+		}, 0, 1, TimeUnit.SECONDS);
+		
     	return executorService;
     }
 

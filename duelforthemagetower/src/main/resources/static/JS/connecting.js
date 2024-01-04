@@ -56,13 +56,15 @@ class Connecting extends Phaser.Scene
 
         // recibir mensajes del ws
 
-        connection.onmessage = (msg) => this.processWsMessage(msg.data);
+        connection.onmessage = (msg) => this.processWSMessage(msg.data);
         
         // timeout error
 
         connection.onerror = function(e) {
-            console.log("WS error: " + e);
+            console.log("WebSocket error: " + e);
         }
+
+        connection.onclose = (e) => {connection = null; console.log("conexion cerrada: " + e);}
 
         // boton para cancelar partida que envie un mensaje de cancelar
     }
@@ -74,44 +76,41 @@ class Connecting extends Phaser.Scene
 
     }
 
-    processWsMessage(msg)
+    processWSMessage(msg)
     {
         msg = JSON.parse(msg)
-        if(msg.info) console.log(msg.info)
 
-        else if(msg.error) console.log(msg.error)
-
-        else if(msg.username) console.log(msg)
-
-        // si el mensaje es timeout
-        if(msg.info == "Sesion cerrada por tiempo de espera demasiado largo en la cola.")
+        if(msg.onStart) //si es el mensaje de respuesta al intentar iniciar una sesion
         {
-            // Mostrar el error al jugador
-            this.timeoutErrorScreen.setVisible(true);
-            //Hago visible el boton de salir
-            this.buttonClose.setVisible(true);
-            // Esto por si se lleva un rato (20 segundos sin hacer nada, que se cierre solo el error)
-            setTimeout(() => {this.minTimeOver = true; this.closeScreen()}, 1000 * 20);
+            if(msg.error) console.log(msg.error);
+
+            else if(msg.info) //el usuario entro en la cola de emparejamiento
+            {
+                console.log(msg.info);
+                this.connectingScreen.setVisible(false);
+                this.searchingScreen.setVisible(true);
+            }
+            return;
         }
 
-        // si el mensaje es de partida encontrada
-        // uso el includes porque el mensaje de info contiene una variable del 
-        // nombre de usuario rival y no puedo conocerla a priori
-        if(msg.info == "Sesion de emparejamiento iniciada para " + user.username + ".")
+        if(msg.onQueue)
         {
-            console.log("JUEGO ONLINE");
-            // Cambio el mensaje a conectando
-            this.connectingScreen.setVisible(false);
-            this.searchingScreen.setVisible(true);
-        }
+            if(msg.queueTimeout)  // si el mensaje es timeout
+            {
+                console.log(msg.error); // Mostrar el error al jugador
+                this.timeoutErrorScreen.setVisible(true);
+                //Hago visible el boton de salir
+                this.buttonClose.setVisible(true);
+                // Esto por si se lleva un rato (20 segundos sin hacer nada, que se cierre solo el error)
+                setTimeout(() => {this.minTimeOver = true; this.closeScreen()}, 1000 * 20);
+            }
 
-        // ahora con el msg que me indique que se ha encontrado a otro jugador
-        {
+            if(msg.matchStart)
+            {
+                matchData = msg;
 
-        // Por ahora pongo que a los 5 segundos lance el juego normal pero
-            // 1. habria q hacerlo cuando la conexion esté completa
-            // 2. tendría que lanzar el juego online
-            //this.scene.start("GameplayScene");
+                this.scene.start("OnlineGameplayScene");
+            }
         }
     }
 

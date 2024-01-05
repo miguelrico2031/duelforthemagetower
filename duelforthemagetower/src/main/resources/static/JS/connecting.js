@@ -97,6 +97,7 @@ class Connecting extends Phaser.Scene
 
                 wsMessageCallbacks.shift(); //quitar el callback del array
 
+        		this.game.sound.stopAll();
                 this.scene.start("OnlineGameplayScene");
             }
         }
@@ -105,6 +106,7 @@ class Connecting extends Phaser.Scene
 
     closeScreen()
     {
+        this.game.sound.stopAll();
         this.audioClose.play();
         connection.close();
         this.scene.start("MenuScene", { isPlaying: true });

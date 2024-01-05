@@ -16,7 +16,8 @@ class OnlineGameover extends Phaser.Scene{
     _J1Stats;
     _J2Stats;
     
-    chatText; //texto en pantalla del ultimo chat recibido
+    chatTextJ1;
+    chatTextJ2; //texto en pantalla del ultimo chat recibido
     //errorText;
     otherUsername; //username del otro usuario del chat
     lastReceivedChat; //ultimo objeto GameChat reibido
@@ -54,7 +55,9 @@ class OnlineGameover extends Phaser.Scene{
     create()
     {
         this._buttonPressed = false;
-
+		
+		this.chatTextJ1 = "";
+		this.chatTextJ2 = "";
 
         if(this._winnerPlayer === 1){
             this.add.image(0, 0, "p1_win").setOrigin(0,0);
@@ -109,6 +112,7 @@ class OnlineGameover extends Phaser.Scene{
     {   
         if(this.retrieveChatInterval !== null) clearInterval(this.retrieveChatInterval);
         console.log("Salir al menú");
+        this.scene.get("OnlineGameplayScene").enableInput(false);
         this.game.sound.stopAll();
         this.scene.launch("MenuScene", { isPlaying: false });
         this.scene.stop("OnlineGameplayScene");
@@ -179,12 +183,20 @@ class OnlineGameover extends Phaser.Scene{
                 .on('pointerout', () => this.enterButtonRestState(this.buttonBye));
             
 
-            this.chatText = this.add.text(viewport.width / 2 + 310, viewport.height / 2 - 150, "", 
+            this.chatTextJ2 = this.add.text(viewport.width / 2 + 310, viewport.height / 2 - 150, "", 
                 { 
                     fontFamily: 'GrapeSoda',
                     fontSize: '24px', 
                     fill: 'black' 
                 }).setOrigin(0, 0);
+
+                
+            this.chatTextJ1 = this.add.text(viewport.width / 2 - 410, viewport.height / 2 - 150, "", 
+            { 
+                fontFamily: 'GrapeSoda',
+                fontSize: '24px', 
+                fill: 'black' 
+            }).setOrigin(0, 0);
     }
 
     disableChatButtonsAndText()
@@ -193,7 +205,8 @@ class OnlineGameover extends Phaser.Scene{
         this.buttonCongrats.setActive(false).setVisible(false);
         this.buttonOther.setActive(false).setVisible(false);
         this.buttonBye.setActive(false).setVisible(false);
-        this.chatText.setActive(false).setVisible(false);
+        this.chatTextJ1.setActive(false).setVisible(false);
+        this.chatTextJ2.setActive(false).setVisible(false);
     }
 
     //ajax
@@ -268,7 +281,12 @@ class OnlineGameover extends Phaser.Scene{
             if(this.lastReceivedChat === null || this.lastReceivedChat.id !== data.id)
             {
                 this.lastReceivedMessage = data;
-                this.chatText.text = data.text;
+
+                if(this._J1Stats.username == user.username){
+                    this.chatTextJ2.text = data.text;
+                } else {
+                    this.chatTextJ1.text = data.text;
+                }
             }
 
         })
@@ -312,6 +330,11 @@ class OnlineGameover extends Phaser.Scene{
             console.log("mensaje enviado");            
             console.log(textStatus+" "+ jqXHR.status);
             console.log(data);
+            if(this._J1Stats.username == user.username){
+                this.chatTextJ1.text = data.text;
+            } else {
+                this.chatTextJ2.text = data.text;
+            }
         })
         .fail((data, textStatus, jqXHR) => 
         {

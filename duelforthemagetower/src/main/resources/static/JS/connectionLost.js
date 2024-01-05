@@ -35,6 +35,7 @@ class ConnectionLost extends Phaser.Scene
 
     closeScreen() 
     {
+        this.game.sound.stopAll();
         this.audioClose.play();
         this.scene.start("MenuScene", { isPlaying: true });
     }

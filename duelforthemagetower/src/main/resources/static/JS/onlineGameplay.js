@@ -31,7 +31,7 @@ class OnlineGameplay extends Phaser.Scene
 
     playerStatsJ1; 
     playerStatsJ2; 
-
+    localStats;
 
     pauseKeyIsPressed;
     remotePausePanel;
@@ -119,10 +119,10 @@ class OnlineGameplay extends Phaser.Scene
     create()
     {   
         // Aqui en el username deberia ir el usuario loggeado
-        const localStats = {username : user.username, hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
+        this.localStats = {username : user.username, hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
         const remoteStats = {username : matchData.otherUsername, hitsGiven : 0, hitsTaken : 0, hitsDeflected : 0, wins : 0, losses : 0};
-        this.playerStatsJ1 = matchData.isPlayer1 ? localStats : remoteStats;
-        this.playerStatsJ2 = !matchData.isPlayer1 ? localStats : remoteStats;
+        this.playerStatsJ1 = matchData.isPlayer1 ? this.localStats : remoteStats;
+        this.playerStatsJ2 = !matchData.isPlayer1 ? this.localStats : remoteStats;
 
         this._audioBlast = this.sound.add("blastAudio");
         this._audioShield = this.sound.add("shieldAudio");
@@ -615,6 +615,8 @@ class OnlineGameplay extends Phaser.Scene
 
 
     launchGameOverScene(winnerId){
+        
+        this.localStats = matchData.isPlayer1 ? this.playerStatsJ1 : this.playerStatsJ2;
 
         this.updatePlayerStats(this.localStats);
         //this.updatePlayerStats(this.playerStatsJ2);

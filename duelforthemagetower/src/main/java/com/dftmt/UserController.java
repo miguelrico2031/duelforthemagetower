@@ -1,5 +1,8 @@
 package com.dftmt;
 
+import java.util.List;
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +38,17 @@ public class UserController
 	@PostMapping("/login")
 	public ResponseEntity<GameUser> logIn(@RequestBody GameUser user)
 	{
-		user = userService.logIn(user);
+		List<GameUser> loggedUsers = userService.getLoggedUsers();
 		
+		for (GameUser loggedUser : loggedUsers) {
+	        if (Objects.equals(loggedUser.getUsername(), user.getUsername())) {
+	            // usuario ya logueado
+	            return new ResponseEntity<>(HttpStatus.CONFLICT);
+	        }
+	    }
+		
+		user = userService.logIn(user);
+
 		if(user == null)
 		{
 			//error de usuario no existente

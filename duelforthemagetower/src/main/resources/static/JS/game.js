@@ -57,3 +57,34 @@ const openWS = (openCallback) =>
     
     connection.onclose = (e) => {connection = null; console.log("conexion cerrada: " + e);}
 }
+
+window.onbeforeunload = function(){
+   if(user != null){
+	   $.ajax
+            ({
+                method: "POST",
+                url: IP + "/users/logout",
+                data: JSON.stringify(user),
+                headers: 
+                {
+                    "Content-type":"application/json"
+                }
+            })
+            .done((data, textStatus, jqXHR) => 
+            {
+                console.log(textStatus+" "+ jqXHR.status);
+                console.log(data);
+                console.log(jqXHR.statusCode())
+
+                // Borra los datos globales
+                user = null;
+
+            })
+            .fail((data, textStatus, jqXHR) => 
+            {
+                console.log(textStatus+" "+jqXHR.status);
+                console.log("Error cerrando sesión");
+            });
+
+   }
+}

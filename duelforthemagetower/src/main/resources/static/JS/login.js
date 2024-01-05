@@ -141,13 +141,20 @@ class Login extends Phaser.Scene
                 this.scene.start("UserScene", { isplaying: true });
 
             })
-            .fail((data, textStatus, jqXHR) => 
+            .fail((jqXHR, textStatus, error) => 
             {
-                // Texto de error
+                // texto de error
                 console.log(textStatus+" "+jqXHR.status);
 
-                // Función notificando el error al usuario
-                this.showWrongCredentialsErrorText();
+                // usuario ya loggeado
+                if (jqXHR.status === 409) {
+			        console.log('El usuario \nya está loggeado.');
+			        this.showWrongCredentialsErrorText('El usuario \nya está loggeado.');
+			    } else {
+			        // credenciales no correctas
+			        console.log('El usuario \no contraseña \nson erróneos');
+			        this.showWrongCredentialsErrorText('El usuario \no contraseña \nson erróneos');
+			    }
             });            
         }
 
@@ -220,8 +227,9 @@ class Login extends Phaser.Scene
     }
 
     // Función para mostrar al usuario un mensaje de error si introduce datos erróneos
-    showWrongCredentialsErrorText()
+    showWrongCredentialsErrorText(text)
     {
+		this.errorText.setText(text);
         this.errorText.setVisible(true);
         this.time.delayedCall(3000, () => this.errorText.setVisible(false)); 
     }

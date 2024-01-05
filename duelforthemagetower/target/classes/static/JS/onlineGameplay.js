@@ -15,7 +15,6 @@ class OnlineGameplay extends Phaser.Scene
         pauseKey: 0
     }
 
-    remotePlayerInput;
 
     ground;
     barrera;
@@ -35,6 +34,7 @@ class OnlineGameplay extends Phaser.Scene
 
 
     pauseKeyIsPressed;
+    remotePausePanel;
     pauseSound;
     gameoverSound;
 
@@ -99,6 +99,9 @@ class OnlineGameplay extends Phaser.Scene
         this.load.spritesheet("PlayerIcon1", "../Assets/UI/HUD/Icons/BlueMageIcon.png", { frameWidth: 64, frameHeight: 64 } );
         this.load.spritesheet("PlayerIcon2", "../Assets/UI/HUD/Icons/RedMageIcon.png", { frameWidth: 64, frameHeight: 64 } );
 
+        //panel pausa remota
+        this.load.image("remotePause", "../Assets/UI/Screens/Pause/PauseWait.png");
+
         //sonido pausa
         this.load.audio("pauseSound", "../Assets/UI/Sounds/Pause.wav");
         this.load.audio("gameoverSound", "../Assets/Sounds/Movement/88_Teleport_02.wav");
@@ -128,6 +131,7 @@ class OnlineGameplay extends Phaser.Scene
         this._audioJump = this.sound.add("jumpAudio", {volume: 2.5});
 
         this.pauseKeyIsPressed = false;
+        this.remotePausePanel = this.add.image(0, 0, "remotePause").setOrigin(0, 0).setVisible(false);
         this.pauseSound = this.sound.add("pauseSound");
         this.gameoverSound = this.sound.add("gameoverSound");
 
@@ -228,15 +232,15 @@ class OnlineGameplay extends Phaser.Scene
         this._musicIngame.setLoop(true);
 
 
-
-        connection.onmessage = (msg) => this.processWSMessage(msg.data);
+        wsMessageCallbacks.push((msg) => this.processWSMessage(msg.data));
+        
         connection.onclose = (msg) => this.closeWS(msg);
     }
 
     update(time, delta)
     {
         this.processInput();
-        this.processOpponentInput();
+        //this.processOpponentInput();
 
         this.player1.update(time, delta);
         this.player2.update(time, delta);
@@ -295,11 +299,7 @@ class OnlineGameplay extends Phaser.Scene
             this.localPlayer.shieldCastInput = 1;
         }
 
-        // ENVIAR EL INPUT AL OTRO JUGADOR
-
-        //if(this.localPlayer.xInput !== 0 || this.localPlayer.yInput !== 0 || this.localPlayer.jumpInput !== 0 || 
-        //    this.localPlayer.castInput !== 0 || this.localPlayer.shieldCastInput !== 0)
-        //{
+ 
         this.sendMessageToOpponent
         ({
             isInput: true,
@@ -309,7 +309,7 @@ class OnlineGameplay extends Phaser.Scene
             castInput: this.localPlayer.castInput,
             shieldCastInput: this.localPlayer.shieldCastInput
         });
-        //}
+
         
         //pausa
         this.checkPauseKeyPressed();
@@ -331,24 +331,24 @@ class OnlineGameplay extends Phaser.Scene
         
     }
 
-    processOpponentInput()
+    processOpponentInput(remotePlayerInput)
     {
 
         // RECIBIR INPUT DEL OTRO JUGADOR
-        if(!this.remotePlayerInput) return;
-
-        this.remotePlayer.xInput = this.remotePlayerInput.xInput;
-        this.remotePlayer.yInput = this.remotePlayerInput.yInput;
-        this.remotePlayer.jumpInput = this.remotePlayerInput.jumpInput;
-        this.remotePlayer.castInput = this.remotePlayerInput.castInput;
-        this.remotePlayer.shieldCastInput = this.remotePlayerInput.shieldCastInput;
-
-        this.remotePlayerInput = null;
-
+        if(!remotePlayerInput) return;
+        
+        this.remotePlayer.xInput = remotePlayerInput.xInput;
+        this.remotePlayer.yInput = remotePlayerInput.yInput;
+        this.remotePlayer.jumpInput = remotePlayerInput.jumpInput;
+        this.remotePlayer.castInput = remotePlayerInput.castInput;
+        this.remotePlayer.shieldCastInput = remotePlayerInput.shieldCastInput;
+        
         //falta pausa tal
+        this.remotePlayer.pauseInput = remotePlayerInput.pauseInput;
     }
 
-    processDeath(){
+    processDeath()
+    {
         if(!this.player1._isAlive){
             this.playerStatsJ1.losses++;
             this.playerStatsJ2.wins++;
@@ -579,36 +579,44 @@ class OnlineGameplay extends Phaser.Scene
         // Cuando se ha soltado, llama al launchPauseMenu
         else if (this.playerInput.pauseKey.isUp && this.pauseKeyIsPressed) {
             this.pauseKeyIsPressed = false;
-            this.launchPauseMenu(true);
+
+            this.sendMessageToOpponent
+            ({
+                isPauseInput: true, pause: true
+            })
+
+
+            this.launchPauseMenu();
         }
     }
 
     // Detiene el juego y lanza el menú de pausa
-    launchPauseMenu(pausedByLocal) 
+    launchPauseMenu() 
     {
-        this.pauseKeyIsPressed = false;
+
         // Pausa la música del juego
         this._musicIngame.pause();
         // Reproduce el efecto de sonido
         this.pauseSound.play();
         // Pausa el juego
-        this.scene.pause("GameplayScene");
+        this.scene.pause("OnlineGameplayScene");
 
         // Evita que se vuelva a crear el objeto del menú si ya existe
-        if(!this.scene.get("PauseScene").loaded)
+        if(!this.scene.get("OnlinePauseScene").loaded)
         {
-            this.scene.get("PauseScene").loaded = true;
-            this.scene.launch("PauseScene"); // pone el menu de pausa por encima
+            this.scene.get("OnlinePauseScene").loaded = true;
+            this.scene.launch("OnlinePauseScene"); // pone el menu de pausa por encima
         }
         else
         {
-            this.scene.wake("PauseScene"); // reactiva el menú de pausa (que ya estaba por encima)
+            this.scene.wake("OnlinePauseScene"); // reactiva el menú de pausa (que ya estaba por encima)
         }
     }
 
+
     launchGameOverScene(winnerId){
 
-        this.updatePlayerStats(this.playerStatsJ1);
+        this.updatePlayerStats(this.localStats);
         //this.updatePlayerStats(this.playerStatsJ2);
 
         //this.updatePlayerStats();
@@ -618,17 +626,24 @@ class OnlineGameplay extends Phaser.Scene
         // Sonidito game over
         this.gameoverSound.play()
         // Finaliza el juego
-        this.scene.pause("GameplayScene");
-        if(!this.scene.get('GameoverScene', { winner: winnerId, J1stats: this.playerStatsJ1, J2stats: this.playerStatsJ2 }).loaded)
+
+        connection.onclose = null;
+        connection.close();
+
+
+        this.scene.pause("OnlineGameplayScene");
+        const gameOverConfig = { winner: winnerId, J1stats: this.playerStatsJ1, J2stats: this.playerStatsJ2 }
+
+        if(!this.scene.get('OnlineGameoverScene', gameOverConfig).loaded)
         {
-            this.scene.get('GameoverScene', { winner: winnerId, J1stats: this.playerStatsJ1, J2stats: this.playerStatsJ2  }).loaded = true;
-            this.scene.launch('GameoverScene', { winner: winnerId, J1stats: this.playerStatsJ1, J2stats: this.playerStatsJ2  }); // pone el menu de pausa por encima
+            this.scene.get('OnlineGameoverScene', gameOverConfig).loaded = true;
+            this.scene.launch('OnlineGameoverScene', gameOverConfig);
         }
         else
         {
-            this.scene.wake('GameoverScene', { winner: winnerId, J1stats: this.playerStatsJ1, J2stats: this.playerStatsJ2  }); // reactiva el menú de pausa (que ya estaba por encima)
+            this.scene.wake('OnlineGameoverScene', gameOverConfig); 
         }
-        this.scene.run('GameoverScene', { winner: winnerId, J1stats: this.playerStatsJ1, J2stats: this.playerStatsJ2  });
+        this.scene.run('OnlineGameoverScene', gameOverConfig);
     }
 
     updatePlayerStats(playerStats){
@@ -668,7 +683,15 @@ class OnlineGameplay extends Phaser.Scene
 
         if(msg.fromPlayer)
         {
-            if(msg.isInput) this.remotePlayerInput = msg; //si es un mensaje de input
+            if(msg.isInput)
+            {
+                this.processOpponentInput(msg);
+            }
+
+            if(msg.isPauseInput && msg.pause)
+            {
+                this.launchPauseMenu();
+            }
 
             return;
         }
@@ -684,5 +707,11 @@ class OnlineGameplay extends Phaser.Scene
         connection = null;
         console.log(msg);
         //cambiar de escena a una que muestre el mensaje de conexion perdida, y luego volver al menu principal
+
+        
+        this.scene.launch("ConnectionLostScene");
+        this.enableInput(false);
+        this.scene.stop("OnlineGameplayScene");
+        this.scene.sleep("OnlinePauseScene");
     }
 }

@@ -12,6 +12,8 @@ let IP = "";
 
 let connection = null;
 
+let wsMessageCallbacks = []
+
 let matchData = null;
 
 const config =
@@ -31,7 +33,8 @@ const config =
             debug: false
         }
     },
-    scene: [Loading, Menu, Login, UserData, Connecting, GameplayScene, OnlineGameplay, Pause, Gameover, Stats, Credits, Tutorial],
+    scene: [Loading, Menu, Login, UserData, Connecting, ConnectionLost, GameplayScene, OnlineGameplay, 
+        Pause, OnlinePause, Gameover, OnlineGameover, Stats, OnlineStats, Credits, Tutorial],
     dom: 
     {
         createContainer: true
@@ -40,3 +43,17 @@ const config =
 };
 
 const game = new Phaser.Game(config);
+
+
+const openWS = (openCallback) => 
+{
+    connection = new WebSocket('ws://' + window.location.href.slice(6) + 'match');
+
+    connection.onopen = openCallback;
+
+    connection.onmessage = (m) => { for(const c of wsMessageCallbacks) c(m); }
+
+    connection.onerror = (e)  => console.log("WebSocket error: " + e);
+    
+    connection.onclose = (e) => {connection = null; console.log("conexion cerrada: " + e);}
+}

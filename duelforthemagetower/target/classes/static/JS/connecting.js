@@ -43,37 +43,23 @@ class Connecting extends Phaser.Scene
 
         //WebSocket();
 
-        connection = new WebSocket('ws://' + window.location.href.slice(6) + 'match');
+        
         
         // Enviar el user con el que quiero jugar
-        connection.onopen = () =>
-        {
-            console.log("conexion abierta")
-            const userData = {username : user.username}
+        openWS(() => this.onWSOpen());
+        wsMessageCallbacks.push((msg) => this.processWSMessage(msg.data))
 
-            connection.send('!' + JSON.stringify(userData));
-        }
-
-        // recibir mensajes del ws
-
-        connection.onmessage = (msg) => this.processWSMessage(msg.data);
         
-        // timeout error
-
-        connection.onerror = function(e) {
-            console.log("WebSocket error: " + e);
-        }
-
-        connection.onclose = (e) => {connection = null; console.log("conexion cerrada: " + e);}
 
         // boton para cancelar partida que envie un mensaje de cancelar
     }
-    
-    update()
+
+    onWSOpen()
     {
-        
+        console.log("conexion abierta")
+        const userData = {username : user.username}
 
-
+        connection.send('!' + JSON.stringify(userData));
     }
 
     processWSMessage(msg)
@@ -109,6 +95,8 @@ class Connecting extends Phaser.Scene
             {
                 matchData = msg;
 
+                wsMessageCallbacks.shift(); //quitar el callback del array
+
                 this.scene.start("OnlineGameplayScene");
             }
         }
@@ -118,6 +106,7 @@ class Connecting extends Phaser.Scene
     closeScreen()
     {
         this.audioClose.play();
+        connection.close();
         this.scene.start("MenuScene", { isPlaying: true });
     }
 }

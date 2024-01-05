@@ -1,1 +1,1 @@
-{"miguel":{"username":"miguel","password":"123","logged":true},"juan":{"username":"juan","password":"123","logged":true}}
+{"miguel":{"username":"miguel","password":"123","logged":false},"juan":{"username":"juan","password":"123","logged":false},"hola":{"username":"hola","password":"hola","logged":true},"adios":{"username":"adios","password":"adios","logged":true}}

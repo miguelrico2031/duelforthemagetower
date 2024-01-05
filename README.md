@@ -462,6 +462,37 @@ Existen diferentes ejemplos de comunicación en red en el juego:
 - Ver estadísticas totales del usuario (se mantienen guardadas tras el cierre de sesión y se actualizan cuando el usuario está activo)
 - Chat con el oponente tras terminar una partida. Ambos jugadores se comunicarán mediante frases predeterminadas, siempre y cuando hayan iniciado sesión previamente.
 
+# 8. Documentación de WebSockets
+
+Para la conexión en tiempo real entre los clientes y el servidor se ha hecho uso de los WebSockets. Esta tecnología permite una conexión bidireccional que facilita la transmisión eficiente de datos entre el servidor y los clientes.
+
+Estas son las principales características y funcionalidades relacionadas con el protocolo WebSocket:
+
+## 8.1. Atributos:
+
+- **userService:** Referencia al UserService utilizado para verificar la existencia de usuarios al iniciar la conexión.
+- **maxTimeout:** Tiempo máximo que una sesión en partida puede pasar sin recibir respuesta antes de cerrarse.
+- **maxTimeOnQueue:** Tiempo máximo que una sesión puede pasar en la cola buscando emparejamiento antes de cerrarse.
+- **sessionsMap:** Mapa que asocia identificadores de sesiones WebSocket con objetos WebSocketSession.
+- **userSessions:** Mapa que asocia identificadores de sesiones WebSocket con objetos GameUser.
+- **sessionMatches:** Mapa que almacena las relaciones entre sesiones emparejadas.
+- **sessionsOnQueue:** Cola que contiene identificadores de sesiones en espera de emparejamiento.
+- **objectMapper:** Objeto ObjectMapper para la manipulación de objetos JSON.
+
+## 8.2. Métodos:
+
+- **WebSocketMatchHandler():** Constructor de la clase que maneja los WebSockets.
+- **handleTextMessage(WebSocketSession session, TextMessage message):** Método llamado al recibir un mensaje de una sesión abierta. Gestiona la inicialización de sesiones y el intercambio de mensajes entre jugadores.
+- **startNewSession(WebSocketSession session, String message):** Inicializa una nueva sesión y realiza la validación del usuario.
+- **updateSessions():** Método llamado periódicamente para actualizar las sesiones, el emparejamiento y la comprobación de inactividad.
+- **doMatchmaking():** Empareja a los usuarios en espera de emparejamiento.
+- **checkSessions():** Comprueba la inactividad y tiempo de espera de las sesiones.
+- **closeSession(WebSocketSession session, CloseStatus status):** Cierra una sesión WebSocket y realiza las operaciones correspondientes (eliminación de mapas, etc.).
+- **getMatchStartJSONs(String id1, String id2):** Genera mensajes JSON de inicio de partida para ambos jugadores.
+- **JSONToString(ObjectNode json):** Convierte un objeto ObjectNode a una cadena JSON.
+- **readServerMessage(WebSocketSession session, String message):** Lee mensajes dirigidos al servidor, aquellos cuyo mensaje comienzan con "!" y realiza acciones correspondientes.
+- **sendMessage(WebSocketSession session, String message):** Envía mensajes a través de sesiones WebSocket a los clientes.
+
 
 
 

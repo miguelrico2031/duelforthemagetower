@@ -159,6 +159,14 @@ En la batalla por la Torre de los Magos, dos hechiceros compiten saltando entre 
 
 7. Funciones de red
 
+8. Documentación de WebSockets
+
+    8.1. Atributos
+   
+    8.2. Métodos
+
+9. UML
+
 
 # 1. Introducción
 
@@ -493,6 +501,6 @@ La clase que gestiona los WebSockets, es la clase WebSocketMatchHandler. Esta pe
 - **readServerMessage(WebSocketSession session, String message):** Lee mensajes dirigidos al servidor, aquellos cuyo mensaje comienzan con "!" y realiza acciones correspondientes.
 - **sendMessage(WebSocketSession session, String message):** Envía mensajes a través de sesiones WebSocket a los clientes.
 
+# 9. UML
 
-
-
+![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/UML.png)

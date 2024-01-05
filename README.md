@@ -466,7 +466,7 @@ Existen diferentes ejemplos de comunicación en red en el juego:
 
 Para la conexión en tiempo real entre los clientes y el servidor se ha hecho uso de los WebSockets. Esta tecnología permite una conexión bidireccional que facilita la transmisión eficiente de datos entre el servidor y los clientes.
 
-Estas son las principales características y funcionalidades relacionadas con el protocolo WebSocket:
+La clase que gestiona los WebSockets, es la clase WebSocketMatchHandler. Esta permite el inicio de sesión de emparejamiento entre jugadores, realizando un matchmaking que empareja automaticamente a los usuarios disponibles. El protocolo sigue un formato JSON, donde se intercambian mensajes entre el cliente y el servidor. Además, la clase administra sesiones y maneja eventos como el cierre por inactividad. Para ello se han hecho uso de los siguientes métodos y atributos:
 
 ## 8.1. Atributos:
 

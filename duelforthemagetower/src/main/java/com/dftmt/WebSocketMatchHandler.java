@@ -384,17 +384,28 @@ public class WebSocketMatchHandler extends TextWebSocketHandler
 		}
 		
 		Boolean closeSession = json.get("closeSession").asBoolean();
-		if(closeSession == true)
+		if(closeSession)
 		{
 			//cerrar sesion
 			closeSession(session);
 			return;
 		}
-		
-		//aqui poner mas mensajes que sean para el servidor en vez de para el otro jugador
-		//ponerlos como propiedades del json que se envie:
-		//"!{"closeSession" : false, "prop1": 10, "prop2" : "hola"}" por ejemplo
-		//y leerlos aqui como se lee closeSession
+		Boolean gameOver = json.get("gameOver").asBoolean();
+		if(gameOver)
+		{
+			session.getAttributes().put("gameOver", true);
+			
+			String otherId = sessionMatches.get((session.getId()));
+			if(otherId == null) return;
+			WebSocketSession otherSession = sessionsMap.get(otherId);
+			if(otherSession == null) return;
+			
+			if((Boolean) otherSession.getAttributes().get("gameOver"))
+			{
+				closeSession(session);
+			}
+		}
+
 	}
 	
 	private void sendMessage(WebSocketSession session, String message) //para mandar mensajes thread safe

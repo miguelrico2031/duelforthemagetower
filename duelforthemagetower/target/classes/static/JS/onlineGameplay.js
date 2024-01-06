@@ -47,6 +47,8 @@ class OnlineGameplay extends Phaser.Scene
     _audioJump;
     _musicIngame;
 
+    deadProcessed = false;
+
     preload()
     {
         //fondo
@@ -349,15 +351,19 @@ class OnlineGameplay extends Phaser.Scene
 
     processDeath()
     {
+        if(this.deadProcessed) return;
+
         if(!this.player1._isAlive){
             this.playerStatsJ1.losses++;
             this.playerStatsJ2.wins++;
+            this.deadProcessed = true;
             this.launchGameOverScene(2);
         }
 
         if(!this.player2._isAlive){
             this.playerStatsJ1.wins++;
             this.playerStatsJ2.losses++;
+            this.deadProcessed = true;
             this.launchGameOverScene(1);
         }
     }
@@ -629,8 +635,9 @@ class OnlineGameplay extends Phaser.Scene
         this.gameoverSound.play()
         // Finaliza el juego
 
-        connection.onclose = null;
-        connection.close();
+        wsMessageCallbacks = [];
+        connection.onclose = (m) => console.log("sesion cerrada por fin de partida.");
+        connection.send("!" + JSON.stringify({gameOver: true}));
 
 
         this.scene.pause("OnlineGameplayScene");

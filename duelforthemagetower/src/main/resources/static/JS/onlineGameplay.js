@@ -237,6 +237,9 @@ class OnlineGameplay extends Phaser.Scene
         wsMessageCallbacks.push((msg) => this.processWSMessage(msg.data));
         
         connection.onclose = (msg) => this.closeWS(msg);
+
+        this.deadProcessed = false;
+        console.log("iniciando gameplay online");
     }
 
     update(time, delta)
@@ -677,7 +680,7 @@ class OnlineGameplay extends Phaser.Scene
 
     sendMessageToOpponent(msg)
     {
-        if(connection == null)
+        if(connection == null || connection.readyState == null || connection.readyState >= 2)
         {
             //error web socket cerrado tal
             return;

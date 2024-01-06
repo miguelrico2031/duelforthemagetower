@@ -2,6 +2,7 @@ com\dftmt\UserService$1.class
 com\dftmt\GameChat.class
 com\dftmt\UserStats.class
 com\dftmt\UserService.class
+com\dftmt\WebSocketMatchHandler.class
 com\dftmt\GameUser.class
 com\dftmt\StatsService$1.class
 com\dftmt\UserController.class

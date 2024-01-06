@@ -77,6 +77,7 @@ public class WebSocketMatchHandler extends TextWebSocketHandler
 		//sino, es un mensaje para el otro jugador.
 		ObjectNode json = objectMapper.createObjectNode();
 		
+		
 		//si no esta en partida  no se puede comunicar con otro jugador
 		if(!(Boolean) session.getAttributes().get("isOnMatch"))
 		{
@@ -383,16 +384,20 @@ public class WebSocketMatchHandler extends TextWebSocketHandler
 			return;
 		}
 		
-		Boolean closeSession = json.get("closeSession").asBoolean();
-		if(closeSession)
-		{
-			//cerrar sesion
-			closeSession(session);
-			return;
-		}
-		Boolean gameOver = json.get("gameOver").asBoolean();
+//		Boolean closeSession = json.get("closeSession").asBoolean();
+//		if(closeSession)
+//		{
+//			//cerrar sesion
+//			closeSession(session);
+//			return;
+//		}
+		System.out.println("mensaje al server");
+		JsonNode n = json.get("gameOver");
+		
+		Boolean gameOver = n != null && n.asBoolean();
 		if(gameOver)
 		{
+			System.out.println("gameOver de jugador");
 			session.getAttributes().put("gameOver", true);
 			
 			String otherId = sessionMatches.get((session.getId()));
@@ -400,8 +405,11 @@ public class WebSocketMatchHandler extends TextWebSocketHandler
 			WebSocketSession otherSession = sessionsMap.get(otherId);
 			if(otherSession == null) return;
 			
-			if((Boolean) otherSession.getAttributes().get("gameOver"))
+			Object go = otherSession.getAttributes().get("gameOver");
+			
+			if(go != null && (Boolean) go)
 			{
+				System.out.println("cerrando sesion por game over");
 				closeSession(session);
 			}
 		}

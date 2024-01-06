@@ -140,6 +140,7 @@ class OnlinePause extends Phaser.Scene
         {
             connection.onclose = null;
             connection.close();
+            connection = null;
         }
 
         this.scene.launch("MenuScene", { isPlaying: false });

@@ -31,10 +31,10 @@ class Gameover extends Phaser.Scene{
         this.load.image("p1_win", "../Assets/UI/Screens/GameOver/P1Win.png");
         this.load.image("p2_win", "../Assets/UI/Screens/GameOver/P2Win.png");
 
-        this.load.spritesheet("bye", "../Assets/UI/Screens/GameOver/byeButton.png", { frameWidth: 320, frameHeight: 45 });
-        this.load.spritesheet("congrats", "../Assets/UI/Screens/GameOver/enhorabuenaButton.png", { frameWidth: 320, frameHeight: 45 });
-        this.load.spritesheet("other", "../Assets/UI/Screens/GameOver/otraButton.png", { frameWidth: 320, frameHeight: 45 });
-        this.load.spritesheet("gg", "../Assets/UI/Screens/GameOver/bienButton.png", { frameWidth: 320, frameHeight: 45 });
+        this.load.spritesheet("chipi", "../Assets/UI/Screens/GameOver/chipi.png", { frameWidth: 320, frameHeight: 45 });
+        this.load.spritesheet("chapa", "../Assets/UI/Screens/GameOver/chapa.png", { frameWidth: 320, frameHeight: 45 });
+        this.load.spritesheet("dubi", "../Assets/UI/Screens/GameOver/dubi.png", { frameWidth: 320, frameHeight: 45 });
+        this.load.spritesheet("daba", "../Assets/UI/Screens/GameOver/daba.png", { frameWidth: 320, frameHeight: 45 });
 
         this.load.spritesheet("btn_menu", "../Assets/UI/Screens/GameOver/MenuButton.png", { frameWidth: 167, frameHeight: 106 });
         this.load.spritesheet("btn_replay", "../Assets/UI/Screens/GameOver/ReplayButton.png", { frameWidth: 167, frameHeight: 106 });
@@ -127,53 +127,53 @@ class Gameover extends Phaser.Scene{
     initChatButtonsAndText()
     {
         
-        this.buttonGg = this.add.sprite(635, 300, "gg")
+        this.buttonGg = this.add.sprite(635, 300, "chipi")
             .setInteractive({ useHandCursor: true })
             // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
             .on('pointerdown', () => { this.enterButtonClickState(this.buttonGg) })
             .on('pointerup', () => 
             { 
                 this.enterButtonRestState(this.buttonGg);
-                this.sendMessage("¡Bien jugado!"); 
+                this.sendMessage("chipi chipi"); 
             })
             // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
             .on('pointerout', () => this.enterButtonRestState(this.buttonGg));
 
 
-        this.buttonCongrats = this.add.sprite(635, 420, "congrats")
+        this.buttonCongrats = this.add.sprite(635, 420, "dubi")
             .setInteractive({ useHandCursor: true })
             // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
             .on('pointerdown', () => { this.enterButtonClickState(this.buttonCongrats) })
             .on('pointerup', () => 
             { 
                 this.enterButtonRestState(this.buttonCongrats);
-                this.sendMessage("¡Enhorabuena!"); 
+                this.sendMessage("dubi dubi"); 
             })
             // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
             .on('pointerout', () => this.enterButtonRestState(this.buttonCongrats));
 
 
-        this.buttonOther = this.add.sprite(635, 360, "other")
+        this.buttonOther = this.add.sprite(635, 360, "chapa")
             .setInteractive({ useHandCursor: true })
             // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
             .on('pointerdown', () => { this.enterButtonClickState(this.buttonOther) })
             .on('pointerup', () => 
             { 
                 this.enterButtonRestState(this.buttonOther);
-                this.sendMessage("¿Jugamos otra?"); 
+                this.sendMessage("chapa chapa"); 
             })
             // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
             .on('pointerout', () => this.enterButtonRestState(this.buttonOther));
             
             
-            this.buttonBye = this.add.sprite(635, 480, "bye")
+            this.buttonBye = this.add.sprite(635, 480, "daba")
                 .setInteractive({ useHandCursor: true })
                 // lo cambio para que se vea la animacion y se ejecute la accion al SOLTAR el boton y no pulsarlo
                 .on('pointerdown', () => { this.enterButtonClickState(this.buttonBye) })
                 .on('pointerup', () => 
                 { 
                     this.enterButtonRestState(this.buttonBye);
-                    this.sendMessage("Adiós"); 
+                    this.sendMessage("daba daba"); 
                 })
                 // vale esto es por si por lo q sea te interesa q al salir el cursor del boton se reinicie la animacion
                 .on('pointerout', () => this.enterButtonRestState(this.buttonBye));

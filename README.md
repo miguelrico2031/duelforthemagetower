@@ -170,7 +170,9 @@ En la batalla por la Torre de los Magos, dos hechiceros compiten saltando entre 
 
 9. UML
     
-10. Vídeo
+10. Mejoras
+
+11. Publicación
 
 
 # 1. Introducción
@@ -510,4 +512,19 @@ La clase que gestiona los WebSockets, es la clase WebSocketMatchHandler. Esta pe
 
 ![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/UML.png)
 
+# 10. Mejoras
+
+-Se ha actualizado el chat tanto en el cliente como en el servidor, porque en fases anteriores lo que hacía era emparejar a dos jugadores aleatoriamente al final de una partida. Ahora empareja a cada jugador con su oponente de esa partida.
+- Se añadieron nuevas frases en el chat, memes, para optar a la insignia.
+- Se solucionó un bug que bloqueaba las teclas usadas en los controles al escribir en los formularios de inicio de sesión después de haber jugado una partida.
+- Se solucionó un bug que hacía que no se mostrase la animación de muerte de los magos al final de la partida.
+- Se cambió la API REST puesto que antes permitía que un mismo usuario iniciase sesión todas las veces que quisiera. Ahora solo puede iniciar sesión una vez, y para volver a iniciar sesión tiene que cerrar sesión antes.
+
+# 11. Publicación
+
+En estas plataformas está publicado el juego:
+- [Itch.io](https://lertronum.itch.io/duel-for-the-mage-tower)
+- [Game Jolt](https://gamejolt.com/games/duelforthemagetower/867590)
+- [NewGrounds](https://www.newgrounds.com/portal/view/913331)
+- [iDev.Games](https://idev.games/game/duel-for-the-mage-tower)
 

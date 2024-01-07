@@ -641,8 +641,10 @@ class OnlineGameplay extends Phaser.Scene
         wsMessageCallbacks = [];
         connection.onclose = (m) => console.log("sesion cerrada por fin de partida.");
         connection.send("!" + JSON.stringify({gameOver: true}));
-
-
+        
+        // Añado este delay para que se pueda apreciar la animación de muerte
+        this.time.delayedCall(3000, () => 
+        {
         this.scene.pause("OnlineGameplayScene");
         const gameOverConfig = { winner: winnerId, J1stats: this.playerStatsJ1, J2stats: this.playerStatsJ2 }
 
@@ -656,6 +658,7 @@ class OnlineGameplay extends Phaser.Scene
             this.scene.wake('OnlineGameoverScene', gameOverConfig); 
         }
         this.scene.run('OnlineGameoverScene', gameOverConfig);
+        });
     }
 
     updatePlayerStats(playerStats){

@@ -567,6 +567,10 @@ class GameplayScene extends Phaser.Scene
         this._musicIngame.pause();
         // Sonidito game over
         this.gameoverSound.play()
+        // por qué el sonido también se retrasa ??
+        // Añado este delay para que se pueda apreciar la animación de muerte
+        this.time.delayedCall(3000, () => 
+        {
         // Finaliza el juego
         this.scene.pause("GameplayScene");
         if(!this.scene.get('GameoverScene', { winner: winnerId, J1stats: this.playerStatsJ1, J2stats: this.playerStatsJ2 }).loaded)
@@ -579,6 +583,7 @@ class GameplayScene extends Phaser.Scene
             this.scene.wake('GameoverScene', { winner: winnerId, J1stats: this.playerStatsJ1, J2stats: this.playerStatsJ2  }); // reactiva el menú de pausa (que ya estaba por encima)
         }
         this.scene.run('GameoverScene', { winner: winnerId, J1stats: this.playerStatsJ1, J2stats: this.playerStatsJ2  });
+        });
     }
 
     updatePlayerStats(playerStats){

@@ -137,17 +137,17 @@ class OnlineGameplay extends Phaser.Scene
         this.pauseSound = this.sound.add("pauseSound");
         this.gameoverSound = this.sound.add("gameoverSound");
 
+
+
+
+
+
         this.playerInput.wasdKeys = this.input.keyboard.addKeys("W,A,S,D");
         this.playerInput.jumpKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.playerInput.castKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
         this.playerInput.shieldCastKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
         
         this.playerInput.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-
-
-
-
-
 
         this.add.image(viewport.width/2, viewport.height/2, "bg");
         
@@ -673,8 +673,28 @@ class OnlineGameplay extends Phaser.Scene
 
     enableInput(enable) 
     {
-        if(enable) this.input.keyboard.enableGlobalCapture() 
-        else this.input.keyboard.disableGlobalCapture() 
+        if(enable)
+        {
+            this.input.keyboard.enableGlobalCapture() 
+            this.playerInput.wasdKeys = this.input.keyboard.addKeys("W,A,S,D");
+            this.playerInput.jumpKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+            this.playerInput.castKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+            this.playerInput.shieldCastKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+            
+            this.playerInput.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
+        }
+        else
+        {
+            this.input.keyboard.disableGlobalCapture() 
+
+            this.input.keyboard.removeCapture("W,A,S,D");
+            this.input.keyboard.removeCapture(Phaser.Input.Keyboard.KeyCodes.SPACE);
+            this.input.keyboard.removeCapture(Phaser.Input.Keyboard.KeyCodes.Q);
+            this.input.keyboard.removeCapture(Phaser.Input.Keyboard.KeyCodes.E);
+            
+            this.input.keyboard.removeCapture(Phaser.Input.Keyboard.KeyCodes.ESC);
+        }
     }
 
 

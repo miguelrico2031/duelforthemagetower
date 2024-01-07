@@ -155,38 +155,5 @@ class Menu extends Phaser.Scene
     }
 
     showUserScreen = () => this.scene.start("UserScene", { isplaying: true });
-    // {
-    //     const loginUser = 
-    //     {
-    //         username: user.username,
-    //         password: user.password
-    //     }
 
-    //     $.ajax
-    //     ({
-    //         method: "POST",
-    //         url: IP + "/users/login",
-    //         data: JSON.stringify(loginUser),
-    //         headers: 
-    //         {
-    //             "Content-type":"application/json"
-    //         }
-    //     })
-    //     .done((data, textStatus, jqXHR) => 
-    //     {
-    //         console.log(textStatus+" "+ jqXHR.status);
-    //         console.log(data);
-    //         console.log(jqXHR.statusCode())
-
-    //         this.audioOpen.play();
-    //         this.scene.start("UserScene", { isplaying: true });
-
-    //     })
-    //     .fail((data, textStatus, jqXHR) => 
-    //     {
-    //         console.log(textStatus+" "+jqXHR.status);
-    //     });
-
-
-    // }
 }

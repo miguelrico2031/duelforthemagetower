@@ -47,7 +47,9 @@ const game = new Phaser.Game(config);
 
 const openWS = (openCallback) => 
 {
-    connection = new WebSocket('ws://' + window.location.href.slice(6) + 'match');
+    let splitHost = window.location.href.split("//")[1];
+
+    connection = new WebSocket('wss://' + splitHost + 'match');
 
     connection.onopen = openCallback;
 

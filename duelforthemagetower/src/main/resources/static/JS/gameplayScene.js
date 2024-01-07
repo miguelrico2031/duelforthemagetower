@@ -593,10 +593,31 @@ class GameplayScene extends Phaser.Scene
             console.log('FAIL');
         });
     }
-
+    
     enableInput(enable) 
     {
-        if(enable) this.input.keyboard.enableGlobalCapture() 
-        else this.input.keyboard.disableGlobalCapture() 
+        if(enable)
+        {
+            this.input.keyboard.enableGlobalCapture() 
+            this.playerInput.wasdKeys = this.input.keyboard.addKeys("W,A,S,D");
+            this.playerInput.jumpKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+            this.playerInput.castKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+            this.playerInput.shieldCastKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+            
+            this.playerInput.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
+        }
+        else
+        {
+            this.input.keyboard.disableGlobalCapture() 
+
+            this.input.keyboard.removeCapture("W,A,S,D");
+            this.input.keyboard.removeCapture(Phaser.Input.Keyboard.KeyCodes.SPACE);
+            this.input.keyboard.removeCapture(Phaser.Input.Keyboard.KeyCodes.Q);
+            this.input.keyboard.removeCapture(Phaser.Input.Keyboard.KeyCodes.E);
+            
+            this.input.keyboard.removeCapture(Phaser.Input.Keyboard.KeyCodes.ESC);
+        }
     }
+
 }

@@ -1,5 +1,7 @@
 package com.dftmt;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 @RestController
 @RequestMapping("/chat")
 public class ChatController
@@ -19,11 +23,17 @@ public class ChatController
 	private ChatService chatService;
 	
 	@PostMapping("/start")
-	public ResponseEntity<GameChat> startChat(@RequestBody GameUser user)
+	public ResponseEntity<GameChat> startChat(@RequestBody ObjectNode users)
 	{
-		if(user == null || user.getUsername() == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		System.out.println(users.toPrettyString());
 		
-		GameChat chat = chatService.startChat(user.getUsername());
+		String user = users.get("username").asText();
+		String otherUser = users.get("otherUsername").asText();
+		
+		System.out.println("Chat started: " + user + " with " + otherUser);
+		if(user == null || otherUser == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		
+		GameChat chat = chatService.startChat(user, otherUser);
 		
 		if(chat == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		

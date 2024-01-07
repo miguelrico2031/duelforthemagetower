@@ -17,11 +17,12 @@ public class ChatService
 	
 	private HashMap<GameUser, GameChat> chats = new HashMap<>();
 	
-	public GameChat startChat(String username)
+	public GameChat startChat(String username, String otherUsername)
 	{
 		GameUser existingUser = userService.getUser(username);
+		GameUser otherUser = userService.getUser(otherUsername);
 		
-		if(existingUser == null || !existingUser.getLogged()) return null;
+		if(existingUser == null || !existingUser.getLogged() || otherUser == null || !otherUser.getLogged()) return null;
 		
 		if(chats.containsKey(existingUser)) return chats.get(existingUser);
 		
@@ -30,13 +31,13 @@ public class ChatService
 		 
 		if(loggedUsers.size() < 2) return null;
 		 
-		GameUser otherUser = null;
-		while(otherUser == null)
-		{
-			int rnd = new Random().nextInt(loggedUsers.size());
-			otherUser = loggedUsers.get(rnd);
-			if(otherUser.equals(existingUser)) otherUser = null;
-		}
+	//	GameUser otherUser = null;
+	//	while(otherUser == null)
+	//	{
+	//		int rnd = new Random().nextInt(loggedUsers.size());
+	//		otherUser = loggedUsers.get(rnd);
+	//		if(otherUser.equals(existingUser)) otherUser = null;
+	//	}
 		
 		chats.put(existingUser, new GameChat(existingUser.getUsername(), otherUser.getUsername(), null));
 		chats.put(otherUser, new GameChat(otherUser.getUsername(), existingUser.getUsername(), null));

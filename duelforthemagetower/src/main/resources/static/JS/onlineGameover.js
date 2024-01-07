@@ -224,7 +224,7 @@ class OnlineGameover extends Phaser.Scene{
             ({
                 method: "POST",
                 url: IP + "/chat/start",
-                data: JSON.stringify({ username: user.username }),
+                data: JSON.stringify({ username: user.username, otherUsername: !matchData.isPlayer1 ? this.playerStatsJ1.username : this.playerStatsJ2.username }),
                 headers: 
                 {
                     "Content-type":"application/json"

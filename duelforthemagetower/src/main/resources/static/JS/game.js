@@ -45,7 +45,7 @@ const config =
 const game = new Phaser.Game(config);
 
 
-const openWS = (openCallback) => 
+const openWS = (openCallback, errorCallback) => 
 {
     connection = new WebSocket('ws://' + window.location.href.slice(6) + 'match');
 
@@ -53,7 +53,7 @@ const openWS = (openCallback) =>
 
     connection.onmessage = (m) => { for(const c of wsMessageCallbacks) c(m); }
 
-    connection.onerror = (e)  => console.log("WebSocket error: " + e);
+    connection.onerror = (e)  => {console.log("WebSocket error: " + e); errorCallback()};
     
     connection.onclose = (e) => {connection = null; console.log("conexion cerrada: " + e);}
 }

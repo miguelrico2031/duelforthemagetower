@@ -46,7 +46,7 @@ class Connecting extends Phaser.Scene
         
         
         // Enviar el user con el que quiero jugar
-        openWS(() => this.onWSOpen());
+        openWS(() => this.onWSOpen(), this.onWSError());
         wsMessageCallbacks.push((msg) => this.processWSMessage(msg.data))
 
         
@@ -60,6 +60,12 @@ class Connecting extends Phaser.Scene
         const userData = {username : user.username}
 
         connection.send('!' + JSON.stringify(userData));
+    }
+
+    onWSError()
+    {
+        console.log("no se ha podido conectar, volviendo al menu.")
+        this.closeScreen();
     }
 
     processWSMessage(msg)
@@ -108,7 +114,7 @@ class Connecting extends Phaser.Scene
     {
         this.game.sound.stopAll();
         this.audioClose.play();
-        connection.close();
+        if(connection != null && connection.readyState < 2) connection.close();
         this.scene.start("MenuScene", { isPlaying: true });
     }
 }

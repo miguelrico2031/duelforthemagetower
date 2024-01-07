@@ -1,4 +1,7 @@
 Repositorio creado para el desarrollo del videojuego de la práctica de Juegos en Red del curso 2023/24.
+# Vídeo mostrando el multijugador on line
+[Vídeo](https://youtu.be/_sik5MtXjRs?si=CHa6ITnFZzEfj95s)
+
 
 # Guía de instalación (Windows)
 En esta sección se detallarán las instrucciones para la correcta compilación y ejecución del juego en una red local.
@@ -507,6 +510,4 @@ La clase que gestiona los WebSockets, es la clase WebSocketMatchHandler. Esta pe
 
 ![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/UML.png)
 
-# 10. Vídeo
 
-[Vídeo](https://youtu.be/_sik5MtXjRs?si=CHa6ITnFZzEfj95s)

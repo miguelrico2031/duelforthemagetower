@@ -166,6 +166,8 @@ En la batalla por la Torre de los Magos, dos hechiceros compiten saltando entre 
     8.2. Métodos
 
 9. UML
+    
+10. Vídeo
 
 
 # 1. Introducción
@@ -506,4 +508,5 @@ La clase que gestiona los WebSockets, es la clase WebSocketMatchHandler. Esta pe
 ![](https://github.com/miguelrico2031/juegosenred/blob/main/Readme%20Images/UML.png)
 
 # 10. Vídeo
-[](https://youtu.be/_sik5MtXjRs)
+
+[Vídeo](https://youtu.be/_sik5MtXjRs?si=CHa6ITnFZzEfj95s)

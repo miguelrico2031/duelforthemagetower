@@ -46,7 +46,7 @@ class Connecting extends Phaser.Scene
         
         
         // Enviar el user con el que quiero jugar
-        openWS(() => this.onWSOpen(), this.onWSError());
+        openWS(() => this.onWSOpen(), () => this.onWSError());
         wsMessageCallbacks.push((msg) => this.processWSMessage(msg.data))
 
         

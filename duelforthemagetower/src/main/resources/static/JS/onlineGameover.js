@@ -218,13 +218,15 @@ class OnlineGameover extends Phaser.Scene{
             //aqui poner aviso en el juego de "no se pudo iniciar chat, tienes que iniciar sesion"
             return;
         }
+        console.log(user.username);
+        console.log(!matchData.isPlayer1 ? this._J1Stats.username : this._J2Stats.username);
 
 
         $.ajax
             ({
                 method: "POST",
                 url: IP + "/chat/start",
-                data: JSON.stringify({ username: user.username, otherUsername: !matchData.isPlayer1 ? this.playerStatsJ1.username : this.playerStatsJ2.username }),
+                data: JSON.stringify({ username: user.username, otherUsername: !matchData.isPlayer1 ? this._J1Stats.username : this._J2Stats.username }),
                 headers: 
                 {
                     "Content-type":"application/json"

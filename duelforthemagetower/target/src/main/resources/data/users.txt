@@ -1,1 +1,1 @@
-{"patata":{"username":"patata","password":"frita","logged":true},"eze":{"username":"eze","password":"plinplon","logged":false},"miguel":{"username":"miguel","password":"123","logged":false},"gloria":{"username":"gloria","password":"holaa","logged":true}}
+{"patata":{"username":"patata","password":"frita","logged":false},"eze":{"username":"eze","password":"plinplon","logged":false},"miguel":{"username":"miguel","password":"123","logged":false},"gloria":{"username":"gloria","password":"holaa","logged":false},"juan":{"username":"juan","password":"123","logged":true}}

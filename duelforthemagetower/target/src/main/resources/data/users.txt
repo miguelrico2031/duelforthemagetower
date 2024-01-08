@@ -1,1 +1,1 @@
-{"eze":{"username":"eze","password":"plinplon","logged":true},"miguel":{"username":"miguel","password":"123","logged":true}}
+{"patata":{"username":"patata","password":"frita","logged":true},"eze":{"username":"eze","password":"plinplon","logged":false},"miguel":{"username":"miguel","password":"123","logged":false},"gloria":{"username":"gloria","password":"holaa","logged":true}}
